@@ -4,110 +4,164 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gayan Weerasingha | Electrical & Automation Engineer</title>
-  <meta name="description" content="Electrical Engineer transitioning into Industrial Automation, Control Systems, and Industry 4.0." />
+  <meta name="description" content="Electrical & Electronic Engineer transitioning into Industrial Automation, Control Systems, and Industry 4.0." />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
-    :root {
-      --primary: #0f172a;
-      --accent: #2563eb;
-      --text: #1f2937;
-      --bg: #ffffff;
-      --muted: #6b7280;
-    }
-
-    * { box-sizing: border-box; }
-
     body {
       margin: 0;
-      font-family: Inter, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
+      font-family: 'Poppins', sans-serif;
+      color: #222;
+      background: #ffffff;
     }
 
     header {
-      background: var(--primary);
+      min-height: 100vh;
+      background: linear-gradient(to right, #0f172a, #020617);
       color: white;
-      padding: 2.5rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       text-align: center;
+      padding: 2rem 1rem;
     }
 
-    header h1 { margin-bottom: 0.3rem; }
-    header p { color: #cbd5f5; }
+    .hero {
+      max-width: 900px;
+    }
+
+    .hero img {
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #fff;
+      margin-bottom: 1.2rem;
+    }
+
+    .hero h1 {
+      font-size: 2.8rem;
+      margin: 0.3rem 0;
+    }
+
+    .hero h2 {
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: #c7d2fe;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero .icons a {
+      color: white;
+      font-size: 1.4rem;
+      margin: 0 0.6rem;
+      transition: 0.3s;
+    }
+
+    .hero .icons a:hover {
+      color: #60a5fa;
+    }
 
     nav {
+      position: sticky;
+      top: 0;
       background: #020617;
-      padding: 0.7rem;
+      padding: 0.8rem;
       text-align: center;
+      z-index: 1000;
     }
 
     nav a {
       color: #e5e7eb;
-      margin: 0 0.8rem;
+      margin: 0 0.9rem;
       text-decoration: none;
       font-weight: 500;
     }
 
-    nav a:hover { color: var(--accent); }
-
-    section {
-      max-width: 1000px;
-      margin: auto;
-      padding: 3rem 1rem;
+    nav a:hover {
+      color: #60a5fa;
     }
 
-    h2 {
-      border-left: 4px solid var(--accent);
-      padding-left: 0.6rem;
-      margin-bottom: 1.5rem;
-      color: var(--primary);
+    section {
+      max-width: 1100px;
+      margin: auto;
+      padding: 4rem 1.2rem;
+    }
+
+    h3.section-title {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      color: #0f172a;
+    }
+
+    .about p {
+      max-width: 900px;
+      margin: auto;
+      text-align: center;
+      line-height: 1.8;
     }
 
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.5rem;
+      gap: 1.8rem;
     }
 
     .card {
       border: 1px solid #e5e7eb;
-      border-radius: 10px;
-      padding: 1.5rem;
-      background: white;
+      border-radius: 14px;
+      padding: 1.8rem;
+      transition: 0.3s;
     }
 
-    .card h3 { margin-top: 0; }
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
 
-    .muted { color: var(--muted); }
+    .card h4 {
+      margin-top: 0;
+      color: #0f172a;
+    }
 
     footer {
+      background: #020617;
+      color: #9ca3af;
       text-align: center;
       padding: 2rem 1rem;
-      background: #f8fafc;
-      font-size: 0.9rem;
-      color: var(--muted);
     }
 
-    .btn {
-      display: inline-block;
-      background: var(--accent);
-      color: white;
-      padding: 0.6rem 1.2rem;
-      border-radius: 6px;
-      text-decoration: none;
-      font-weight: 500;
+    footer a {
+      color: #60a5fa;
+      margin: 0 0.4rem;
+      font-size: 1.3rem;
     }
-
-    .btn:hover { opacity: 0.9; }
   </style>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 </head>
 <body>
 
+<!-- HERO -->
 <header>
-  <div style="display:flex;justify-content:center;gap:1.2rem;font-size:1.1rem;margin-bottom:1rem;flex-wrap:wrap;">
-    <a href="mailto:gweerasinghe67@gmail.com" title="Email" style="color:white;"><i class="fa-solid fa-envelope"></i></a>
-    <a href="tel:+94724618922" title="Phone" style="color:white;"><i class="fa-solid fa-phone"></i></a>
+  <div class="hero">
+    <img src="assets/images/profile.jpg" alt="Gayan Weerasingha" />
+    <h1>Gayan Weerasingha</h1>
+    <h2>Electrical & Electronic Engineer · Industrial Automation · Industry 4.0</h2>
+    <div class="icons">
+      <a href="mailto:gweerasinghe67@gmail.com"><i class="fa-solid fa-envelope"></i></a>
+      <a href="tel:+94724618922"><i class="fa-solid fa-phone"></i></a>
+      <a href="https://www.linkedin.com/in/gayan-weerasingha-075946188/" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+      <a href="https://github.com/lintagni" target="_blank"><i class="fa-brands fa-github"></i></a>
+    </div>
+  </div>
+</header>
 
+<!-- NAV -->
 <nav>
   <a href="#about">About</a>
   <a href="#experience">Experience</a>
@@ -116,106 +170,79 @@
   <a href="#contact">Contact</a>
 </nav>
 
-<section id="about">
-  <h2>About Me</h2>
+<!-- ABOUT -->
+<section id="about" class="about">
+  <h3 class="section-title">About Me</h3>
   <p>
-    Electrical and Electronic Engineer with over 3 years of experience in MEP and electrical engineering projects at ICC, Voltas Engineering, and Central Engineering Consultancy Bureau (CECB). Strong exposure to low-voltage power distribution, switchboards, lighting systems, electrical estimation, and site coordination.
-  </p>
-  <p>
-    Proficient in AutoCAD and SolidWorks with hands-on experience in installation, testing, and commissioning activities. Currently pursuing an MSc in Industrial Automation (University of Moratuwa), with a clear career objective to transition into automation and control-focused engineering roles.
+    Electrical and Electronic Engineer with over 3 years of experience in MEP and electrical engineering projects at ICC, Voltas Engineering, and Central Engineering Consultancy Bureau (CECB). Strong exposure to low-voltage power distribution, switchboards, lighting systems, estimation, and site coordination. Currently pursuing an MSc in Industrial Automation at the University of Moratuwa with a clear goal of transitioning into automation and control-focused engineering roles.
   </p>
 </section>
 
+<!-- EXPERIENCE -->
 <section id="experience">
-  <h2>Experience</h2>
+  <h3 class="section-title">Experience</h3>
   <div class="grid">
     <div class="card">
-      <h3>Electrical Engineer – Central Engineering Consultancy Bureau (CECB)</h3>
-      <p class="muted">Jul 2024 – Present | Galle</p>
-      <ul>
-        <li>Designed and consulted on electrical systems using AutoCAD</li>
-        <li>Prepared BOQs and electrical estimations ensuring accurate budgeting</li>
-        <li>Prepared technical and evaluation reports to support project decisions</li>
-      </ul>
+      <h4>Electrical Engineer – CECB</h4>
+      <p>Jul 2024 – Present · Galle</p>
+      <p>Electrical design, BOQs, estimation, and technical evaluation for infrastructure and hospital projects.</p>
     </div>
     <div class="card">
-      <h3>Electrical Engineer (Projects) – Voltas Engineering</h3>
-      <p class="muted">Mar 2024 – Jun 2024 | Colombo</p>
-      <ul>
-        <li>Executed electrical system projects focusing on efficiency and accuracy</li>
-        <li>Conducted testing and commissioning to ensure system reliability</li>
-        <li>Performed maintenance activities to improve system longevity</li>
-      </ul>
+      <h4>Electrical Engineer (Projects) – Voltas Engineering</h4>
+      <p>Mar 2024 – Jun 2024 · Colombo</p>
+      <p>Testing, commissioning, maintenance, and execution of electrical installations.</p>
     </div>
     <div class="card">
-      <h3>MEP Engineer – International Construction Consortium (ICC)</h3>
-      <p class="muted">Mar 2022 – Mar 2024 | Dehiwala</p>
-      <ul>
-        <li>Maintained MEP documentation for large-scale hospital projects</li>
-        <li>Coordinated QA/QC works and liaised with consultants</li>
-        <li>Ensured compliance with project standards and timelines</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>Trainee Electrical Engineer – Ceylon Electricity Board</h3>
-      <p class="muted">Aug 2021 – Nov 2021 | Kandy</p>
-      <ul>
-        <li>Operated and maintained power station and grid substation systems</li>
-        <li>Involved in underground power transfer and energy management</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>Trainee Telecommunication Engineer – Sri Lanka Telecom</h3>
-      <p class="muted">Mar 2019 – May 2019 | Colombo</p>
-      <ul>
-        <li>Assisted in operating soft switches and submarine cable systems</li>
-        <li>Supported power and air-conditioning system maintenance</li>
-      </ul>
+      <h4>MEP Engineer – ICC</h4>
+      <p>Mar 2022 – Mar 2024 · Dehiwala</p>
+      <p>MEP documentation, QA/QC coordination, and consultant liaison for hospital projects.</p>
     </div>
   </div>
 </section>
 
+<!-- PROJECTS -->
 <section id="projects">
-  <h2>Projects</h2>
+  <h3 class="section-title">Projects</h3>
   <div class="grid">
     <div class="card">
-      <h3>Advanced Driving Assistant System</h3>
-      <p class="muted">Final Year Project – South Eastern University of Sri Lanka</p>
-      <p>
-        Developed an image-processing-based advanced driving assistant system to reduce road accidents and traffic congestion by enhancing driver awareness and decision-making.
-      </p>
+      <h4>Advanced Driving Assistant System</h4>
+      <p>Image-processing-based system to reduce road accidents and traffic congestion.</p>
     </div>
     <div class="card">
-      <h3>Density-Based Traffic Light System</h3>
-      <p class="muted">Academic Project – South Eastern University of Sri Lanka</p>
-      <p>
-        Proposed and implemented a density-based traffic light control system using image processing techniques to minimize traffic congestion and improve traffic flow efficiency.
-      </p>
+      <h4>Density-Based Traffic Light System</h4>
+      <p>Smart traffic light control using real-time vehicle density analysis.</p>
     </div>
   </div>
 </section>
 
+<!-- ARTICLES -->
 <section id="articles">
-  <h2>Articles & Technical Writing</h2>
-  <ul>
-    <li>Introduction to Industrial Automation for Electrical Engineers</li>
-    <li>Electrical Load Calculation Basics for Building Services</li>
-    <li>From Electrical Engineering to Industry 4.0 – Career Transition Insights</li>
-  </ul>
+  <h3 class="section-title">Articles & Writing</h3>
+  <div class="grid">
+    <div class="card">
+      <h4>Introduction to Industrial Automation</h4>
+      <p>Foundational concepts for electrical engineers entering automation.</p>
+    </div>
+    <div class="card">
+      <h4>Electrical Load Calculation Basics</h4>
+      <p>Practical guide for building services engineers.</p>
+    </div>
+  </div>
 </section>
 
+<!-- CONTACT -->
 <section id="contact">
-  <h2>Contact</h2>
-  <div style="display:flex;flex-wrap:wrap;gap:1.5rem;align-items:center;">
-    <a href="mailto:gweerasinghe67@gmail.com" title="Email" style="text-decoration:none;font-size:1.5rem;">📧</a>
-    <a href="tel:+94724618922" title="Phone" style="text-decoration:none;font-size:1.5rem;">📞</a>
-    <a href="https://www.linkedin.com/in/gayan-weerasingha-075946188/" target="_blank" title="LinkedIn" style="text-decoration:none;font-size:1.5rem;">🔗</a>
-    <a href="https://github.com/lintagni" target="_blank" title="GitHub" style="text-decoration:none;font-size:1.5rem;">💻</a>
+  <h3 class="section-title">Get In Touch</h3>
+  <div style="text-align:center;font-size:1.8rem;">
+    <a href="mailto:gweerasinghe67@gmail.com"><i class="fa-solid fa-envelope"></i></a>
+    <a href="tel:+94724618922"><i class="fa-solid fa-phone"></i></a>
+    <a href="https://www.linkedin.com/in/gayan-weerasingha-075946188/" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+    <a href="https://github.com/lintagni" target="_blank"><i class="fa-brands fa-github"></i></a>
   </div>
 </section>
 
 <footer>
-  © 2026 Gayan Weerasingha · Engineering Portfolio
+  © 2026 Gayan Weerasingha · Electrical & Automation Engineer
 </footer>
 
 </body>
