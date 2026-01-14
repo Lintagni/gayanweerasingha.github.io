@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Projects | Gayan Weerasingha</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Inter, Arial, sans-serif;
+      margin: 0;
+      background: #f9fafb;
+      color: #111827;
+    }
+
+    header {
+      background: #020617;
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+
+    header p {
+      color: #cbd5f5;
+      margin-top: 0.5rem;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: auto;
+      padding: 3rem 1rem;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    a.project-link {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 1.8rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      height: 100%;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+
+    .card h3 {
+      margin-top: 0;
+      margin-bottom: 0.4rem;
+      font-size: 1.2rem;
+    }
+
+    .muted {
+      color: #6b7280;
+      font-size: 0.9rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .tags {
+      margin-top: 1rem;
+    }
+
+    .tag {
+      display: inline-block;
+      background: #e0e7ff;
+      color: #3730a3;
+      font-size: 0.75rem;
+      padding: 0.3rem 0.6rem;
+      border-radius: 999px;
+      margin-right: 0.3rem;
+      margin-bottom: 0.3rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      background: #f8fafc;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+     .back-btn {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  padding: 0.6rem 1.2rem;
+  background: #2563eb;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.back-btn:hover {
+  opacity: 0.9;
+}
+
+
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Projects</h1>
+  <p>Selected Engineering & Design Work</p>
+</header>
+
+<main>
+  <a href="index.html" class="back-btn">
+  <i class="fa-solid fa-arrow-left"></i> Back to Home
+</a>
+
+  <div class="projects-grid">
+
+    <!-- Project 1 -->
+    <a href="projects/project-1.html" class="project-link">
+      <div class="card">
+        <h3>Electrical System Design – Cath Lab</h3>
+        <p class="muted">Karapitiya National Hospital</p>
+        <p>
+          Complete electrical system design for a new Cardiac Catheterization
+          Laboratory including power distribution, lighting, and emergency systems.
+        </p>
+        <div class="tags">
+          <span class="tag">Electrical Engineering</span>
+          <span class="tag">AutoCAD</span>
+          <span class="tag">Hospital Design</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Project 2 
+    <a href="project-2.html" class="project-link">
+      <div class="card">
+        <h3>Hospital Electrical Design Project</h3>
+        <p class="muted">MEP Engineering</p>
+        <p>
+          Electrical design for hospital facilities including lighting,
+          power distribution, earthing, and backup power systems.
+        </p>
+        <div class="tags">
+          <span class="tag">MEP</span>
+          <span class="tag">IEC</span>
+          <span class="tag">DIALux</span>
+        </div>
+      </div>
+    </a>-->
+
+    <!-- Project 3 
+    <a href="project-3.html" class="project-link">
+      <div class="card">
+        <h3>Solar Powered Street Lighting Project</h3>
+        <p class="muted">Renewable Energy</p>
+        <p>
+          Design and implementation support for solar-powered street
+          lighting systems including load assessment and BOQ preparation.
+        </p>
+        <div class="tags">
+          <span class="tag">Solar</span>
+          <span class="tag">Lighting</span>
+          <span class="tag">Sustainability</span>
+        </div>
+      </div>
+    </a>-->
+
+  </div>
+
+</main>
+
+<footer>
+  © 2026 Designed & Developed by Gayan Weerasingha · Engineering Portfolio
+</footer>
+
+</body>
+</html>
