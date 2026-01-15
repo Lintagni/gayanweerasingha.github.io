@@ -39,13 +39,29 @@
     header p { color: #cbd5f5; }
 
     /* SOCIAL BAR */
-    .social {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      padding: 0 50px;
-      height: 50px;
-    }
+.social {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 50px;
+  height: 50px;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .social {
+    justify-content: center;
+    padding: 10px;
+    height: auto;
+  }
+
+  .social a span {
+    display: none; /* icons only on mobile */
+  }
+}
+
 
     .social a {
       color: white;
@@ -59,17 +75,21 @@
     }
 
     nav {
-      background: #020617;
-      padding: 0.7rem;
-      text-align: center;
-    }
+  background: #020617;
+  padding: 0.7rem;
+  text-align: center;
+}
 
-    nav a {
-      color: #e5e7eb;
-      margin: 0 0.8rem;
-      text-decoration: none;
-      font-weight: 500;
-    }
+nav a {
+  display: inline-block;
+  margin: 0.4rem 0.6rem;
+}
+
+@media (max-width: 600px) {
+  nav a {
+    font-size: 0.9rem;
+  }
+}
 
     nav a:hover { color: var(--accent); }
 
@@ -191,6 +211,33 @@
     #scrollTopBtn:hover {
     opacity: 0.9;
     }
+
+    @media (max-width: 768px) {
+  header {
+    padding: 2rem 1rem;
+  }
+
+  header h1 {
+    font-size: 1.8rem;
+  }
+
+  header p {
+    font-size: 0.95rem;
+  }
+
+  header img {
+    width: 120px !important;
+    height: 120px !important;
+  }
+}
+
+    @media (max-width: 768px) {
+  #scrollTopBtn {
+    right: 20px;
+    bottom: 20px;
+  }
+}
+
 
   </style>
 
@@ -379,3 +426,4 @@
 
 </body>
 </html>
+
