@@ -1,13 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- BASIC -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gayan Weerasingha | Electrical & Automation Engineer</title>
 
-  <meta name="description" content="Electrical & Electronic Engineer transitioning into Industrial Automation, Control Systems, and Industry 4.0." />
-  <meta name="author" content="Gayan Weerasingha">
-  <meta name="keywords" content="Electrical Engineer, Industrial Automation, PLC, Industry 4.0, Sri Lanka">
+  <!-- SEO -->
+  <meta name="description" content="Electrical & Electronic Engineer with 3+ years experience in electrical design, industrial automation, PLC and Industry 4.0. MSc Industrial Automation – University of Moratuwa." />
+  <meta name="keywords" content="Electrical Engineer Sri Lanka, Industrial Automation, PLC Engineer, Electrical Design, Industry 4.0, Gayan Weerasingha" />
+  <meta name="author" content="Gayan Weerasingha" />
+
+  <!-- OPEN GRAPH -->
+  <meta property="og:title" content="Gayan Weerasingha | Electrical & Automation Engineer" />
+  <meta property="og:description" content="Professional portfolio of an Electrical & Automation Engineer specializing in electrical design, PLC & Industry 4.0." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/images/profile.webp" />
+  <meta property="og:url" content="https://YOUR_GITHUB_USERNAME.github.io/" />
+
+  <meta name="theme-color" content="#2563eb" />
+
+  <!-- FONT AWESOME -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        crossorigin="anonymous" />
 
   <style>
     :root {
@@ -15,10 +31,21 @@
       --accent: #2563eb;
       --text: #1f2937;
       --bg: #ffffff;
+      --card: #ffffff;
       --muted: #6b7280;
     }
 
+    body.dark {
+      --primary: #e5e7eb;
+      --accent: #60a5fa;
+      --text: #e5e7eb;
+      --bg: #020617;
+      --card: #020617;
+      --muted: #94a3b8;
+    }
+
     * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
@@ -26,37 +53,40 @@
       background: var(--bg);
       color: var(--text);
       line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
     }
 
+    /* HEADER */
     header {
       background: var(--primary);
       color: white;
       padding: 2.5rem 1rem;
       text-align: center;
+      position: relative;
     }
 
-    header h1 { margin-bottom: 0.3rem; }
     header p { color: #cbd5f5; }
 
-    /* SOCIAL BAR */
+    .theme-toggle {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
     .social {
       display: flex;
       justify-content: flex-end;
-      align-items: center;
-      padding: 0 50px;
-      height: 50px;
+      gap: 15px;
+      padding: 10px 40px;
+      flex-wrap: wrap;
     }
 
-    .social a {
-      color: white;
-      margin-left: 15px;
-      text-decoration: none;
-      font-size: 15px;
-    }
-
-    .social a span {
-      margin-left: 5px;
-    }
+    .social a { color: white; font-size: 15px; }
 
     nav {
       background: #020617;
@@ -66,9 +96,10 @@
 
     nav a {
       color: #e5e7eb;
-      margin: 0 0.8rem;
+      margin: 0.4rem 0.6rem;
       text-decoration: none;
       font-weight: 500;
+      display: inline-block;
     }
 
     nav a:hover { color: var(--accent); }
@@ -86,11 +117,6 @@
       color: var(--primary);
     }
 
-    #about p {
-      text-align: justify;
-      hyphens: auto;
-    }
-
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -98,11 +124,11 @@
     }
 
     .card {
+      background: var(--card);
       border: 1px solid #e5e7eb;
       border-radius: 10px;
       padding: 1.5rem;
-      background: white;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
 
     .card:hover {
@@ -110,30 +136,11 @@
       box-shadow: 0 8px 20px rgba(0,0,0,0.08);
     }
 
-    .card1 {
-      border: 1px solid #e5e7eb;
-      border-radius: 10px;
-      padding: 1.5rem;
-      background: white;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .card1:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-    }
-
     .ser1 {
       display: flex;
-      justify-content: center;
       align-items: center;
       gap: 10px;
       margin-bottom: 10px;
-    }
-
-    .card1 h3,
-    .card1 i {
-      color: var(--primary);
     }
 
     .muted { color: var(--muted); }
@@ -148,88 +155,60 @@
       font-weight: 500;
     }
 
-    .btn:hover { opacity: 0.9; }
-
-    /* Project arrow card */
-    .card a {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100%;
-      color: var(--primary);
-      text-decoration: none;
-    }
-
     footer {
       text-align: center;
       padding: 2rem 1rem;
-      background: #f8fafc;
+      background: #020617;
+      color: #94a3b8;
       font-size: 0.9rem;
-      color: var(--muted);
     }
 
-    /* Scroll to Top Button */
     #scrollTopBtn {
-    position: fixed;
-    bottom: 50px;
-    right: 100px;
-    width: 45px;
-    height: 45px;
-    border: none;
-    border-radius: 50%;
-    background-color: var(--accent);
-    color: white;
-    font-size: 18px;
-    cursor: pointer;
-    display: none; /* hidden by default */
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: white;
+      border: none;
+      display: none;
+      cursor: pointer;
     }
 
-    #scrollTopBtn:hover {
-    opacity: 0.9;
+    @media (max-width: 768px) {
+      header img {
+        width: 120px !important;
+        height: 120px !important;
+      }
+      .social a span { display: none; }
     }
-
   </style>
-
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-        crossorigin="anonymous" />
 </head>
-
 
 <body>
 
 <header>
+  <button class="theme-toggle" id="themeToggle">
+    <i class="fa-solid fa-moon"></i>
+  </button>
+
   <div class="social">
-    <a href="https://www.linkedin.com/in/gayan-weerasingha-075946188/" target="_blank" rel="noopener noreferrer">
-      <i class="fa-brands fa-linkedin"></i><span>LinkedIn</span>
-    </a>
-    <a href="mailto:gweerasinghe67@gmail.com">
-      <i class="fa-solid fa-envelope"></i><span>Email</span>
-    </a>
-    <a href="https://www.upwork.com/freelancers/~017ae3abc09e8b3661" target="_blank" rel="noopener noreferrer">
-      <i class="fa-brands fa-square-upwork"></i><span>Upwork</span>
-    </a>
-    <a href="https://wa.me/94724618922" target="_blank" rel="noopener noreferrer">
-      <i class="fa-brands fa-whatsapp"></i><span>WhatsApp</span>
-    </a>
+    <a href="https://www.linkedin.com/in/gayan-weerasingha-075946188/" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+    <a href="mailto:gweerasinghe67@gmail.com"><i class="fa-solid fa-envelope"></i></a>
+    <a href="https://www.upwork.com/freelancers/~017ae3abc09e8b3661" target="_blank"><i class="fa-brands fa-square-upwork"></i></a>
+    <a href="https://wa.me/94724618922" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
   </div>
 
   <img src="assets/images/profile.webp" alt="Gayan Weerasingha"
-       style="width:160px;height:160px;border-radius:50%;border:4px solid #fff;margin-bottom:1rem;object-fit:cover;" />
+       style="width:160px;height:160px;border-radius:50%;border:4px solid #fff;object-fit:cover;" />
 
   <h1>Gayan Weerasingha</h1>
   <p>Electrical & Electronic Engineer | Industrial Automation | Industry 4.0</p>
 
-  <a class="btn"
-     href="assets/documents/W_M_G_Weerasinghe_CV.pdf"
-     target="_blank"
-     rel="noopener noreferrer">
-    <i class="fa-solid fa-arrow-down" style="margin-right:8px;"></i>
-    View Resume
+  <a class="btn" href="assets/documents/W_M_G_Weerasinghe_CV.pdf" target="_blank">
+    <i class="fa-solid fa-download"></i> View Resume
   </a>
 </header>
 
@@ -245,14 +224,9 @@
 <section id="about">
   <h2>About Me</h2>
   <p>
-    Electrical and Electronic Engineer with over 3 years of experience 
-    in electrical engineering projects at ICC, 
-    Voltas Engineering, and Central Engineering Consultancy Bureau (CECB). 
-    Strong exposure to low-voltage power distribution, switchboards, lighting systems, electrical estimation, and site coordination.
-  </p>
-  <p>
-    Proficient in AutoCAD and SolidWorks and currently pursuing an MSc in
-    Industrial Automation at the University of Moratuwa.
+    Electrical and Electronic Engineer with over 3 years of experience in electrical
+    design, estimation, and consultancy. Currently pursuing an MSc in Industrial Automation
+    at the University of Moratuwa.
   </p>
 </section>
 
@@ -263,9 +237,9 @@
       <h3>Electrical Engineer – CECB</h3>
       <p class="muted">Jul 2024 – Present | Galle</p>
       <ul>
-        <li>Designed and consulted on electrical systems using AutoCAD</li>
-        <li>Prepared BOQs and electrical estimations ensuring accurate budgeting</li>
-        <li>Prepared technical and evaluation reports to support project decisions</li>
+        <li>Electrical system design using AutoCAD</li>
+        <li>BOQ preparation & cost estimation</li>
+        <li>Technical evaluation reports</li>
       </ul>
     </div>
 
@@ -273,9 +247,8 @@
       <h3>Electrical Engineer – Voltas Engineering</h3>
       <p class="muted">Mar 2024 – Jun 2024 | Colombo</p>
       <ul>
-        <li>Executed electrical system projects focusing on efficiency and accuracy</li>
-        <li>Conducted testing and commissioning to ensure system reliability</li>
-        <li>Performed maintenance activities to improve system longevity</li>
+        <li>Testing & commissioning</li>
+        <li>Maintenance of electrical systems</li>
       </ul>
     </div>
 
@@ -283,9 +256,8 @@
       <h3>MEP Engineer – ICC</h3>
       <p class="muted">Mar 2022 – Mar 2024 | Dehiwala</p>
       <ul>
-        <li>Maintained MEP documentation for large-scale hospital projects</li>
-        <li>Coordinated QA/QC works and liaised with consultants</li>
-        <li>Ensured compliance with project standards and timelines</li>
+        <li>Hospital MEP projects</li>
+        <li>QA/QC coordination</li>
       </ul>
     </div>
   </div>
@@ -294,25 +266,20 @@
 <section id="services">
   <h2>Services</h2>
   <div class="grid">
-
-    <div class="card1">
+    <div class="card">
       <div class="ser1">
         <i class="fa-solid fa-plug fa-2x"></i>
-        <h3>Electrical Design Services</h3>
+        <h3>Electrical Design</h3>
       </div>
       <ul>
-        <li>Electrical demand/load calculations</li>
-        <li>Cable sizing & voltage drop analysis</li>
-        <li>MCB/MCCB selection</li>
-        <li> Lighting design using DIALux EVO</li>
-        <li>Power & lighting layout (AutoCAD)</li>
-        <li>Single Line Diagrams (SLDs)</li>
-        <li>Preparation of Bill of Quantities (BOQ)</li>
-        <li>Technical Evaluation Reports</li>
+        <li>Load calculations</li>
+        <li>Cable sizing & protection</li>
+        <li>DIALux lighting design</li>
+        <li>SLDs & BOQs</li>
       </ul>
     </div>
 
-    <div class="card1">
+    <div class="card">
       <div class="ser1">
         <i class="fa-solid fa-cogs fa-2x"></i>
         <h3>Industrial Automation</h3>
@@ -323,7 +290,6 @@
         <li>System integration</li>
       </ul>
     </div>
-
   </div>
 </section>
 
@@ -332,13 +298,14 @@
   <div class="grid">
     <div class="card">
       <h3>Cath Lab Project</h3>
-      <p class="muted">National hospital - Galle</p>
-      <p>Electrical system design and implementation for a catheterization laboratory.</p>
+      <p class="muted">National Hospital – Galle</p>
+      <p>Electrical system design and implementation.</p>
     </div>
 
     <div class="card">
-      <a href="projects.html">
+      <a href="projects.html" style="text-decoration:none;color:inherit;text-align:center;">
         <i class="fa-solid fa-chevron-right fa-3x"></i>
+        <p>View More Projects</p>
       </a>
     </div>
   </div>
@@ -346,38 +313,44 @@
 
 <section id="contact">
   <h2>Contact</h2>
-  <p>Email: gweerasinghe67@gmail.com</p>
-  <p>Phone: +94 724 618 922</p>
+  <p>Email: <a href="mailto:gweerasinghe67@gmail.com">gweerasinghe67@gmail.com</a></p>
+  <p>Phone: <a href="tel:+94724618922">+94 724 618 922</a></p>
   <p>Location: Sri Lanka</p>
 </section>
 
 <footer>
-  © 2026 Designed & Developed by Gayan Weerasingha · Engineering Portfolio
+  <div>👀 Visitors: <span id="visitor-count">Loading...</span></div>
+  <p>© 2026 Designed & Developed by Gayan Weerasingha</p>
 </footer>
-<!-- Scroll to Top Button -->
-<button id="scrollTopBtn" title="Go to top">
-  <i class="fa-solid fa-arrow-up"></i>
-</button>
+
+<button id="scrollTopBtn"><i class="fa-solid fa-arrow-up"></i></button>
+
 <script>
-  const scrollTopBtn = document.getElementById("scrollTopBtn");
-
+  /* SCROLL TOP */
+  const btn = document.getElementById("scrollTopBtn");
   window.addEventListener("scroll", () => {
-    if (window.scrollY > 300) {
-      scrollTopBtn.style.display = "flex";
-    } else {
-      scrollTopBtn.style.display = "none";
-    }
+    btn.style.display = window.scrollY > 300 ? "block" : "none";
   });
+  btn.onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
-  scrollTopBtn.addEventListener("click", () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-  });
+  /* VISITOR COUNTER */
+  fetch("https://api.countapi.xyz/hit/gayan-weerasingha/visits")
+    .then(res => res.json())
+    .then(data => document.getElementById("visitor-count").innerText = data.value);
+
+  /* DARK MODE */
+  const toggle = document.getElementById("themeToggle");
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+  if (localStorage.theme === "dark" || (!localStorage.theme && prefersDark)) {
+    document.body.classList.add("dark");
+  }
+
+  toggle.onclick = () => {
+    document.body.classList.toggle("dark");
+    localStorage.theme = document.body.classList.contains("dark") ? "dark" : "light";
+  };
 </script>
 
 </body>
 </html>
-
-
