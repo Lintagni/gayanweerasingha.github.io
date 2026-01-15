@@ -116,26 +116,34 @@ body.dark i {
     display: none; /* icons only on mobile */
   }
 }
-
-
-    
-
     .social a span {
       margin-left: 5px;
     }
 
-    nav {
-  background: #020617;
-  padding: 0.7rem;
+    /* Light mode nav */
+nav {
+  background: #f8fafc;  /* light nav background */
   text-align: center;
 }
-
 nav a {
-  color: #e5e7eb;
+  color: #0f172a;  /* dark text for readability */
   font-weight: 500;
   text-decoration: none;
   display: inline-block;
-  margin: 0.4rem 6.4px 0.6rem;
+  margin: 0.4rem 0.6rem;
+}
+
+/* Hover effect */
+nav a:hover {
+  color: var(--accent);
+}
+
+/* Dark mode nav */
+body.dark nav {
+  background: #020617;  /* dark background */
+}
+body.dark nav a {
+  color: #e5e7eb;       /* light text in dark mode */
 }
 
 @media (max-width: 600px) {
@@ -143,8 +151,6 @@ nav a {
     font-size: 0.9rem;
   }
 }
-
-    nav a:hover { color: var(--accent); }
 
     section {
       max-width: 1000px;
@@ -159,9 +165,11 @@ nav a {
       color: var(--text); /* <-- FIX */
     }
 
-    body.dark h2 {
+body.dark h2 {
   color: #e5e7eb;
+  border-left-color: #38bdf8; /* accent cyan for dark mode */
 }
+
 
     #about p {
       text-align: justify;
@@ -258,6 +266,12 @@ body.dark .card1:hover {
     }
 
     .btn:hover { opacity: 0.9; }
+
+    body.dark .btn {
+  background: #2563eb; /* darker accent for dark mode */
+  color: white;
+}
+
 
     /* Project arrow card */
     .card a {
@@ -569,6 +583,7 @@ body.dark .card1:hover {
 
 </body>
 </html>
+
 
 
 
