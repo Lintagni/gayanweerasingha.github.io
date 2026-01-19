@@ -5,6 +5,12 @@
   <title>Projects | Gayan Weerasingha</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
+
   <style>
     body {
       font-family: Inter, Arial, sans-serif;
@@ -31,40 +37,50 @@
       padding: 3rem 1rem;
     }
 
+    /* Back button */
+    .back-btn {
+      display: inline-block;
+      margin-bottom: 2rem;
+      padding: 0.6rem 1.2rem;
+      background: #2563eb;
+      color: white;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .back-btn i {
+      margin-right: 6px;
+    }
+
+    .back-btn:hover {
+      opacity: 0.9;
+    }
+
+    /* Grid */
     .projects-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 24px;
+      gap: 2rem; /* ✅ proper spacing between cards */
     }
 
     a.project-link {
       text-decoration: none;
       color: inherit;
+      display: block;
+      height: 100%;
     }
 
-
-.card img {
-  width: 100%;
-  display: block;
-}
-
-.card-content {
-  padding: 16px 18px; /* 👈 CREATES SPACE */
-}
-
-
-
-
+    /* Card */
     .card {
-      background: var(--card-bg);
-  border-radius: 12px;
-  overflow: hidden; /* keeps image inside rounded corners */
       background: white;
-      
-      padding: 1.8rem;
+      border-radius: 14px;
+      overflow: hidden;
       box-shadow: 0 10px 25px rgba(0,0,0,0.05);
       transition: transform 0.25s ease, box-shadow 0.25s ease;
       height: 100%;
+      display: flex;
+      flex-direction: column;
     }
 
     .card:hover {
@@ -72,11 +88,23 @@
       box-shadow: 0 20px 40px rgba(0,0,0,0.1);
     }
 
+    /* Image */
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Card content */
+    .card-content {
+      padding: 1.5rem; /* ✅ space between image & text */
+      flex: 1;
+    }
+
     .card h3 {
       margin-top: 0;
-  margin-bottom: 8px;
-      
-      
+      margin-bottom: 0.4rem;
       font-size: 1.2rem;
     }
 
@@ -111,25 +139,9 @@
       padding: 2rem 1rem;
       background: #f8fafc;
       font-size: 0.9rem;
-      color: var(--muted);
+      color: #6b7280;
+      margin-top: 3rem;
     }
-
-     .back-btn {
-  display: inline-block;
-  margin-bottom: 1.5rem;
-  padding: 0.6rem 1.2rem;
-  background: #2563eb;
-  color: white;
-  border-radius: 6px;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.back-btn:hover {
-  opacity: 0.9;
-}
-
-
   </style>
 </head>
 
@@ -141,43 +153,49 @@
 </header>
 
 <main>
+
   <a href="index.html" class="back-btn">
-  <i class="fa-solid fa-arrow-left"></i> Back to Home
-</a>
+    <i class="fa-solid fa-arrow-left"></i> Back to Home
+  </a>
 
   <div class="projects-grid">
 
     <!-- Project 1 -->
     <a href="projects/project-1.html" class="project-link">
       <div class="card">
-        <h3>Electrical System Design – Cath Lab</h3>
-        <p class="muted">Karapitiya National Hospital</p>
-        <p>
-          Complete electrical system design for a new Cardiac Catheterization
-          Laboratory, including power distribution, lighting, and emergency systems.
-        </p>
-        <div class="tags">
-          <span class="tag">Electrical Engineering</span>
-          <span class="tag">AutoCAD</span>
-          <span class="tag">Hospital Design</span>
+        <img src="images/project-1.jpg" alt="Cath Lab Electrical Design">
+        <div class="card-content">
+          <h3>Electrical System Design – Cath Lab</h3>
+          <p class="muted">Karapitiya National Hospital</p>
+          <p>
+            Complete electrical system design for a new Cardiac Catheterization
+            Laboratory, including power distribution, lighting, and emergency systems.
+          </p>
+          <div class="tags">
+            <span class="tag">Electrical Engineering</span>
+            <span class="tag">AutoCAD</span>
+            <span class="tag">Hospital Design</span>
+          </div>
         </div>
       </div>
     </a>
 
-     <!-- Project 2 -->
+    <!-- Project 2 -->
     <a href="projects/project-2.html" class="project-link">
       <div class="card">
-        <h3>Morning Sun Villa – Residential Electrical Design</h3>
-        <p class="muted">Villa Project</p>
-        <p>
-          One of the key projects completed during this period was Morning Sun Villa,
-    a private residential development. The electrical design was carried out in close coordination
-    with the architectural layout to ensure functionality, aesthetics, and long-term reliability.
-        </p>
-        <div class="tags">
-          <span class="tag">Electrical Engineering</span>
-          <span class="tag">BS Code</span>
-          <span class="tag">Villa Project</span>
+        <img src="images/project-2.jpg" alt="Morning Sun Villa">
+        <div class="card-content">
+          <h3>Morning Sun Villa – Residential Electrical Design</h3>
+          <p class="muted">Villa Project</p>
+          <p>
+            Electrical design coordinated with architectural layouts to ensure
+            functionality, aesthetics, and long-term reliability.
+          </p>
+          <div class="tags">
+            <span class="tag">Electrical Engineering</span>
+            <span class="tag">BS Code</span>
+            <span class="tag">Villa Project</span>
+          </div>
         </div>
       </div>
     </a>
@@ -185,35 +203,19 @@
     <!-- Project 3 -->
     <a href="projects/project-3.html" class="project-link">
       <div class="card">
-        <h3>Mr. Harindu Housing Project – Residential Electrical Design</h3>
-        <p class="muted">Housing Project</p>
-        <p>
-          The Mr. Harindu Housing Projectis a private residential development consisting
-    of a three-storey modern house. I provided complete electrical system design and
-    technical consultancy services from the concept stage through to final design documentation.
-        </p>
-        <div class="tags">
-          <span class="tag">Electrical Engineering</span>
-          <span class="tag">BS Code</span>
-          <span class="tag">Housing Project</span>
-        </div>
-      </div>
-    </a>
-
-    <!-- Project 3 -->
-    <a href="projects/project-3.html" class="project-link">
-      <div class="card">
-        <h3>Mr. Harindu Housing Project – Residential Electrical Design</h3>
-        <p class="muted">Housing Project</p>
-        <p>
-          The Mr. Harindu Housing Projectis a private residential development consisting
-    of a three-storey modern house. I provided complete electrical system design and
-    technical consultancy services from the concept stage through to final design documentation.
-        </p>
-        <div class="tags">
-          <span class="tag">Electrical Engineering</span>
-          <span class="tag">BS Code</span>
-          <span class="tag">Housing Project</span>
+        <img src="images/project-3.jpg" alt="Mr Harindu Housing Project">
+        <div class="card-content">
+          <h3>Mr. Harindu Housing Project – Residential Electrical Design</h3>
+          <p class="muted">Housing Project</p>
+          <p>
+            Complete electrical system design and technical consultancy for a
+            three-storey modern residential building.
+          </p>
+          <div class="tags">
+            <span class="tag">Electrical Engineering</span>
+            <span class="tag">BS Code</span>
+            <span class="tag">Housing Project</span>
+          </div>
         </div>
       </div>
     </a>
@@ -227,13 +229,4 @@
 </footer>
 
 </body>
-
 </html>
-
-
-
-
-
-
-
-
