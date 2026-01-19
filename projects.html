@@ -42,9 +42,25 @@
       color: inherit;
     }
 
+
+.card img {
+  width: 100%;
+  display: block;
+}
+
+.card-content {
+  padding: 16px 18px; /* 👈 CREATES SPACE */
+}
+
+
+
+
     .card {
+      background: var(--card-bg);
+  border-radius: 12px;
+  overflow: hidden; /* keeps image inside rounded corners */
       background: white;
-      border-radius: 14px;
+      
       padding: 1.8rem;
       box-shadow: 0 10px 25px rgba(0,0,0,0.05);
       transition: transform 0.25s ease, box-shadow 0.25s ease;
@@ -58,7 +74,9 @@
 
     .card h3 {
       margin-top: 0;
-      margin-bottom: 0.4rem;
+  margin-bottom: 8px;
+      
+      
       font-size: 1.2rem;
     }
 
@@ -211,6 +229,7 @@
 </body>
 
 </html>
+
 
 
 
