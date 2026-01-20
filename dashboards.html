@@ -1,1 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboards | Gayan Weerasingha</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
+
+  <style>
+    body {
+      font-family: Inter, Arial, sans-serif;
+      margin: 0;
+      background: #f9fafb;
+      color: #111827;
+    }
+
+    header {
+      background: #020617;
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+
+    header p {
+      color: #cbd5f5;
+      margin-top: 0.5rem;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: auto;
+      padding: 3rem 1rem;
+    }
+
+    /* Back button */
+    .back-btn {
+      display: inline-block;
+      margin-bottom: 2rem;
+      padding: 0.6rem 1.2rem;
+      background: #2563eb;
+      color: white;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .back-btn i {
+      margin-right: 6px;
+    }
+
+    .back-btn:hover {
+      opacity: 0.9;
+    }
+
+    /* Grid */
+    .dashboards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    a.dashboard-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      height: 100%;
+    }
+
+    /* Card */
+    .card {
+      background: white;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+
+    /* Image */
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Card content */
+    .card-content {
+      padding: 1.5rem;
+      flex: 1;
+    }
+
+    .card h3 {
+      margin-top: 0;
+      margin-bottom: 0.4rem;
+      font-size: 1.2rem;
+    }
+
+    .muted {
+      color: #6b7280;
+      font-size: 0.9rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .tags {
+      margin-top: 1rem;
+    }
+
+    .tag {
+      display: inline-block;
+      background: #e0e7ff;
+      color: #3730a3;
+      font-size: 0.75rem;
+      padding: 0.3rem 0.6rem;
+      border-radius: 999px;
+      margin-right: 0.3rem;
+      margin-bottom: 0.3rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      background: #f8fafc;
+      font-size: 0.9rem;
+      color: #6b7280;
+      margin-top: 3rem;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Dashboards</h1>
+  <p>Interactive Web Dashboard Projects</p>
+</header>
+
+<main>
+
+  <a href="index.html" class="back-btn">
+    <i class="fa-solid fa-arrow-left"></i> Back to Home
+  </a>
+
+  <div class="dashboards-grid">
+
+    <!-- Dashboard 1 -->
+    <a href="projects/automation-dashboard.html" class="dashboard-link">
+      <div class="card">
+        <img src="projects/assets/images/automation_dashboard.png" alt="Automation Monitoring Dashboard">
+        <div class="card-content">
+          <h3>Automation Monitoring Dashboard</h3>
+          <p class="muted">Simulated Industrial Systems</p>
+          <p>
+            Real-time dashboard simulating motor, pump, power system, and environmental monitoring.
+            Includes charts, alarms, event logs, and dark mode. Built using public APIs and AI assistance (ChatGPT).
+          </p>
+          <div class="tags">
+            <span class="tag">Web Development</span>
+            <span class="tag">Automation</span>
+            <span class="tag">Data Visualization</span>
+            <span class="tag">AI Assisted</span>
+          </div>
+        </div>
+      </div>
+    </a>
+
+    <!-- Dashboard 2 -->
+    <a href="projects/energy-dashboard.html" class="dashboard-link">
+      <div class="card">
+        <img src="projects/assets/images/energy_dashboard.png" alt="Energy & Environment Dashboard">
+        <div class="card-content">
+          <h3>Energy & Environment Dashboard</h3>
+          <p class="muted">Building Energy & Weather Monitoring</p>
+          <p>
+            Dashboard visualizing energy consumption, voltage, and environmental conditions in real-time.
+            Features interactive charts, alarm logic, and dark/light mode. Built using public APIs.
+          </p>
+          <div class="tags">
+            <span class="tag">Web Development</span>
+            <span class="tag">Energy Management</span>
+            <span class="tag">Data Visualization</span>
+            <span class="tag">AI Assisted</span>
+          </div>
+        </div>
+      </div>
+    </a>
+
+    <!-- Dashboard 3 -->
+    <a href="projects/solar-dashboard.html" class="dashboard-link">
+      <div class="card">
+        <img src="projects/assets/images/solar_dashboard.png" alt="Solar Power Monitoring Dashboard">
+        <div class="card-content">
+          <h3>Solar Power Monitoring Dashboard</h3>
+          <p class="muted">Solar PV System Dashboard</p>
+          <p>
+            Interactive dashboard showing solar panel output, energy production, and efficiency in real-time.
+            Uses public APIs for weather data and AI-assisted chart design for clean visualization.
+          </p>
+          <div class="tags">
+            <span class="tag">Web Development</span>
+            <span class="tag">Solar Energy</span>
+            <span class="tag">Data Visualization</span>
+            <span class="tag">AI Assisted</span>
+          </div>
+        </div>
+      </div>
+    </a>
+
+    <!-- Add more dashboard cards below as needed -->
+
+  </div>
+
+</main>
+
+<footer>
+  © 2026 Designed & Developed by Gayan Weerasingha · Engineering Portfolio
+</footer>
+
+</body>
+</html>
 
