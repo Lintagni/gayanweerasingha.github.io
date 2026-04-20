@@ -22,7 +22,7 @@ const projects = [
     description: "20 working web apps built entirely with AI prompts using Claude Code — covering productivity, business & finance, lifestyle, and utility tools. Each app is live and usable.",
     tags: ["Claude Code", "React", "AI-Built", "Vercel"],
     type: "webapp",
-    link: "https://20-projects-for-beginners.vercel.app/",
+    link: "https://20-projects-for-beginners.netlify.app/",
     external: true
   }
 ];
