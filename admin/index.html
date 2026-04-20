@@ -7,252 +7,439 @@
   <meta name="robots" content="noindex, nofollow" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />
   <style>
-    :root {
-      --primary: #0f172a;
-      --accent: #2563eb;
-      --text: #1f2937;
-      --border: #e5e7eb;
-      --surface: #f8fafc;
-      --muted: #6b7280;
-    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: Inter, Arial, sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; }
 
-    /* ---- LOCK SCREEN ---- */
+    body {
+      font-family: Inter, Arial, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      min-height: 100vh;
+    }
+
+    /* =============================================
+       LOCK SCREEN
+    ============================================= */
     #lockScreen {
+      min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+      padding: 1rem;
     }
-    .lock-box {
-      background: #1e293b;
-      border: 1px solid #334155;
-      border-radius: 16px;
-      padding: 2.5rem 2rem;
+
+    .lock-wrap {
+      display: flex;
       width: 100%;
-      max-width: 360px;
-      text-align: center;
+      max-width: 860px;
+      min-height: 480px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.5);
     }
-    .lock-box i { color: var(--accent); font-size: 2.5rem; margin-bottom: 1rem; }
-    .lock-box h2 { margin-bottom: 0.3rem; }
-    .lock-box p { color: #94a3b8; font-size: 0.9rem; margin-bottom: 1.5rem; }
+
+    /* Left panel — branding */
+    .lock-left {
+      flex: 1;
+      background: linear-gradient(160deg, #2563eb, #1d4ed8, #1e1b4b);
+      padding: 3rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .lock-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: white;
+    }
+
+    .lock-logo-icon {
+      width: 36px;
+      height: 36px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+
+    .lock-left-body { color: rgba(255,255,255,0.9); }
+    .lock-left-body h2 { font-size: 1.7rem; line-height: 1.3; margin-bottom: 0.8rem; }
+    .lock-left-body p { font-size: 0.9rem; color: rgba(255,255,255,0.65); line-height: 1.6; }
+
+    .lock-features { list-style: none; margin-top: 1.5rem; }
+    .lock-features li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.75);
+      margin-bottom: 0.6rem;
+    }
+    .lock-features li i { color: #34d399; font-size: 0.75rem; }
+
+    .lock-left-footer { color: rgba(255,255,255,0.4); font-size: 0.78rem; }
+
+    /* Right panel — form */
+    .lock-right {
+      width: 380px;
+      background: #1e293b;
+      padding: 3rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .lock-right h3 { font-size: 1.35rem; color: white; margin-bottom: 0.3rem; }
+    .lock-right .lock-sub { color: #94a3b8; font-size: 0.88rem; margin-bottom: 2rem; }
+
+    .lock-field { margin-bottom: 1.2rem; }
+    .lock-field label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #94a3b8;
+      margin-bottom: 0.5rem;
+    }
+
+    .lock-field-wrap {
+      position: relative;
+    }
+
     .lock-input {
       width: 100%;
-      padding: 0.75rem 1rem;
+      padding: 0.75rem 2.8rem 0.75rem 1rem;
       background: #0f172a;
       border: 1px solid #334155;
-      border-radius: 8px;
+      border-radius: 10px;
       color: white;
-      font-size: 1rem;
-      margin-bottom: 0.8rem;
+      font-size: 0.95rem;
       font-family: inherit;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
-    .lock-input:focus { outline: none; border-color: var(--accent); }
+
+    .lock-input:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+    }
+
+    .toggle-pw {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #475569;
+      cursor: pointer;
+      font-size: 0.9rem;
+      padding: 0;
+      transition: color 0.2s;
+    }
+    .toggle-pw:hover { color: #94a3b8; }
+
+    .lock-error {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      background: rgba(239,68,68,0.1);
+      border: 1px solid rgba(239,68,68,0.3);
+      color: #fca5a5;
+      font-size: 0.83rem;
+      padding: 0.6rem 0.9rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+
     .lock-btn {
       width: 100%;
-      padding: 0.75rem;
-      background: var(--accent);
+      padding: 0.8rem;
+      background: #2563eb;
       color: white;
       border: none;
-      border-radius: 8px;
-      font-size: 1rem;
+      border-radius: 10px;
+      font-size: 0.95rem;
       font-weight: 600;
       cursor: pointer;
       font-family: inherit;
-      transition: opacity 0.2s;
+      transition: background 0.2s, transform 0.1s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
-    .lock-btn:hover { opacity: 0.9; }
-    .lock-error { color: #f87171; font-size: 0.85rem; margin-top: 0.6rem; display: none; }
+    .lock-btn:hover { background: #1d4ed8; }
+    .lock-btn:active { transform: scale(0.98); }
 
-    /* ---- ADMIN UI ---- */
+    .lock-hint {
+      margin-top: 1.5rem;
+      text-align: center;
+      font-size: 0.78rem;
+      color: #475569;
+    }
+
+    /* =============================================
+       ADMIN UI
+    ============================================= */
     #adminUI { display: none; }
 
     .admin-header {
       background: #1e293b;
       border-bottom: 1px solid #334155;
-      padding: 1rem 2rem;
+      padding: 0.9rem 2rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
     }
-    .admin-header h1 { font-size: 1.1rem; color: white; }
-    .admin-header span { color: #94a3b8; font-size: 0.85rem; }
+
+    .admin-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .admin-brand-dot {
+      width: 8px;
+      height: 8px;
+      background: #34d399;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .admin-meta { color: #64748b; font-size: 0.82rem; }
+
     .logout-btn {
       background: none;
-      border: 1px solid #475569;
+      border: 1px solid #334155;
       color: #94a3b8;
-      padding: 0.3rem 0.8rem;
-      border-radius: 6px;
+      padding: 0.35rem 0.9rem;
+      border-radius: 7px;
       cursor: pointer;
-      font-size: 0.83rem;
+      font-size: 0.82rem;
       font-family: inherit;
       transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
     }
     .logout-btn:hover { border-color: #f87171; color: #f87171; }
 
     .admin-body { max-width: 900px; margin: auto; padding: 2rem 1rem; }
 
     /* ---- TABS ---- */
-    .tabs { display: flex; gap: 0; border-bottom: 1px solid #334155; margin-bottom: 2rem; }
+    .tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid #334155;
+      margin-bottom: 2rem;
+    }
+
     .tab-btn {
-      padding: 0.7rem 1.5rem;
+      padding: 0.7rem 1.4rem;
       background: none;
       border: none;
       border-bottom: 3px solid transparent;
-      color: #94a3b8;
-      font-size: 0.95rem;
+      color: #64748b;
+      font-size: 0.88rem;
       font-weight: 600;
       cursor: pointer;
       font-family: inherit;
       transition: all 0.2s;
       margin-bottom: -1px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
-    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
-    .tab-btn:hover { color: white; }
+    .tab-btn.active { color: #2563eb; border-bottom-color: #2563eb; }
+    .tab-btn:hover:not(.active) { color: #e2e8f0; }
+
     .tab-pane { display: none; }
     .tab-pane.active { display: block; }
 
     /* ---- FORM ---- */
     .form-group { margin-bottom: 1.2rem; }
+
     .form-group label {
       display: block;
-      font-size: 0.83rem;
-      font-weight: 600;
+      font-size: 0.78rem;
+      font-weight: 700;
       color: #94a3b8;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 0.4rem;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.45rem;
     }
+
     .form-group input,
     .form-group textarea,
     .form-group select {
       width: 100%;
-      padding: 0.7rem 0.9rem;
+      padding: 0.7rem 0.95rem;
       background: #1e293b;
       border: 1px solid #334155;
-      border-radius: 8px;
+      border-radius: 9px;
       color: white;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       font-family: inherit;
-      transition: border-color 0.2s;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
+
     .form-group input:focus,
     .form-group textarea:focus,
-    .form-group select:focus { outline: none; border-color: var(--accent); }
+    .form-group select:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+    }
+
     .form-group textarea { min-height: 100px; resize: vertical; }
     .form-group select option { background: #1e293b; }
+    .hint { color: #475569; font-size: 0.78rem; margin-top: 0.3rem; }
 
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 
     .generate-btn {
-      background: var(--accent);
+      background: #2563eb;
       color: white;
       border: none;
-      padding: 0.7rem 1.5rem;
-      border-radius: 8px;
-      font-size: 0.95rem;
+      padding: 0.72rem 1.6rem;
+      border-radius: 9px;
+      font-size: 0.92rem;
       font-weight: 600;
       cursor: pointer;
       font-family: inherit;
-      transition: opacity 0.2s;
+      transition: background 0.2s, transform 0.1s;
       display: inline-flex;
       align-items: center;
       gap: 8px;
     }
-    .generate-btn:hover { opacity: 0.9; }
+    .generate-btn:hover { background: #1d4ed8; }
+    .generate-btn:active { transform: scale(0.98); }
 
     /* ---- OUTPUT ---- */
     .output-section { display: none; margin-top: 2rem; }
     .output-section.visible { display: block; }
 
     .output-block { margin-bottom: 1.5rem; }
-    .output-block h3 {
-      font-size: 0.83rem;
+
+    .output-block-header {
+      font-size: 0.78rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
       color: #94a3b8;
       margin-bottom: 0.6rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
+
     .copy-btn {
       background: #334155;
       color: #e2e8f0;
       border: none;
-      padding: 0.25rem 0.7rem;
+      padding: 0.25rem 0.75rem;
       border-radius: 5px;
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       cursor: pointer;
       font-family: inherit;
       transition: background 0.2s;
+      text-transform: none;
+      letter-spacing: 0;
+      font-weight: 500;
     }
-    .copy-btn:hover { background: var(--accent); }
+    .copy-btn:hover { background: #2563eb; }
+    .copy-btn.copied { background: #059669; }
 
     .code-box {
       background: #020617;
-      border: 1px solid #334155;
+      border: 1px solid #1e293b;
       border-radius: 10px;
       padding: 1.2rem;
       font-family: 'Courier New', monospace;
-      font-size: 0.83rem;
-      line-height: 1.6;
-      color: #a5f3fc;
+      font-size: 0.8rem;
+      line-height: 1.65;
+      color: #7dd3fc;
       white-space: pre-wrap;
       word-break: break-all;
-      max-height: 320px;
+      max-height: 300px;
       overflow-y: auto;
     }
 
     .instruction-box {
-      background: #1e293b;
-      border: 1px solid #334155;
-      border-left: 4px solid var(--accent);
-      border-radius: 8px;
+      background: rgba(37,99,235,0.08);
+      border: 1px solid rgba(37,99,235,0.25);
+      border-radius: 10px;
       padding: 1rem 1.2rem;
-      font-size: 0.88rem;
+      font-size: 0.87rem;
       color: #cbd5f5;
       line-height: 1.7;
     }
-    .instruction-box ol { padding-left: 1.2rem; margin-top: 0.4rem; }
+    .instruction-box strong { color: white; }
+    .instruction-box ol { padding-left: 1.2rem; margin-top: 0.5rem; }
     .instruction-box li { margin-bottom: 0.3rem; }
 
-    .hint { color: #64748b; font-size: 0.82rem; margin-top: 0.3rem; }
-
-    /* ---- PREVIEW CARD ---- */
+    /* ---- PREVIEW ---- */
     .preview-section { margin-top: 2rem; }
-    .preview-section h3 {
-      font-size: 0.83rem;
+    .preview-label {
+      font-size: 0.78rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
       color: #94a3b8;
       margin-bottom: 0.8rem;
     }
+
     .preview-card {
       background: white;
       border-radius: 12px;
-      padding: 1.5rem;
+      padding: 1.4rem;
       color: #1f2937;
-      max-width: 400px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+      max-width: 380px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
     }
-    .preview-card h3 { color: #0f172a; margin-bottom: 0.3rem; font-size: 1rem; }
-    .preview-card .p-muted { color: #6b7280; font-size: 0.85rem; margin-bottom: 0.5rem; }
-    .preview-card .p-desc { font-size: 0.9rem; line-height: 1.5; margin-bottom: 0.8rem; }
+    .preview-card h3 { color: #0f172a; margin-bottom: 0.25rem; font-size: 1rem; }
+    .preview-card .p-muted { color: #6b7280; font-size: 0.82rem; margin-bottom: 0.5rem; }
+    .preview-card .p-desc { font-size: 0.88rem; line-height: 1.5; margin-bottom: 0.8rem; }
     .preview-tag {
       display: inline-block;
       background: #e0e7ff;
       color: #3730a3;
-      font-size: 0.72rem;
-      padding: 0.2rem 0.5rem;
+      font-size: 0.7rem;
+      padding: 0.18rem 0.5rem;
       border-radius: 999px;
-      margin-right: 0.25rem;
+      margin-right: 0.2rem;
+      margin-bottom: 0.2rem;
     }
 
-    @media (max-width: 600px) {
+    /* ---- DIVIDER ---- */
+    .section-divider {
+      border: none;
+      border-top: 1px solid #1e293b;
+      margin: 2rem 0;
+    }
+
+    @media (max-width: 720px) {
+      .lock-wrap { flex-direction: column; min-height: auto; }
+      .lock-left { padding: 2rem 1.5rem; }
+      .lock-right { width: 100%; padding: 2rem 1.5rem; }
       .form-row { grid-template-columns: 1fr; }
       .admin-header { flex-wrap: wrap; gap: 0.5rem; }
     }
@@ -261,45 +448,99 @@
 
 <body>
 
-<!-- ===== LOCK SCREEN ===== -->
+<!-- =============================================
+     LOCK SCREEN
+============================================= -->
 <div id="lockScreen">
-  <div class="lock-box">
-    <i class="fa-solid fa-shield-halved"></i>
-    <h2>Portfolio Admin</h2>
-    <p>Enter your password to continue</p>
-    <input type="password" class="lock-input" id="passwordInput"
-           placeholder="Password" onkeydown="if(event.key==='Enter')unlock()" />
-    <button class="lock-btn" onclick="unlock()">
-      <i class="fa-solid fa-unlock" style="margin-right:6px;"></i>Unlock
-    </button>
-    <p class="lock-error" id="lockError">Incorrect password. Try again.</p>
+  <div class="lock-wrap">
+
+    <!-- Left branding panel -->
+    <div class="lock-left">
+      <div class="lock-logo">
+        <div class="lock-logo-icon"><i class="fa-solid fa-bolt"></i></div>
+        gayanweerasingha.org
+      </div>
+
+      <div class="lock-left-body">
+        <h2>Portfolio<br/>Admin Panel</h2>
+        <p>Manage your projects and articles without touching code.</p>
+        <ul class="lock-features">
+          <li><i class="fa-solid fa-circle-check"></i> Add &amp; publish engineering projects</li>
+          <li><i class="fa-solid fa-circle-check"></i> Write and publish articles</li>
+          <li><i class="fa-solid fa-circle-check"></i> Generate ready-to-deploy HTML</li>
+          <li><i class="fa-solid fa-circle-check"></i> Live card preview before publishing</li>
+        </ul>
+      </div>
+
+      <div class="lock-left-footer">
+        Private access only &nbsp;·&nbsp; Not indexed by search engines
+      </div>
+    </div>
+
+    <!-- Right login form -->
+    <div class="lock-right">
+      <h3>Welcome back</h3>
+      <p class="lock-sub">Sign in to manage your portfolio</p>
+
+      <div class="lock-field">
+        <label>Password</label>
+        <div class="lock-field-wrap">
+          <input type="password" class="lock-input" id="passwordInput"
+                 placeholder="Enter your password"
+                 onkeydown="if(event.key==='Enter')unlock()" />
+          <button class="toggle-pw" type="button" onclick="togglePw()" id="togglePwBtn"
+                  title="Show/hide password">
+            <i class="fa-solid fa-eye" id="pwEyeIcon"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="lock-error" id="lockError">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        Incorrect password. Please try again.
+      </div>
+
+      <button class="lock-btn" onclick="unlock()">
+        <i class="fa-solid fa-unlock"></i> Unlock Admin
+      </button>
+
+      <p class="lock-hint">
+        <i class="fa-solid fa-lock" style="margin-right:4px;"></i>
+        Session clears when you close the tab
+      </p>
+    </div>
+
   </div>
 </div>
 
-<!-- ===== ADMIN UI ===== -->
+<!-- =============================================
+     ADMIN UI
+============================================= -->
 <div id="adminUI">
 
   <div class="admin-header">
-    <h1><i class="fa-solid fa-shield-halved" style="color:var(--accent);margin-right:8px;"></i>Portfolio Admin</h1>
-    <span>gayanweerasingha.org</span>
+    <div class="admin-brand">
+      <div class="admin-brand-dot"></div>
+      Portfolio Admin
+    </div>
+    <span class="admin-meta">gayanweerasingha.org</span>
     <button class="logout-btn" onclick="logout()">
-      <i class="fa-solid fa-right-from-bracket" style="margin-right:4px;"></i>Lock
+      <i class="fa-solid fa-lock"></i> Lock
     </button>
   </div>
 
   <div class="admin-body">
 
-    <!-- TABS -->
     <div class="tabs">
       <button class="tab-btn active" onclick="switchTab('projects', this)">
-        <i class="fa-solid fa-folder-open" style="margin-right:6px;"></i>Add Project
+        <i class="fa-solid fa-folder-open"></i> Add Project
       </button>
       <button class="tab-btn" onclick="switchTab('articles', this)">
-        <i class="fa-solid fa-pen-nib" style="margin-right:6px;"></i>Add Article
+        <i class="fa-solid fa-pen-nib"></i> Add Article
       </button>
     </div>
 
-    <!-- ===== PROJECT TAB ===== -->
+    <!-- ===================== PROJECT TAB ===================== -->
     <div class="tab-pane active" id="tab-projects">
 
       <div class="form-row">
@@ -316,7 +557,7 @@
       <div class="form-row">
         <div class="form-group">
           <label>Year</label>
-          <input type="text" id="p-year" placeholder="2025" value="2026" />
+          <input type="text" id="p-year" placeholder="2026" value="2026" />
         </div>
         <div class="form-group">
           <label>Project Type</label>
@@ -329,12 +570,13 @@
 
       <div class="form-group">
         <label>Description *</label>
-        <textarea id="p-description" placeholder="Brief description of the project (1–3 sentences)..."></textarea>
+        <textarea id="p-description" placeholder="Brief description (1–3 sentences)..."></textarea>
       </div>
 
       <div class="form-group">
-        <label>Tags <span class="hint">(comma separated)</span></label>
-        <input type="text" id="p-tags" placeholder="e.g. Electrical Engineering, AutoCAD, Solar" />
+        <label>Tags</label>
+        <input type="text" id="p-tags" placeholder="Electrical Engineering, AutoCAD, Hospital Design" />
+        <p class="hint">Comma separated</p>
       </div>
 
       <div class="form-row">
@@ -352,45 +594,46 @@
       </div>
 
       <button class="generate-btn" onclick="generateProject()">
-        <i class="fa-solid fa-code"></i>Generate Code
+        <i class="fa-solid fa-wand-magic-sparkles"></i> Generate Code
       </button>
 
-      <!-- Preview -->
       <div class="preview-section" id="p-preview" style="display:none;">
-        <h3>Card Preview</h3>
+        <hr class="section-divider" />
+        <p class="preview-label">Card Preview</p>
         <div class="preview-card" id="p-preview-card"></div>
       </div>
 
-      <!-- Output -->
       <div class="output-section" id="p-output">
+        <hr class="section-divider" />
         <div class="instruction-box">
-          <strong>How to publish this project:</strong>
+          <strong>How to publish:</strong>
           <ol>
             <li>Copy the code block below</li>
-            <li>Open <code>data/content.js</code> in VS Code</li>
-            <li>Add the object inside the <code>projects</code> array (after the last item, before the <code>]</code>)</li>
-            <li>If it's an engineering project, create the detail page too (see template below)</li>
-            <li>Save → commit → push to GitHub → Vercel auto-deploys</li>
+            <li>Open <code>data/content.js</code> → add the object inside the <code>projects [ ]</code> array</li>
+            <li>If engineering project: save the detail page template as <code>projects/project-N.html</code></li>
+            <li>Commit &amp; push to GitHub → Vercel auto-deploys</li>
           </ol>
         </div>
 
         <div class="output-block" style="margin-top:1.2rem;">
-          <h3>Add to <code>data/content.js</code> → projects array
-            <button class="copy-btn" onclick="copyCode('p-code-output')">Copy</button>
-          </h3>
+          <div class="output-block-header">
+            Add to <code>data/content.js</code> → projects [ ]
+            <button class="copy-btn" onclick="copyCode('p-code-output', this)">Copy</button>
+          </div>
           <div class="code-box" id="p-code-output"></div>
         </div>
 
         <div class="output-block" id="p-detail-block">
-          <h3>Save as <code>projects/project-N.html</code> (detail page template)
-            <button class="copy-btn" onclick="copyCode('p-detail-output')">Copy</button>
-          </h3>
+          <div class="output-block-header">
+            Detail page template → save as <code>projects/project-N.html</code>
+            <button class="copy-btn" onclick="copyCode('p-detail-output', this)">Copy</button>
+          </div>
           <div class="code-box" id="p-detail-output"></div>
         </div>
       </div>
     </div>
 
-    <!-- ===== ARTICLE TAB ===== -->
+    <!-- ===================== ARTICLE TAB ===================== -->
     <div class="tab-pane" id="tab-articles">
 
       <div class="form-row">
@@ -401,7 +644,7 @@
         <div class="form-group">
           <label>Filename</label>
           <input type="text" id="a-filename" placeholder="article-2.html" value="article-2.html" />
-          <p class="hint">Will be saved as articles/[filename]</p>
+          <p class="hint">Saved as articles/[filename]</p>
         </div>
       </div>
 
@@ -417,41 +660,44 @@
       </div>
 
       <div class="form-group">
-        <label>Excerpt <span class="hint">(shown on articles list page)</span></label>
-        <textarea id="a-excerpt" placeholder="2–3 sentence summary shown on the articles list..." style="min-height:80px;"></textarea>
+        <label>Excerpt <span class="hint" style="text-transform:none;letter-spacing:0;">(shown on articles list)</span></label>
+        <textarea id="a-excerpt" placeholder="2–3 sentence summary..." style="min-height:80px;"></textarea>
       </div>
 
       <div class="form-group">
-        <label>Full Article Content <span class="hint">(each paragraph on a new line)</span></label>
-        <textarea id="a-content" placeholder="Write your full article here. Separate paragraphs with blank lines.&#10;&#10;Second paragraph goes here..." style="min-height:200px;"></textarea>
+        <label>Full Article Content *</label>
+        <textarea id="a-content" placeholder="Write your full article here.&#10;&#10;Separate paragraphs with a blank line.&#10;&#10;Third paragraph..." style="min-height:220px;"></textarea>
+        <p class="hint">Blank line = new paragraph</p>
       </div>
 
       <button class="generate-btn" onclick="generateArticle()">
-        <i class="fa-solid fa-code"></i>Generate Code
+        <i class="fa-solid fa-wand-magic-sparkles"></i> Generate Code
       </button>
 
-      <!-- Output -->
       <div class="output-section" id="a-output">
+        <hr class="section-divider" />
         <div class="instruction-box">
-          <strong>How to publish this article:</strong>
+          <strong>How to publish:</strong>
           <ol>
-            <li>Copy Block 1 → open <code>data/content.js</code> → add object inside the <code>articles</code> array</li>
-            <li>Copy Block 2 → create a new file <code>articles/[filename]</code> → paste and save</li>
-            <li>Save all files → commit → push to GitHub → Vercel auto-deploys</li>
+            <li>Copy Block 1 → open <code>data/content.js</code> → add object inside <code>articles [ ]</code></li>
+            <li>Copy Block 2 → create new file <code>articles/[filename]</code> → paste &amp; save</li>
+            <li>Commit &amp; push to GitHub → Vercel auto-deploys</li>
           </ol>
         </div>
 
         <div class="output-block" style="margin-top:1.2rem;">
-          <h3>Block 1 — Add to <code>data/content.js</code> → articles array
-            <button class="copy-btn" onclick="copyCode('a-code-output')">Copy</button>
-          </h3>
+          <div class="output-block-header">
+            Block 1 — Add to <code>data/content.js</code> → articles [ ]
+            <button class="copy-btn" onclick="copyCode('a-code-output', this)">Copy</button>
+          </div>
           <div class="code-box" id="a-code-output"></div>
         </div>
 
         <div class="output-block">
-          <h3>Block 2 — Save as <code>articles/[filename]</code>
-            <button class="copy-btn" onclick="copyCode('a-html-output')">Copy</button>
-          </h3>
+          <div class="output-block-header">
+            Block 2 — Save as <code>articles/[filename]</code>
+            <button class="copy-btn" onclick="copyCode('a-html-output', this)">Copy</button>
+          </div>
           <div class="code-box" id="a-html-output"></div>
         </div>
       </div>
@@ -462,9 +708,8 @@
 
 <script>
   // ============================================================
-  //  PASSWORD — change the value inside atob() if you want to
-  //  update your password. Steps:
-  //  1. Go to: https://www.base64encode.org/
+  //  PASSWORD — to change:
+  //  1. Go to https://www.base64encode.org/
   //  2. Encode your new password
   //  3. Replace the string inside atob("...") below
   //  Current password: Gayan@2026
@@ -478,8 +723,11 @@
       document.getElementById('lockScreen').style.display = 'none';
       document.getElementById('adminUI').style.display = 'block';
     } else {
-      document.getElementById('lockError').style.display = 'block';
+      const err = document.getElementById('lockError');
+      err.style.display = 'flex';
       document.getElementById('passwordInput').value = '';
+      document.getElementById('passwordInput').focus();
+      setTimeout(() => err.style.display = 'none', 3000);
     }
   }
 
@@ -488,7 +736,18 @@
     location.reload();
   }
 
-  // Auto-unlock if already authenticated this session
+  function togglePw() {
+    const inp = document.getElementById('passwordInput');
+    const icon = document.getElementById('pwEyeIcon');
+    if (inp.type === 'password') {
+      inp.type = 'text';
+      icon.className = 'fa-solid fa-eye-slash';
+    } else {
+      inp.type = 'password';
+      icon.className = 'fa-solid fa-eye';
+    }
+  }
+
   if (sessionStorage.getItem('admin_auth') === '1') {
     document.getElementById('lockScreen').style.display = 'none';
     document.getElementById('adminUI').style.display = 'block';
@@ -501,109 +760,34 @@
     document.getElementById('tab-' + name).classList.add('active');
   }
 
-  // ---- GENERATE PROJECT ----
   function generateProject() {
-    const title = document.getElementById('p-title').value.trim();
-    const subtitle = document.getElementById('p-subtitle').value.trim();
-    const year = document.getElementById('p-year').value.trim();
-    const type = document.getElementById('p-type').value;
+    const title       = document.getElementById('p-title').value.trim();
+    const subtitle    = document.getElementById('p-subtitle').value.trim();
+    const year        = document.getElementById('p-year').value.trim();
+    const type        = document.getElementById('p-type').value;
     const description = document.getElementById('p-description').value.trim();
-    const tagsRaw = document.getElementById('p-tags').value.trim();
-    const link = document.getElementById('p-link').value.trim() || '#';
-    const external = document.getElementById('p-external').value === 'true';
+    const tagsRaw     = document.getElementById('p-tags').value.trim();
+    const link        = document.getElementById('p-link').value.trim() || '#';
+    const external    = document.getElementById('p-external').value === 'true';
 
-    if (!title || !description) {
-      alert('Please fill in at least Title and Description.');
-      return;
-    }
+    if (!title || !description) { alert('Please fill in Title and Description.'); return; }
 
     const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
-    const nextId = Date.now(); // simple unique id
 
-    // Show preview
     const tagHTML = tags.map(t => `<span class="preview-tag">${t}</span>`).join('');
     document.getElementById('p-preview-card').innerHTML = `
       <h3>${title}</h3>
-      <p class="p-muted">${subtitle || 'No subtitle'}</p>
+      <p class="p-muted">${subtitle || '—'}</p>
       <p class="p-desc">${description}</p>
       <div>${tagHTML}</div>`;
     document.getElementById('p-preview').style.display = 'block';
 
-    // Generate JS object
-    const obj = `  {
-    id: ${nextId},
-    title: "${title}",
-    subtitle: "${subtitle}",
-    year: "${year}",
-    description: "${description.replace(/"/g, '\\"')}",
-    tags: ${JSON.stringify(tags)},
-    type: "${type}",
-    link: "${link}",
-    external: ${external}
-  },`;
-
+    const obj = `  {\n    id: ${Date.now()},\n    title: "${title}",\n    subtitle: "${subtitle}",\n    year: "${year}",\n    description: "${description.replace(/"/g, '\\"')}",\n    tags: ${JSON.stringify(tags)},\n    type: "${type}",\n    link: "${link}",\n    external: ${external}\n  },`;
     document.getElementById('p-code-output').textContent = obj;
 
-    // Generate detail page template (only for internal engineering projects)
     const detailBlock = document.getElementById('p-detail-block');
     if (!external) {
-      const detailHTML = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>${title} | Gayan Weerasingha</title>
-  <link rel="stylesheet" href="../assets/css/style.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />
-</head>
-<body>
-
-<header class="page-header">
-  <h1>${title}</h1>
-  <p>${subtitle}</p>
-</header>
-
-<nav>
-  <a href="../index.html">Home</a>
-  <a href="../projects.html">Projects</a>
-  <a href="../index.html#contact">Contact</a>
-</nav>
-
-<div class="detail-main">
-  <a href="../projects.html" class="back-btn">
-    <i class="fa-solid fa-arrow-left"></i> Back to Projects
-  </a>
-
-  <h2>Project Overview</h2>
-  <p>${description}</p>
-
-  <h2>Scope of Work</h2>
-  <p>Add scope details here...</p>
-
-  <h2>My Responsibilities</h2>
-  <ul style="padding-left:1.2rem;line-height:2;">
-    <li>Add responsibility 1</li>
-    <li>Add responsibility 2</li>
-  </ul>
-
-  <h2>Tools &amp; Standards</h2>
-  <p>${tags.join(', ')}</p>
-
-  <!-- Uncomment and add images if available
-  <h2>Project Gallery</h2>
-  <div class="image-gallery">
-    <img src="assets/images/img1.jpg" alt="Project image 1" />
-  </div>
-  -->
-
-</div>
-
-<footer>
-  &copy; 2026 Gayan Weerasingha &nbsp;&middot;&nbsp; Electrical &amp; Automation Engineer
-</footer>
-
-</body>
-</html>`;
+      const detailHTML = `<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8" />\n  <meta name="viewport" content="width=device-width, initial-scale=1.0" />\n  <title>${title} | Gayan Weerasingha</title>\n  <link rel="stylesheet" href="../assets/css/style.css" />\n  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />\n</head>\n<body>\n\n<header class="page-header">\n  <h1>${title}</h1>\n  <p>${subtitle}</p>\n</header>\n\n<nav>\n  <a href="../index.html">Home</a>\n  <a href="../projects.html">Projects</a>\n  <a href="../index.html#contact">Contact</a>\n</nav>\n\n<div class="detail-main">\n  <a href="../projects.html" class="back-btn">\n    <i class="fa-solid fa-arrow-left"></i> Back to Projects\n  </a>\n\n  <h2>Project Overview</h2>\n  <p>${description}</p>\n\n  <h2>Scope of Work</h2>\n  <p>Add scope details here...</p>\n\n  <h2>My Responsibilities</h2>\n  <ul style="padding-left:1.2rem;line-height:2;">\n    <li>Add responsibility here</li>\n  </ul>\n\n  <h2>Tools &amp; Standards</h2>\n  <p>${tags.join(', ')}</p>\n\n</div>\n\n<footer>\n  &copy; 2026 Gayan Weerasingha\n</footer>\n\n</body>\n</html>`;
       document.getElementById('p-detail-output').textContent = detailHTML;
       detailBlock.style.display = 'block';
     } else {
@@ -611,97 +795,37 @@
     }
 
     document.getElementById('p-output').classList.add('visible');
-    document.getElementById('p-output').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('p-output').scrollIntoView({ behavior: 'smooth' });
   }
 
-  // ---- GENERATE ARTICLE ----
   function generateArticle() {
-    const title = document.getElementById('a-title').value.trim();
+    const title    = document.getElementById('a-title').value.trim();
     const filename = document.getElementById('a-filename').value.trim() || 'article-2.html';
-    const date = document.getElementById('a-date').value.trim();
+    const date     = document.getElementById('a-date').value.trim();
     const readTime = document.getElementById('a-readtime').value.trim();
-    const excerpt = document.getElementById('a-excerpt').value.trim();
-    const content = document.getElementById('a-content').value.trim();
+    const excerpt  = document.getElementById('a-excerpt').value.trim();
+    const content  = document.getElementById('a-content').value.trim();
 
-    if (!title || !content) {
-      alert('Please fill in at least Title and Content.');
-      return;
-    }
+    if (!title || !content) { alert('Please fill in Title and Content.'); return; }
 
-    const link = `articles/${filename}`;
-    const nextId = Date.now();
-
-    // Generate JS object
-    const obj = `  {
-    id: ${nextId},
-    title: "${title.replace(/"/g, '\\"')}",
-    date: "${date}",
-    readTime: "${readTime}",
-    excerpt: "${excerpt.replace(/"/g, '\\"')}",
-    link: "${link}"
-  },`;
-
+    const obj = `  {\n    id: ${Date.now()},\n    title: "${title.replace(/"/g, '\\"')}",\n    date: "${date}",\n    readTime: "${readTime}",\n    excerpt: "${excerpt.replace(/"/g, '\\"')}",\n    link: "articles/${filename}"\n  },`;
     document.getElementById('a-code-output').textContent = obj;
 
-    // Generate article HTML
     const paragraphs = content.split(/\n\n+/).filter(p => p.trim());
-    const paragraphsHTML = paragraphs.map(p =>
-      `  <p>${p.replace(/\n/g, '<br/>').replace(/"/g, '&quot;')}</p>`
-    ).join('\n\n');
+    const parasHTML  = paragraphs.map(p => `  <p>${p.replace(/\n/g, '<br/>')}</p>`).join('\n\n');
 
-    const articleHTML = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>${title} | Gayan Weerasingha</title>
-  <meta name="description" content="${excerpt.replace(/"/g, '').substring(0, 150)}" />
-  <link rel="stylesheet" href="../assets/css/style.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />
-</head>
-<body>
-
-<header class="page-header">
-  <h1>Articles &amp; Technical Writing</h1>
-</header>
-
-<nav>
-  <a href="../index.html">Home</a>
-  <a href="../articles.html">Articles</a>
-  <a href="../index.html#contact">Contact</a>
-</nav>
-
-<div class="detail-main">
-  <a href="../articles.html" class="back-btn">
-    <i class="fa-solid fa-arrow-left"></i> Back to Articles
-  </a>
-
-  <h1>${title}</h1>
-  <p class="detail-meta">By Gayan Weerasingha &nbsp;·&nbsp; ${date} &nbsp;·&nbsp; ${readTime} min read</p>
-
-${paragraphsHTML}
-
-</div>
-
-<footer>
-  &copy; 2026 Gayan Weerasingha &nbsp;&middot;&nbsp; Electrical &amp; Automation Engineer
-</footer>
-
-</body>
-</html>`;
-
+    const articleHTML = `<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8" />\n  <meta name="viewport" content="width=device-width, initial-scale=1.0" />\n  <title>${title} | Gayan Weerasingha</title>\n  <meta name="description" content="${excerpt.substring(0,150)}" />\n  <link rel="stylesheet" href="../assets/css/style.css" />\n  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />\n</head>\n<body>\n\n<header class="page-header">\n  <h1>Articles &amp; Technical Writing</h1>\n</header>\n\n<nav>\n  <a href="../index.html">Home</a>\n  <a href="../articles.html">Articles</a>\n  <a href="../index.html#contact">Contact</a>\n</nav>\n\n<div class="detail-main">\n  <a href="../articles.html" class="back-btn">\n    <i class="fa-solid fa-arrow-left"></i> Back to Articles\n  </a>\n\n  <h1>${title}</h1>\n  <p class="detail-meta">By Gayan Weerasingha &nbsp;·&nbsp; ${date} &nbsp;·&nbsp; ${readTime} min read</p>\n\n${parasHTML}\n\n</div>\n\n<footer>\n  &copy; 2026 Gayan Weerasingha &nbsp;&middot;&nbsp; Electrical &amp; Automation Engineer\n</footer>\n\n</body>\n</html>`;
     document.getElementById('a-html-output').textContent = articleHTML;
+
     document.getElementById('a-output').classList.add('visible');
-    document.getElementById('a-output').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('a-output').scrollIntoView({ behavior: 'smooth' });
   }
 
-  // ---- COPY CODE ----
-  function copyCode(id) {
-    const text = document.getElementById(id).textContent;
-    navigator.clipboard.writeText(text).then(() => {
-      const btn = event.target;
+  function copyCode(id, btn) {
+    navigator.clipboard.writeText(document.getElementById(id).textContent).then(() => {
       btn.textContent = 'Copied!';
-      setTimeout(() => btn.textContent = 'Copy', 2000);
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
   }
 </script>

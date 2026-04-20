@@ -292,20 +292,24 @@
         <a href="https://www.linkedin.com/in/gayan-weerasingha-075946188/" target="_blank" rel="noopener noreferrer">LinkedIn Profile</a></p>
     </div>
 
-    <!-- Contact form — powered by Formspree -->
-    <!-- To activate: sign up at formspree.io, create a form, replace YOUR_FORM_ID below -->
-    <form class="contact-form" id="contactForm"
-          action="https://formspree.io/f/YOUR_FORM_ID"
-          method="POST">
-      <input type="text" name="name" placeholder="Your Name" required />
-      <input type="email" name="email" placeholder="Your Email" required />
-      <input type="text" name="subject" placeholder="Subject" />
-      <textarea name="message" placeholder="Your message..." required></textarea>
-      <button type="submit" class="btn" style="width:fit-content;">
+    <!-- Contact form — powered by EmailJS (free, no backend needed)        -->
+    <!-- Setup: emailjs.com → create account → Add Email Service → Create  -->
+    <!-- Template → copy Service ID, Template ID, Public Key below         -->
+    <form class="contact-form" id="contactForm" onsubmit="sendEmail(event)">
+      <input type="text" id="cf-name" placeholder="Your Name" required />
+      <input type="email" id="cf-email" placeholder="Your Email" required />
+      <input type="text" id="cf-subject" placeholder="Subject" />
+      <textarea id="cf-message" placeholder="Your message..." required></textarea>
+      <button type="submit" class="btn" id="cf-submit" style="width:fit-content;">
         <i class="fa-solid fa-paper-plane" style="margin-right:6px;"></i>Send Message
       </button>
       <div class="form-success" id="formSuccess">
+        <i class="fa-solid fa-circle-check" style="margin-right:6px;"></i>
         Message sent! I'll get back to you soon.
+      </div>
+      <div class="form-success" id="formError" style="background:#fee2e2;color:#991b1b;display:none;">
+        <i class="fa-solid fa-circle-exclamation" style="margin-right:6px;"></i>
+        Something went wrong. Please email me directly at gweerasinghe67@gmail.com
       </div>
     </form>
 
@@ -321,6 +325,51 @@
 <button id="scrollTopBtn" title="Back to top" aria-label="Back to top">
   <i class="fa-solid fa-arrow-up"></i>
 </button>
+
+<!-- EmailJS — https://emailjs.com (free: 200 emails/month) -->
+<!-- After creating your account, replace the three values below -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  // ── EmailJS config ──────────────────────────────────────────
+  // 1. Sign up at emailjs.com
+  // 2. Add an Email Service (Gmail recommended) → copy Service ID
+  // 3. Create an Email Template with variables:
+  //    {{from_name}}, {{from_email}}, {{subject}}, {{message}}
+  //    → copy Template ID
+  // 4. Go to Account → API Keys → copy Public Key
+  // Replace the three strings below:
+  const EJS_SERVICE  = "YOUR_SERVICE_ID";
+  const EJS_TEMPLATE = "YOUR_TEMPLATE_ID";
+  const EJS_KEY      = "YOUR_PUBLIC_KEY";
+  emailjs.init({ publicKey: EJS_KEY });
+  // ────────────────────────────────────────────────────────────
+
+  async function sendEmail(e) {
+    e.preventDefault();
+    const btn = document.getElementById('cf-submit');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="margin-right:6px;"></i>Sending…';
+
+    const params = {
+      from_name:  document.getElementById('cf-name').value,
+      from_email: document.getElementById('cf-email').value,
+      subject:    document.getElementById('cf-subject').value,
+      message:    document.getElementById('cf-message').value,
+    };
+
+    try {
+      await emailjs.send(EJS_SERVICE, EJS_TEMPLATE, params);
+      document.getElementById('contactForm').reset();
+      document.getElementById('formSuccess').style.display = 'flex';
+      btn.innerHTML = '<i class="fa-solid fa-paper-plane" style="margin-right:6px;"></i>Send Message';
+      btn.disabled = false;
+    } catch {
+      document.getElementById('formError').style.display = 'flex';
+      btn.innerHTML = '<i class="fa-solid fa-paper-plane" style="margin-right:6px;"></i>Send Message';
+      btn.disabled = false;
+    }
+  }
+</script>
 
 <script src="https://app.lemonsqueezy.com/js/lemon.js" defer></script>
 <script src="data/content.js"></script>
