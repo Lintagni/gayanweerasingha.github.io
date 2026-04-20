@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Projects | Gayan Weerasingha</title>
-  <meta name="description" content="Engineering and web app projects by Gayan Weerasingha — Electrical Engineer and part-time developer." />
+  <meta name="description" content="Engineering and web app projects by Gayan Weerasingha." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%232563eb'/><text x='50' y='72' font-size='60' font-family='Arial' font-weight='bold' text-anchor='middle' fill='white'>G</text></svg>" />
   <link rel="stylesheet" href="assets/css/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />
   <style>
@@ -28,14 +29,21 @@
     }
     .project-card h3 { margin-bottom: 0.3rem; color: var(--primary); }
     .project-card p { font-size: 0.95rem; line-height: 1.6; }
-    .external-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 0.78rem;
-      color: var(--accent);
-      font-weight: 500;
-      margin-top: 1rem;
+    .filter-bar { display:flex; gap:0.6rem; flex-wrap:wrap; margin-bottom:2rem; }
+    .filter-btn {
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: white;
+      font-size: 0.83rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
     }
   </style>
 </head>
@@ -62,55 +70,54 @@
     <i class="fa-solid fa-arrow-left"></i> Back to Home
   </a>
 
-  <div class="projects-grid">
-
-    <!-- Engineering Project 1 -->
-    <a href="projects/project-1.html" class="project-card-link">
-      <div class="project-card">
-        <h3>Electrical System Design – Cath Lab</h3>
-        <p class="muted" style="margin:0.3rem 0 0.7rem;">Karapitiya National Hospital &nbsp;·&nbsp; 2025</p>
-        <p>
-          Complete electrical system design for a new Cardiac Catheterization Laboratory including
-          power distribution, lighting design, emergency power supply, earthing, and medical
-          equipment vendor coordination.
-        </p>
-        <div class="tags" style="margin-top:1rem;">
-          <span class="tag">Electrical Engineering</span>
-          <span class="tag">AutoCAD</span>
-          <span class="tag">Hospital Design</span>
-          <span class="tag">IEC Standards</span>
-        </div>
-      </div>
-    </a>
-
-    <!-- Web Apps Project -->
-    <a href="https://20-projects-for-beginners.vercel.app/" target="_blank" rel="noopener noreferrer" class="project-card-link">
-      <div class="project-card">
-        <h3>20 Claude Code Projects for Beginners</h3>
-        <p class="muted" style="margin:0.3rem 0 0.7rem;">Web Apps &nbsp;·&nbsp; 2026</p>
-        <p>
-          20 working web apps built entirely with AI prompts using Claude Code — covering productivity,
-          business &amp; finance, lifestyle, and utility tools. Each app is live and usable.
-          Also available as a PDF guide teaching how to build them.
-        </p>
-        <div class="tags" style="margin-top:1rem;">
-          <span class="tag">Claude Code</span>
-          <span class="tag tag-green">React</span>
-          <span class="tag tag-green">AI-Built</span>
-          <span class="tag">Vercel</span>
-        </div>
-        <span class="external-badge">
-          <i class="fa-solid fa-arrow-up-right-from-square"></i> View live apps
-        </span>
-      </div>
-    </a>
-
+  <div class="filter-bar">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="engineering">Engineering</button>
+    <button class="filter-btn" data-filter="webapp">Web Apps</button>
   </div>
+
+  <div class="projects-grid" id="projects-grid"></div>
 </main>
 
 <footer>
   © 2026 Gayan Weerasingha &nbsp;·&nbsp; Electrical &amp; Automation Engineer
 </footer>
+
+<script src="data/content.js"></script>
+<script>
+  function renderProjects(filter) {
+    const grid = document.getElementById('projects-grid');
+    const filtered = filter === 'all' ? projects : projects.filter(p => p.type === filter);
+    grid.innerHTML = filtered.map(p => {
+      const tagHTML = p.tags.map(t =>
+        `<span class="tag${t === 'React' || t === 'AI-Built' ? ' tag-green' : ''}">${t}</span>`
+      ).join('');
+      const externalBadge = p.external
+        ? `<span class="external-badge"><i class="fa-solid fa-arrow-up-right-from-square"></i> View live apps</span>`
+        : '';
+      return `
+        <a href="${p.link}" class="project-card-link"${p.external ? ' target="_blank" rel="noopener noreferrer"' : ''}>
+          <div class="project-card">
+            <h3>${p.title}</h3>
+            <p class="muted" style="margin:0.3rem 0 0.7rem;">${p.subtitle} &nbsp;·&nbsp; ${p.year}</p>
+            <p>${p.description}</p>
+            <div class="tags" style="margin-top:1rem;">${tagHTML}</div>
+            ${externalBadge}
+          </div>
+        </a>`;
+    }).join('');
+  }
+
+  renderProjects('all');
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderProjects(btn.dataset.filter);
+    });
+  });
+</script>
 
 </body>
 </html>

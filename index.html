@@ -10,6 +10,7 @@
   <meta property="og:title" content="Gayan Weerasingha | Electrical & Automation Engineer" />
   <meta property="og:description" content="Electrical Engineer specialising in automation, control systems, and Industry 4.0." />
   <meta property="og:url" content="https://gayanweerasingha.org/" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%232563eb'/><text x='50' y='72' font-size='60' font-family='Arial' font-weight='bold' text-anchor='middle' fill='white'>G</text></svg>" />
   <link rel="stylesheet" href="assets/css/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />
 </head>
@@ -19,6 +20,9 @@
 <!-- ===== HEADER ===== -->
 <header>
   <div class="social">
+    <a href="https://github.com/Lintagni" target="_blank" rel="noopener noreferrer">
+      <i class="fa-brands fa-github"></i><span>GitHub</span>
+    </a>
     <a href="https://www.linkedin.com/in/gayan-weerasingha-075946188/" target="_blank" rel="noopener noreferrer">
       <i class="fa-brands fa-linkedin"></i><span>LinkedIn</span>
     </a>
@@ -36,8 +40,10 @@
   <img src="assets/images/profile.webp" alt="Gayan Weerasingha" class="profile-img" />
   <h1>Gayan Weerasingha</h1>
   <p>Electrical &amp; Electronic Engineer &nbsp;|&nbsp; Industrial Automation &nbsp;|&nbsp; Industry 4.0</p>
-
-  <br />
+  <p class="hero-tagline">
+    Designing safe, code-compliant electrical systems for hospitals and commercial buildings —
+    and building AI-powered software tools on the side.
+  </p>
   <a class="btn" href="assets/documents/W_M_G_Weerasinghe_CV.pdf" target="_blank" rel="noopener noreferrer">
     <i class="fa-solid fa-arrow-down" style="margin-right:6px;"></i> View Resume
   </a>
@@ -46,7 +52,9 @@
 <!-- ===== NAV ===== -->
 <nav>
   <a href="#about">About</a>
+  <a href="#skills">Skills</a>
   <a href="#experience">Experience</a>
+  <a href="#education">Education</a>
   <a href="#services">Services</a>
   <a href="#projects">Projects</a>
   <a href="articles.html">Articles</a>
@@ -65,8 +73,59 @@
   </p>
   <p>
     Proficient in AutoCAD and SolidWorks, and currently pursuing an MSc in Industrial Automation
-    at the University of Moratuwa.
+    at the University of Moratuwa. Alongside engineering work, I build and ship web applications
+    using AI tools — combining technical expertise with modern software development.
   </p>
+</section>
+
+<!-- ===== SKILLS ===== -->
+<section id="skills" style="background:var(--surface);">
+  <h2>Skills &amp; Tools</h2>
+  <div class="skills-grid">
+
+    <div class="skill-group">
+      <h3>Design &amp; Drafting</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">AutoCAD</span>
+        <span class="skill-tag">SolidWorks</span>
+        <span class="skill-tag">DIALux EVO</span>
+        <span class="skill-tag">Single Line Diagrams</span>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <h3>Electrical Engineering</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">Load Calculations</span>
+        <span class="skill-tag">Cable Sizing</span>
+        <span class="skill-tag">BOQ Preparation</span>
+        <span class="skill-tag">IEC Standards</span>
+        <span class="skill-tag">Hospital Electrical Design</span>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <h3>Automation</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">PLC Systems</span>
+        <span class="skill-tag">Control Panel Design</span>
+        <span class="skill-tag">System Integration</span>
+        <span class="skill-tag">Industry 4.0</span>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <h3>Software &amp; AI Tools</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">Claude Code</span>
+        <span class="skill-tag">VS Code</span>
+        <span class="skill-tag">React</span>
+        <span class="skill-tag">HTML / CSS / JS</span>
+        <span class="skill-tag">Git &amp; GitHub</span>
+      </div>
+    </div>
+
+  </div>
 </section>
 
 <!-- ===== EXPERIENCE ===== -->
@@ -77,7 +136,7 @@
     <div class="card">
       <h3>Electrical Engineer – CECB</h3>
       <p class="muted">Jul 2024 – Present &nbsp;|&nbsp; Galle</p>
-      <ul>
+      <ul style="padding-left:1.2rem;margin-top:0.6rem;">
         <li>Designed and consulted on electrical systems using AutoCAD</li>
         <li>Prepared BOQs and electrical estimations ensuring accurate budgeting</li>
         <li>Prepared technical and evaluation reports to support project decisions</li>
@@ -87,7 +146,7 @@
     <div class="card">
       <h3>Electrical Engineer – Voltas Engineering</h3>
       <p class="muted">Mar 2024 – Jun 2024 &nbsp;|&nbsp; Colombo</p>
-      <ul>
+      <ul style="padding-left:1.2rem;margin-top:0.6rem;">
         <li>Executed electrical system projects focusing on efficiency and accuracy</li>
         <li>Conducted testing and commissioning to ensure system reliability</li>
         <li>Performed maintenance activities to improve system longevity</li>
@@ -97,11 +156,38 @@
     <div class="card">
       <h3>MEP Engineer – ICC</h3>
       <p class="muted">Mar 2022 – Mar 2024 &nbsp;|&nbsp; Dehiwala</p>
-      <ul>
+      <ul style="padding-left:1.2rem;margin-top:0.6rem;">
         <li>Maintained MEP documentation for large-scale hospital projects</li>
         <li>Coordinated QA/QC works and liaised with consultants</li>
         <li>Ensured compliance with project standards and timelines</li>
       </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== EDUCATION ===== -->
+<section id="education" style="background:var(--surface);">
+  <h2>Education</h2>
+  <div style="display:flex;flex-direction:column;gap:1rem;">
+
+    <div class="edu-card">
+      <div class="edu-icon"><i class="fa-solid fa-graduation-cap fa-lg"></i></div>
+      <div class="edu-body">
+        <h3>MSc in Industrial Automation</h3>
+        <p>University of Moratuwa, Sri Lanka</p>
+        <p>2024 – Present</p>
+        <span class="edu-badge">In Progress</span>
+      </div>
+    </div>
+
+    <div class="edu-card">
+      <div class="edu-icon"><i class="fa-solid fa-bolt fa-lg"></i></div>
+      <div class="edu-body">
+        <h3>BEng (Hons) Electrical &amp; Electronic Engineering</h3>
+        <p>Sri Lanka</p>
+        <p>Completed</p>
+      </div>
     </div>
 
   </div>
@@ -142,41 +228,18 @@
     </div>
 
   </div>
+  <p style="margin-top:1.5rem;">
+    <a href="#contact" class="btn">
+      <i class="fa-solid fa-paper-plane" style="margin-right:6px;"></i>Get a Quote
+    </a>
+  </p>
 </section>
 
 <!-- ===== PROJECTS ===== -->
-<section id="projects">
+<section id="projects" style="background:var(--surface);">
   <h2>Projects</h2>
-  <div class="grid">
-
-    <!-- Engineering project -->
-    <a href="projects/project-1.html" class="project-card-link">
-      <div class="card">
-        <h3>Electrical System Design – Cath Lab</h3>
-        <p class="muted" style="margin:0.3rem 0 0.6rem;">Karapitiya National Hospital, Galle</p>
-        <p style="font-size:0.95rem;">Complete electrical system design for a new Cardiac Catheterization Laboratory including power distribution, lighting, and emergency systems.</p>
-        <div class="tags">
-          <span class="tag">Electrical Engineering</span>
-          <span class="tag">AutoCAD</span>
-          <span class="tag">Hospital Design</span>
-        </div>
-      </div>
-    </a>
-
-    <!-- Web apps project -->
-    <a href="https://20-projects-for-beginners.vercel.app/" target="_blank" rel="noopener noreferrer" class="project-card-link">
-      <div class="card">
-        <h3>20 Claude Code Projects for Beginners</h3>
-        <p class="muted" style="margin:0.3rem 0 0.6rem;">Web Apps &nbsp;·&nbsp; Live on Vercel</p>
-        <p style="font-size:0.95rem;">20 working web apps built with AI prompts — productivity tools, finance apps, wellness trackers, and utilities. No coding experience needed to build them.</p>
-        <div class="tags">
-          <span class="tag">Claude Code</span>
-          <span class="tag tag-green">React</span>
-          <span class="tag tag-green">AI-Built</span>
-        </div>
-      </div>
-    </a>
-
+  <div class="grid" id="projects-grid">
+    <!-- Rendered by content.js -->
   </div>
   <p style="margin-top:1.2rem;">
     <a href="projects.html" class="btn btn-outline" style="font-size:0.9rem;">View all projects →</a>
@@ -190,14 +253,14 @@
     <h2>Build 20 Apps Without Writing a Single Line of Code</h2>
     <p class="guide-subtitle">
       The Claude Code Prompt Library for Beginners — 20 tested, copy-paste-ready prompts that generate
-      real working apps in 3–6 minutes each.
+      real working apps in 3–6 minutes each. No coding experience needed.
     </p>
     <ul class="guide-features">
       <li>20 complete, tested prompts — copy, paste, done</li>
       <li>4 categories: Productivity, Business &amp; Finance, Wellness, Tools</li>
-      <li>Screenshots of every finished app</li>
+      <li>Screenshots of every finished app included</li>
       <li>Build time 3–6 minutes per app</li>
-      <li>Difficulty levels &amp; customisation ideas</li>
+      <li>Difficulty levels &amp; customisation ideas for each</li>
       <li>Lifetime access + future updates</li>
     </ul>
     <div class="guide-cta">
@@ -214,31 +277,97 @@
 <!-- ===== CONTACT ===== -->
 <section id="contact">
   <h2>Contact</h2>
-  <p><i class="fa-solid fa-envelope" style="color:var(--accent);margin-right:8px;"></i><a href="mailto:gweerasinghe67@gmail.com">gweerasinghe67@gmail.com</a></p>
-  <p><i class="fa-solid fa-phone" style="color:var(--accent);margin-right:8px;"></i>+94 724 618 922</p>
-  <p><i class="fa-solid fa-location-dot" style="color:var(--accent);margin-right:8px;"></i>Sri Lanka</p>
+  <div class="contact-grid">
+
+    <div class="contact-info">
+      <p><i class="fa-solid fa-envelope" style="color:var(--accent);width:18px;"></i>
+        <a href="mailto:gweerasinghe67@gmail.com">gweerasinghe67@gmail.com</a></p>
+      <p><i class="fa-solid fa-phone" style="color:var(--accent);width:18px;"></i>
+        <a href="tel:+94724618922">+94 724 618 922</a></p>
+      <p><i class="fa-brands fa-whatsapp" style="color:var(--accent);width:18px;"></i>
+        <a href="https://wa.me/94724618922" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
+      <p><i class="fa-solid fa-location-dot" style="color:var(--accent);width:18px;"></i>
+        Sri Lanka</p>
+      <p><i class="fa-brands fa-linkedin" style="color:var(--accent);width:18px;"></i>
+        <a href="https://www.linkedin.com/in/gayan-weerasingha-075946188/" target="_blank" rel="noopener noreferrer">LinkedIn Profile</a></p>
+    </div>
+
+    <!-- Contact form — powered by Formspree -->
+    <!-- To activate: sign up at formspree.io, create a form, replace YOUR_FORM_ID below -->
+    <form class="contact-form" id="contactForm"
+          action="https://formspree.io/f/YOUR_FORM_ID"
+          method="POST">
+      <input type="text" name="name" placeholder="Your Name" required />
+      <input type="email" name="email" placeholder="Your Email" required />
+      <input type="text" name="subject" placeholder="Subject" />
+      <textarea name="message" placeholder="Your message..." required></textarea>
+      <button type="submit" class="btn" style="width:fit-content;">
+        <i class="fa-solid fa-paper-plane" style="margin-right:6px;"></i>Send Message
+      </button>
+      <div class="form-success" id="formSuccess">
+        Message sent! I'll get back to you soon.
+      </div>
+    </form>
+
+  </div>
 </section>
 
 <!-- ===== FOOTER ===== -->
 <footer>
-  © 2026 Gayan Weerasingha &nbsp;·&nbsp; Electrical &amp; Automation Engineer
+  © 2026 Gayan Weerasingha &nbsp;·&nbsp; Electrical &amp; Automation Engineer &nbsp;·&nbsp;
+  <a href="https://gayanweerasingha.org" style="color:var(--muted);">gayanweerasingha.org</a>
 </footer>
 
-<!-- Scroll to Top -->
 <button id="scrollTopBtn" title="Back to top" aria-label="Back to top">
   <i class="fa-solid fa-arrow-up"></i>
 </button>
 
-<!-- Lemon Squeezy overlay checkout -->
 <script src="https://app.lemonsqueezy.com/js/lemon.js" defer></script>
-
+<script src="data/content.js"></script>
 <script>
+  /* ---- Render projects ---- */
+  const grid = document.getElementById('projects-grid');
+  projects.forEach(p => {
+    const tagHTML = p.tags.map(t =>
+      `<span class="tag${t === 'React' || t === 'AI-Built' ? ' tag-green' : ''}">${t}</span>`
+    ).join('');
+    const externalBadge = p.external
+      ? `<span class="external-badge"><i class="fa-solid fa-arrow-up-right-from-square"></i> View live</span>`
+      : '';
+    grid.innerHTML += `
+      <a href="${p.link}" class="project-card-link"${p.external ? ' target="_blank" rel="noopener noreferrer"' : ''}>
+        <div class="card">
+          <h3>${p.title}</h3>
+          <p class="muted" style="margin:0.3rem 0 0.6rem;">${p.subtitle}</p>
+          <p style="font-size:0.95rem;">${p.description}</p>
+          <div class="tags">${tagHTML}</div>
+          ${externalBadge}
+        </div>
+      </a>`;
+  });
+
+  /* ---- Scroll to top ---- */
   const scrollTopBtn = document.getElementById("scrollTopBtn");
   window.addEventListener("scroll", () => {
     scrollTopBtn.style.display = window.scrollY > 300 ? "flex" : "none";
   });
   scrollTopBtn.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  /* ---- Contact form (Formspree) ---- */
+  const form = document.getElementById('contactForm');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+    const res = await fetch(form.action, {
+      method: 'POST', body: data,
+      headers: { 'Accept': 'application/json' }
+    });
+    if (res.ok) {
+      form.reset();
+      document.getElementById('formSuccess').style.display = 'block';
+    }
   });
 </script>
 
