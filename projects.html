@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects | Gayan Weerasingha</title>
+  <meta name="description" content="Engineering and web app projects by Gayan Weerasingha — Electrical Engineer and part-time developer." />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />
+  <style>
+    main { max-width: 1100px; margin: auto; padding: 3rem 1rem; }
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    .project-card {
+      background: white;
+      border-radius: 14px;
+      padding: 1.8rem;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      height: 100%;
+    }
+    .project-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 36px rgba(0,0,0,0.1);
+    }
+    .project-card h3 { margin-bottom: 0.3rem; color: var(--primary); }
+    .project-card p { font-size: 0.95rem; line-height: 1.6; }
+    .external-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.78rem;
+      color: var(--accent);
+      font-weight: 500;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="page-header">
+  <h1>Projects</h1>
+  <p>Engineering work &amp; web app builds</p>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="index.html#about">About</a>
+  <a href="index.html#experience">Experience</a>
+  <a href="index.html#services">Services</a>
+  <a href="articles.html">Articles</a>
+  <a href="index.html#guide" class="nav-cta">Get the Guide</a>
+  <a href="index.html#contact">Contact</a>
+</nav>
+
+<main>
+  <a href="index.html" class="back-btn">
+    <i class="fa-solid fa-arrow-left"></i> Back to Home
+  </a>
+
+  <div class="projects-grid">
+
+    <!-- Engineering Project 1 -->
+    <a href="projects/project-1.html" class="project-card-link">
+      <div class="project-card">
+        <h3>Electrical System Design – Cath Lab</h3>
+        <p class="muted" style="margin:0.3rem 0 0.7rem;">Karapitiya National Hospital &nbsp;·&nbsp; 2025</p>
+        <p>
+          Complete electrical system design for a new Cardiac Catheterization Laboratory including
+          power distribution, lighting design, emergency power supply, earthing, and medical
+          equipment vendor coordination.
+        </p>
+        <div class="tags" style="margin-top:1rem;">
+          <span class="tag">Electrical Engineering</span>
+          <span class="tag">AutoCAD</span>
+          <span class="tag">Hospital Design</span>
+          <span class="tag">IEC Standards</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Web Apps Project -->
+    <a href="https://20-projects-for-beginners.vercel.app/" target="_blank" rel="noopener noreferrer" class="project-card-link">
+      <div class="project-card">
+        <h3>20 Claude Code Projects for Beginners</h3>
+        <p class="muted" style="margin:0.3rem 0 0.7rem;">Web Apps &nbsp;·&nbsp; 2026</p>
+        <p>
+          20 working web apps built entirely with AI prompts using Claude Code — covering productivity,
+          business &amp; finance, lifestyle, and utility tools. Each app is live and usable.
+          Also available as a PDF guide teaching how to build them.
+        </p>
+        <div class="tags" style="margin-top:1rem;">
+          <span class="tag">Claude Code</span>
+          <span class="tag tag-green">React</span>
+          <span class="tag tag-green">AI-Built</span>
+          <span class="tag">Vercel</span>
+        </div>
+        <span class="external-badge">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> View live apps
+        </span>
+      </div>
+    </a>
+
+  </div>
+</main>
+
+<footer>
+  © 2026 Gayan Weerasingha &nbsp;·&nbsp; Electrical &amp; Automation Engineer
+</footer>
+
+</body>
+</html>
