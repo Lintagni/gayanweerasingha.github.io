@@ -1015,27 +1015,23 @@ System integration</textarea>
   }
 
   async function loadProjects() {
-    if (!localStorage.getItem('gh_token')) { showToast('Connect GitHub token in Settings first.', true); return; }
-    const btn = event.currentTarget;
-    btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading…';
+    if (!localStorage.getItem('gh_token')) return;
+    const container = document.getElementById('p-existing-blocks');
+    container.innerHTML = '<p class="hint" style="padding:0.5rem 0;"><i class="fa-solid fa-spinner fa-spin" style="margin-right:6px;"></i>Loading from GitHub…</p>';
     try {
       const data = await loadContentData();
       renderProjectBlocks(data.projects);
-      showToast(`Loaded ${data.projects.length} project(s).`);
-    } catch(e) { showToast(e.message, true); }
-    finally { btn.disabled = false; btn.innerHTML = '<i class="fa-brands fa-github"></i> Load from GitHub'; }
+    } catch(e) { container.innerHTML = ''; showToast(e.message, true); }
   }
 
   async function loadArticles() {
-    if (!localStorage.getItem('gh_token')) { showToast('Connect GitHub token in Settings first.', true); return; }
-    const btn = event.currentTarget;
-    btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading…';
+    if (!localStorage.getItem('gh_token')) return;
+    const container = document.getElementById('a-existing-blocks');
+    container.innerHTML = '<p class="hint" style="padding:0.5rem 0;"><i class="fa-solid fa-spinner fa-spin" style="margin-right:6px;"></i>Loading from GitHub…</p>';
     try {
       const data = await loadContentData();
       renderArticleBlocks(data.articles);
-      showToast(`Loaded ${data.articles.length} article(s).`);
-    } catch(e) { showToast(e.message, true); }
-    finally { btn.disabled = false; btn.innerHTML = '<i class="fa-brands fa-github"></i> Load from GitHub'; }
+    } catch(e) { container.innerHTML = ''; showToast(e.message, true); }
   }
 
   function renderProjectBlocks(projects) {

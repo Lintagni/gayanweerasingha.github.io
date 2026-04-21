@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Downloads | Gayan Weerasingha</title>
+  <meta name="description" content="Free downloads and web tools by Gayan Weerasingha — projects, apps, and resources for engineers and beginners." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%232563eb'/><text x='50' y='72' font-size='60' font-family='Arial' font-weight='bold' text-anchor='middle' fill='white'>G</text></svg>" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />
+  <style>
+    main { max-width: 900px; margin: auto; padding: 3rem 1rem; }
+    .downloads-intro { color: var(--muted); font-size: 0.97rem; margin-bottom: 2.5rem; line-height: 1.7; }
+    .downloads-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+    .dl-card {
+      border: 1px solid var(--border); border-radius: 14px; padding: 1.6rem;
+      background: white; display: flex; flex-direction: column; gap: 0.8rem;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .dl-card:hover { box-shadow: 0 10px 28px rgba(0,0,0,0.09); transform: translateY(-2px); }
+    .dl-card-icon {
+      width: 44px; height: 44px; border-radius: 10px; background: var(--accent);
+      display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem;
+    }
+    .dl-card h2 { font-size: 1.05rem; color: var(--text); margin: 0; }
+    .dl-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.6; margin: 0; flex: 1; }
+    .dl-card .dl-meta { font-size: 0.78rem; color: var(--muted); display: flex; gap: 0.8rem; flex-wrap: wrap; }
+    .dl-card .dl-meta span { display: flex; align-items: center; gap: 4px; }
+    .dl-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: var(--accent); color: white; padding: 0.55rem 1.1rem;
+      border-radius: 8px; font-size: 0.88rem; font-weight: 600;
+      text-decoration: none; transition: background 0.2s; width: fit-content;
+    }
+    .dl-btn:hover { background: #1d4ed8; }
+    .dl-btn.outline {
+      background: transparent; color: var(--accent); border: 1.5px solid var(--accent);
+    }
+    .dl-btn.outline:hover { background: var(--accent); color: white; }
+  </style>
+</head>
+<body>
+
+<header class="page-header">
+  <h1>Downloads &amp; Free Resources</h1>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="index.html#projects">Projects</a>
+  <a href="articles.html">Articles</a>
+  <a href="index.html#contact">Contact</a>
+</nav>
+
+<main>
+  <p class="downloads-intro">
+    Free tools, web apps, and resources I've built and published. Everything here is live and usable with no sign-up required.
+  </p>
+
+  <div class="downloads-grid">
+
+    <div class="dl-card">
+      <div class="dl-card-icon"><i class="fa-solid fa-rocket"></i></div>
+      <h2>20 Claude Code Projects for Beginners</h2>
+      <p>20 fully working web apps built entirely with AI prompts using Claude Code — covering productivity, finance, lifestyle, and utility tools.</p>
+      <div class="dl-meta">
+        <span><i class="fa-solid fa-layer-group"></i> 20 Apps</span>
+        <span><i class="fa-brands fa-react"></i> React · Vercel</span>
+      </div>
+      <a class="dl-btn" href="https://20-projects-for-beginners.netlify.app/" target="_blank" rel="noopener noreferrer">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> View All Apps
+      </a>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  © 2026 Gayan Weerasingha &nbsp;·&nbsp; Electrical &amp; Automation Engineer &nbsp;·&nbsp;
+  <a href="https://gayanweerasingha.org" style="color:var(--muted);">gayanweerasingha.org</a>
+</footer>
+
+</body>
+</html>
