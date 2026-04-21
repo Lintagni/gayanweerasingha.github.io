@@ -121,7 +121,7 @@ const projects = [
   {
     id: 1776754149292,
     title: "The Flight agent Saas Project",
-    subtitle: "",
+    subtitle: "Web Apps · Live on Vercel",
     year: "2026",
     description: "AI-powered flight price monitor that deploys autonomous agents to hunt mispriced tickets and deals 24/7.",
     tags: ["Claude Code","VS Code","React","AI-Built","Vercel"],
