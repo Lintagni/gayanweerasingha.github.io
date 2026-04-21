@@ -137,6 +137,45 @@
     .hint { color: #475569; font-size: 0.78rem; margin-top: 0.3rem; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 
+    /* ---- SIDEBAR LAYOUT ---- */
+    .admin-layout { display: flex; height: calc(100vh - 52px); overflow: hidden; }
+
+    .admin-sidebar {
+      width: 210px; background: #1e293b; border-right: 1px solid #334155;
+      overflow-y: auto; flex-shrink: 0; display: flex; flex-direction: column;
+    }
+
+    .sidebar-nav { flex: 1; padding: 0.5rem 0; }
+
+    .sidebar-label {
+      font-size: 0.62rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: #475569; padding: 0.75rem 1rem 0.25rem; display: block;
+    }
+
+    .sidebar-btn {
+      display: flex; align-items: center; gap: 9px; width: 100%;
+      padding: 0.6rem 1rem; background: none; border: none; border-left: 3px solid transparent;
+      color: #94a3b8; font-size: 0.85rem; font-weight: 500; cursor: pointer;
+      font-family: inherit; text-align: left; transition: all 0.15s;
+    }
+    .sidebar-btn i { width: 16px; text-align: center; font-size: 0.82rem; }
+    .sidebar-btn:hover { color: #e2e8f0; background: rgba(255,255,255,0.04); }
+    .sidebar-btn.active { color: #2563eb; background: rgba(37,99,235,0.08); border-left-color: #2563eb; }
+
+    .sidebar-divider { border: none; border-top: 1px solid #1e293b; margin: 0.3rem 0.5rem; }
+
+    .sidebar-footer { padding: 0.75rem; border-top: 1px solid #334155; }
+
+    .sidebar-lock-btn {
+      width: 100%; padding: 0.5rem; background: none; border: 1px solid #334155;
+      color: #64748b; border-radius: 7px; cursor: pointer; font-size: 0.8rem;
+      font-family: inherit; transition: all 0.2s; display: flex; align-items: center;
+      justify-content: center; gap: 6px;
+    }
+    .sidebar-lock-btn:hover { border-color: #f87171; color: #f87171; }
+
+    .admin-content { flex: 1; overflow-y: auto; padding: 1.5rem 2rem; max-width: 860px; }
+
     /* ---- REPEAT BLOCKS ---- */
     .repeat-block {
       background: #162032; border: 1px solid #1e3a5f; border-radius: 10px;
@@ -290,21 +329,34 @@
       Portfolio Admin
     </div>
     <span class="gh-status disconnected" id="ghStatus"><i class="fa-brands fa-github"></i> <span id="ghStatusText">GitHub not connected</span></span>
-    <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-lock"></i> Lock</button>
   </div>
 
-  <div class="admin-body">
-    <div class="tabs">
-      <button class="tab-btn active" onclick="switchTab('about', this)"><i class="fa-solid fa-user"></i> About</button>
-      <button class="tab-btn" onclick="switchTab('skills', this)"><i class="fa-solid fa-wrench"></i> Skills</button>
-      <button class="tab-btn" onclick="switchTab('experience', this)"><i class="fa-solid fa-briefcase"></i> Experience</button>
-      <button class="tab-btn" onclick="switchTab('education', this)"><i class="fa-solid fa-graduation-cap"></i> Education</button>
-      <button class="tab-btn" onclick="switchTab('services', this)"><i class="fa-solid fa-plug"></i> Services</button>
-      <button class="tab-btn" onclick="switchTab('contact', this)"><i class="fa-solid fa-envelope"></i> Contact</button>
-      <button class="tab-btn" onclick="switchTab('projects', this)"><i class="fa-solid fa-folder-open"></i> Projects</button>
-      <button class="tab-btn" onclick="switchTab('articles', this)"><i class="fa-solid fa-pen-nib"></i> Articles</button>
-      <button class="tab-btn" onclick="switchTab('settings', this)"><i class="fa-solid fa-gear"></i> Settings</button>
+  <div class="admin-layout">
+
+    <!-- SIDEBAR -->
+    <div class="admin-sidebar">
+      <div class="sidebar-nav">
+        <span class="sidebar-label">Content</span>
+        <button class="sidebar-btn active" onclick="switchTab('about', this)"><i class="fa-solid fa-user"></i> About</button>
+        <button class="sidebar-btn" onclick="switchTab('skills', this)"><i class="fa-solid fa-wrench"></i> Skills</button>
+        <button class="sidebar-btn" onclick="switchTab('experience', this)"><i class="fa-solid fa-briefcase"></i> Experience</button>
+        <button class="sidebar-btn" onclick="switchTab('education', this)"><i class="fa-solid fa-graduation-cap"></i> Education</button>
+        <button class="sidebar-btn" onclick="switchTab('services', this)"><i class="fa-solid fa-plug"></i> Services</button>
+        <button class="sidebar-btn" onclick="switchTab('contact', this)"><i class="fa-solid fa-envelope"></i> Contact</button>
+        <div class="sidebar-divider"></div>
+        <span class="sidebar-label">Publish</span>
+        <button class="sidebar-btn" onclick="switchTab('projects', this)"><i class="fa-solid fa-folder-open"></i> Projects</button>
+        <button class="sidebar-btn" onclick="switchTab('articles', this)"><i class="fa-solid fa-pen-nib"></i> Articles</button>
+        <div class="sidebar-divider"></div>
+        <button class="sidebar-btn" onclick="switchTab('settings', this)"><i class="fa-solid fa-gear"></i> Settings</button>
+      </div>
+      <div class="sidebar-footer">
+        <button class="sidebar-lock-btn" onclick="logout()"><i class="fa-solid fa-lock"></i> Lock</button>
+      </div>
     </div>
+
+    <!-- CONTENT -->
+    <div class="admin-content">
 
     <!-- ===================== ABOUT ===================== -->
     <div class="tab-pane active" id="tab-about">
@@ -567,49 +619,9 @@ System integration</textarea>
 
       <div id="p-existing-blocks"></div>
 
-      <!-- Add new -->
-      <hr class="section-divider" />
-      <p style="color:#94a3b8;font-size:0.85rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:1rem;">
-        <i class="fa-solid fa-plus" style="margin-right:5px;"></i>Add New Project
-      </p>
-      <div class="repeat-block" id="p-new-form">
-        <div class="form-row">
-          <div class="form-group"><label>Project Title *</label><input type="text" id="p-title" placeholder="e.g. Solar Street Lighting System" /></div>
-          <div class="form-group"><label>Subtitle / Location</label><input type="text" id="p-subtitle" placeholder="e.g. Galle Municipality · 2025" /></div>
-        </div>
-        <div class="form-row">
-          <div class="form-group"><label>Year</label><input type="text" id="p-year" value="2026" /></div>
-          <div class="form-group"><label>Project Type</label>
-            <select id="p-type"><option value="engineering">Engineering</option><option value="webapp">Web App</option></select>
-          </div>
-        </div>
-        <div class="form-group"><label>Description *</label><textarea id="p-description" placeholder="Brief description (1–3 sentences)..."></textarea></div>
-        <div class="form-group"><label>Tags (comma separated)</label><input type="text" id="p-tags" placeholder="Electrical Engineering, AutoCAD, Hospital Design" /></div>
-        <div class="form-row">
-          <div class="form-group"><label>Link</label><input type="text" id="p-link" placeholder="projects/project-2.html or https://..." /></div>
-          <div class="form-group"><label>Opens in new tab?</label>
-            <select id="p-external"><option value="false">No (internal page)</option><option value="true">Yes (external URL)</option></select>
-          </div>
-        </div>
-      </div>
-      <div class="btn-row">
-        <button class="save-btn" onclick="publishProject()"><i class="fa-solid fa-floppy-disk"></i> Add &amp; Save to GitHub</button>
-        <button class="generate-btn" onclick="generateProject()"><i class="fa-solid fa-eye"></i> Preview Code</button>
-      </div>
-      <div class="preview-section" id="p-preview" style="display:none;">
-        <hr class="section-divider" /><p class="preview-label">Card Preview</p>
-        <div class="preview-card" id="p-preview-card"></div>
-      </div>
-      <div class="output-section" id="p-output">
-        <hr class="section-divider" />
-        <div class="output-block">
-          <div class="output-block-header">New entry for <code>projects [ ]</code><button class="copy-btn" onclick="copyCode('p-code-output', this)">Copy</button></div>
-          <div class="code-box" id="p-code-output"></div>
-        </div>
-        <div class="output-block" id="p-detail-block">
-          <div class="output-block-header">Detail page → save as <code>projects/project-N.html</code><button class="copy-btn" onclick="copyCode('p-detail-output', this)">Copy</button></div>
-          <div class="code-box" id="p-detail-output"></div>
-        </div>
+      <button class="add-block-btn" onclick="addNewProjectBlock()"><i class="fa-solid fa-plus"></i> Add New Project</button>
+      <div class="btn-row" id="p-save-row" style="display:none;">
+        <button class="save-btn" onclick="saveAllProjects()"><i class="fa-solid fa-floppy-disk"></i> Save All Changes to GitHub</button>
       </div>
     </div>
 
@@ -626,40 +638,9 @@ System integration</textarea>
 
       <div id="a-existing-blocks"></div>
 
-      <!-- Add new -->
-      <hr class="section-divider" />
-      <p style="color:#94a3b8;font-size:0.85rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:1rem;">
-        <i class="fa-solid fa-plus" style="margin-right:5px;"></i>Add New Article
-      </p>
-      <div class="repeat-block">
-        <div class="form-row">
-          <div class="form-group"><label>Article Title *</label><input type="text" id="a-title" placeholder="e.g. How to Size a Cable for a Hospital Circuit" /></div>
-          <div class="form-group"><label>Filename</label><input type="text" id="a-filename" value="article-2.html" /><p class="hint">Saved as articles/[filename]</p></div>
-        </div>
-        <div class="form-row">
-          <div class="form-group"><label>Publish Date</label><input type="text" id="a-date" placeholder="Apr 2026" /></div>
-          <div class="form-group"><label>Read Time (minutes)</label><input type="number" id="a-readtime" value="5" min="1" /></div>
-        </div>
-        <div class="form-group"><label>Excerpt</label><textarea id="a-excerpt" placeholder="2–3 sentence summary..." style="min-height:80px;"></textarea></div>
-        <div class="form-group"><label>Full Article Content *</label>
-          <textarea id="a-content" placeholder="Write your full article here.&#10;&#10;Separate paragraphs with a blank line." style="min-height:200px;"></textarea>
-          <p class="hint">Blank line = new paragraph. Content is saved as a separate HTML file.</p>
-        </div>
-      </div>
-      <div class="btn-row">
-        <button class="save-btn" onclick="publishArticle()"><i class="fa-solid fa-floppy-disk"></i> Add &amp; Save to GitHub</button>
-        <button class="generate-btn" onclick="generateArticle()"><i class="fa-solid fa-eye"></i> Preview Code</button>
-      </div>
-      <div class="output-section" id="a-output">
-        <hr class="section-divider" />
-        <div class="output-block">
-          <div class="output-block-header">Block 1 — entry for <code>articles [ ]</code><button class="copy-btn" onclick="copyCode('a-code-output', this)">Copy</button></div>
-          <div class="code-box" id="a-code-output"></div>
-        </div>
-        <div class="output-block">
-          <div class="output-block-header">Block 2 — save as <code>articles/[filename]</code><button class="copy-btn" onclick="copyCode('a-html-output', this)">Copy</button></div>
-          <div class="code-box" id="a-html-output"></div>
-        </div>
+      <button class="add-block-btn" onclick="addNewArticleBlock()"><i class="fa-solid fa-plus"></i> Add New Article</button>
+      <div class="btn-row" id="a-save-row" style="display:none;">
+        <button class="save-btn" onclick="saveAllArticles()"><i class="fa-solid fa-floppy-disk"></i> Save All Changes to GitHub</button>
       </div>
     </div>
 
@@ -694,6 +675,7 @@ System integration</textarea>
       </div>
     </div>
 
+  </div>
   </div>
 </div>
 
@@ -806,7 +788,7 @@ System integration</textarea>
   //  TABS / BLOCKS
   // ============================================================
   function switchTab(name, btn) {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
     document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
     btn.classList.add('active');
     document.getElementById('tab-' + name).classList.add('active');
@@ -1098,13 +1080,41 @@ System integration</textarea>
         </div>`;
       container.appendChild(div);
     });
-    if (projects.length) {
-      const saveRow = document.createElement('div');
-      saveRow.className = 'btn-row';
-      saveRow.style.marginBottom = '0.5rem';
-      saveRow.innerHTML = `<button class="save-btn" onclick="saveAllProjects()"><i class="fa-solid fa-floppy-disk"></i> Save All Changes to GitHub</button>`;
-      container.appendChild(saveRow);
-    }
+    document.getElementById('p-save-row').style.display = 'flex';
+  }
+
+  function addNewProjectBlock() {
+    const container = document.getElementById('p-existing-blocks');
+    const n = container.querySelectorAll('.proj-block').length + 1;
+    const div = document.createElement('div');
+    div.className = 'repeat-block proj-block';
+    div.dataset.id = 'new';
+    div.innerHTML = `
+      <div class="repeat-block-header">
+        <span class="repeat-block-title">New Project ${n}</span>
+        <button class="remove-btn" onclick="removeBlock(this)">Remove</button>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Title *</label><input class="pb-title" type="text" placeholder="e.g. Solar Street Lighting System" /></div>
+        <div class="form-group"><label>Subtitle / Location</label><input class="pb-subtitle" type="text" placeholder="e.g. Galle Municipality · 2025" /></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Year</label><input class="pb-year" type="text" value="2026" /></div>
+        <div class="form-group"><label>Type</label>
+          <select class="pb-type"><option value="engineering">Engineering</option><option value="webapp">Web App</option></select>
+        </div>
+      </div>
+      <div class="form-group"><label>Description *</label><textarea class="pb-desc" rows="3" placeholder="Brief description (1–3 sentences)..."></textarea></div>
+      <div class="form-group"><label>Tags (comma separated)</label><input class="pb-tags" type="text" placeholder="Electrical Engineering, AutoCAD, Hospital Design" /></div>
+      <div class="form-row">
+        <div class="form-group"><label>Link</label><input class="pb-link" type="text" placeholder="projects/project-2.html or https://..." /></div>
+        <div class="form-group"><label>Opens in new tab?</label>
+          <select class="pb-external"><option value="false">No (internal page)</option><option value="true">Yes (external URL)</option></select>
+        </div>
+      </div>`;
+    container.appendChild(div);
+    document.getElementById('p-save-row').style.display = 'flex';
+    div.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
   function renderArticleBlocks(articles) {
@@ -1130,13 +1140,36 @@ System integration</textarea>
         <div class="form-group"><label>Excerpt</label><textarea class="ab-excerpt" rows="3">${esc(a.excerpt)}</textarea></div>`;
       container.appendChild(div);
     });
-    if (articles.length) {
-      const saveRow = document.createElement('div');
-      saveRow.className = 'btn-row';
-      saveRow.style.marginBottom = '0.5rem';
-      saveRow.innerHTML = `<button class="save-btn" onclick="saveAllArticles()"><i class="fa-solid fa-floppy-disk"></i> Save All Changes to GitHub</button>`;
-      container.appendChild(saveRow);
-    }
+    document.getElementById('a-save-row').style.display = 'flex';
+  }
+
+  function addNewArticleBlock() {
+    const container = document.getElementById('a-existing-blocks');
+    const n = container.querySelectorAll('.art-block').length + 1;
+    const div = document.createElement('div');
+    div.className = 'repeat-block art-block';
+    div.dataset.id = 'new';
+    div.innerHTML = `
+      <div class="repeat-block-header">
+        <span class="repeat-block-title">New Article ${n}</span>
+        <button class="remove-btn" onclick="removeBlock(this)">Remove</button>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Title *</label><input class="ab-title" type="text" placeholder="e.g. How to Size a Cable for a Hospital Circuit" /></div>
+        <div class="form-group"><label>Filename</label><input class="ab-link" type="text" placeholder="article-2.html" /><p class="hint">Saved as articles/[filename]</p></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Publish Date</label><input class="ab-date" type="text" placeholder="Apr 2026" /></div>
+        <div class="form-group"><label>Read Time (min)</label><input class="ab-readtime" type="number" value="5" min="1" /></div>
+      </div>
+      <div class="form-group"><label>Excerpt</label><textarea class="ab-excerpt" rows="3" placeholder="2–3 sentence summary..."></textarea></div>
+      <div class="form-group"><label>Full Article Content *</label>
+        <textarea class="ab-content" rows="8" placeholder="Write your full article here.&#10;&#10;Separate paragraphs with a blank line."></textarea>
+        <p class="hint">Blank line = new paragraph. Saved as a separate HTML file.</p>
+      </div>`;
+    container.appendChild(div);
+    document.getElementById('a-save-row').style.display = 'flex';
+    div.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
   function esc(str) {
@@ -1147,20 +1180,25 @@ System integration</textarea>
     if (!sessionStorage.getItem('gh_token')) { showToast('Connect GitHub token in Settings first.', true); return; }
     const blocks = document.querySelectorAll('.proj-block');
     const projects = [];
+    const newInternalBlocks = [];
     blocks.forEach(b => {
       const title = b.querySelector('.pb-title').value.trim();
       if (!title) return;
-      projects.push({
-        id: parseInt(b.dataset.id) || Date.now(),
+      const isNew = b.dataset.id === 'new';
+      const id = isNew ? Date.now() + Math.floor(Math.random()*1000) : parseInt(b.dataset.id);
+      const p = {
+        id,
         title,
         subtitle: b.querySelector('.pb-subtitle').value.trim(),
         year:     b.querySelector('.pb-year').value.trim(),
         type:     b.querySelector('.pb-type').value,
         description: b.querySelector('.pb-desc').value.trim(),
         tags:     b.querySelector('.pb-tags').value.split(',').map(t=>t.trim()).filter(Boolean),
-        link:     b.querySelector('.pb-link').value.trim(),
+        link:     b.querySelector('.pb-link').value.trim() || '#',
         external: b.querySelector('.pb-external').value === 'true'
-      });
+      };
+      projects.push(p);
+      if (isNew && !p.external) newInternalBlocks.push(p);
     });
     if (!projects.length) { showToast('No projects to save.', true); return; }
     const btn = event.currentTarget;
@@ -1175,7 +1213,12 @@ System integration</textarea>
       const updated = replaceSection(current, 'PROJECTS', snippet);
       if (!updated) throw new Error('Projects section not found.');
       await ghPut(updated, file.sha, 'Update projects via admin panel');
+      for (const p of newInternalBlocks) {
+        const filename = p.link.startsWith('projects/') ? p.link : `projects/${p.link}`;
+        await ghPutNew(filename, buildDetailPage(p), `Add detail page: ${p.title}`);
+      }
       showToast('Projects saved! Vercel is deploying…');
+      renderProjectBlocks(projects);
     } catch(e) { showToast(e.message, true); }
     finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save All Changes to GitHub'; }
   }
@@ -1184,18 +1227,29 @@ System integration</textarea>
     if (!sessionStorage.getItem('gh_token')) { showToast('Connect GitHub token in Settings first.', true); return; }
     const blocks = document.querySelectorAll('.art-block');
     const articles = [];
+    const newArticlePages = [];
     blocks.forEach(b => {
       const title = b.querySelector('.ab-title').value.trim();
       if (!title) return;
-      const filename = b.querySelector('.ab-link').value.trim();
-      articles.push({
-        id:       parseInt(b.dataset.id) || Date.now(),
+      const isNew = b.dataset.id === 'new';
+      const id = isNew ? Date.now() + Math.floor(Math.random()*1000) : parseInt(b.dataset.id);
+      const filenameRaw = b.querySelector('.ab-link').value.trim();
+      const filename = filenameRaw || `article-${id}.html`;
+      const link = filename.startsWith('articles/') ? filename : `articles/${filename}`;
+      const a = {
+        id,
         title,
         date:     b.querySelector('.ab-date').value.trim(),
         readTime: b.querySelector('.ab-readtime').value.trim(),
         excerpt:  b.querySelector('.ab-excerpt').value.trim(),
-        link:     filename.startsWith('articles/') ? filename : `articles/${filename}`
-      });
+        link
+      };
+      articles.push(a);
+      if (isNew) {
+        const contentEl = b.querySelector('.ab-content');
+        const content = contentEl ? contentEl.value.trim() : '';
+        if (content) newArticlePages.push({ a, content, link });
+      }
     });
     if (!articles.length) { showToast('No articles to save.', true); return; }
     const btn = event.currentTarget;
@@ -1210,67 +1264,17 @@ System integration</textarea>
       const updated = replaceSection(current, 'ARTICLES', snippet);
       if (!updated) throw new Error('Articles section not found.');
       await ghPut(updated, file.sha, 'Update articles via admin panel');
+      for (const { a, content, link } of newArticlePages) {
+        await ghPutNew(link, buildArticleHTML(a.title, '', a.date, a.readTime, a.excerpt, content), `Add article page: ${a.title}`);
+      }
       showToast('Articles saved! Vercel is deploying…');
+      renderArticleBlocks(articles);
     } catch(e) { showToast(e.message, true); }
     finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save All Changes to GitHub'; }
   }
 
-  // ============================================================
-  //  PROJECT (add new)
-  // ============================================================
-  function buildProjectObj() {
-    const title       = document.getElementById('p-title').value.trim();
-    const subtitle    = document.getElementById('p-subtitle').value.trim();
-    const year        = document.getElementById('p-year').value.trim();
-    const type        = document.getElementById('p-type').value;
-    const description = document.getElementById('p-description').value.trim();
-    const tagsRaw     = document.getElementById('p-tags').value.trim();
-    const link        = document.getElementById('p-link').value.trim() || '#';
-    const external    = document.getElementById('p-external').value === 'true';
-    if (!title || !description) { showToast('Title and Description are required.', true); return null; }
-    const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
-    return { title, subtitle, year, type, description, tags, link, external };
-  }
-
-  function generateProject() {
-    const p = buildProjectObj(); if (!p) return;
-    const tagHTML = p.tags.map(t => `<span class="preview-tag">${t}</span>`).join('');
-    document.getElementById('p-preview-card').innerHTML = `<h3>${p.title}</h3><p class="p-muted">${p.subtitle || '—'}</p><p class="p-desc">${p.description}</p><div>${tagHTML}</div>`;
-    document.getElementById('p-preview').style.display = 'block';
-    const obj = `  {\n    id: ${Date.now()},\n    title: "${p.title}",\n    subtitle: "${p.subtitle}",\n    year: "${p.year}",\n    description: "${p.description.replace(/"/g,'\\"')}",\n    tags: ${JSON.stringify(p.tags)},\n    type: "${p.type}",\n    link: "${p.link}",\n    external: ${p.external}\n  },`;
-    document.getElementById('p-code-output').textContent = obj;
-    const db = document.getElementById('p-detail-block');
-    if (!p.external) {
-      document.getElementById('p-detail-output').textContent = buildDetailPage(p);
-      db.style.display = 'block';
-    } else { db.style.display = 'none'; }
-    document.getElementById('p-output').classList.add('visible');
-    document.getElementById('p-output').scrollIntoView({ behavior: 'smooth' });
-  }
-
   function buildDetailPage(p) {
     return `<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8" />\n  <meta name="viewport" content="width=device-width, initial-scale=1.0" />\n  <title>${p.title} | Gayan Weerasingha</title>\n  <link rel="stylesheet" href="../assets/css/style.css" />\n  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />\n</head>\n<body>\n\n<header class="page-header">\n  <h1>${p.title}</h1>\n  <p>${p.subtitle}</p>\n</header>\n\n<nav>\n  <a href="../index.html">Home</a>\n  <a href="../projects.html">Projects</a>\n  <a href="../index.html#contact">Contact</a>\n</nav>\n\n<div class="detail-main">\n  <a href="../projects.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Projects</a>\n\n  <h2>Project Overview</h2>\n  <p>${p.description}</p>\n\n  <h2>Scope of Work</h2>\n  <p>Add scope details here...</p>\n\n  <h2>My Responsibilities</h2>\n  <ul style="padding-left:1.2rem;line-height:2;">\n    <li>Add responsibility here</li>\n  </ul>\n\n  <h2>Tools &amp; Standards</h2>\n  <p>${p.tags.join(', ')}</p>\n\n</div>\n\n<footer>&copy; 2026 Gayan Weerasingha</footer>\n\n</body>\n</html>`;
-  }
-
-  async function publishProject() {
-    if (!sessionStorage.getItem('gh_token')) { showToast('Connect GitHub token first.', true); return; }
-    const p = buildProjectObj(); if (!p) return;
-    const btn = event.currentTarget;
-    btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Publishing…';
-    try {
-      const obj = `  {\n    id: ${Date.now()},\n    title: "${p.title}",\n    subtitle: "${p.subtitle}",\n    year: "${p.year}",\n    description: "${p.description.replace(/"/g,'\\"')}",\n    tags: ${JSON.stringify(p.tags)},\n    type: "${p.type}",\n    link: "${p.link}",\n    external: ${p.external}\n  },`;
-      const file = await ghGet();
-      const current = decodeURIComponent(escape(atob(file.content.replace(/\n/g,''))));
-      const updated = appendToSection(current, 'PROJECTS', obj);
-      if (!updated) throw new Error('Projects section not found in content.js');
-      await ghPut(updated, file.sha, `Add project: ${p.title}`);
-      if (!p.external) {
-        const filename = p.link.startsWith('projects/') ? p.link : `projects/${p.link}`;
-        await ghPutNew(filename, buildDetailPage(p), `Add detail page: ${p.title}`);
-      }
-      showToast('Project published! Vercel is deploying…');
-    } catch(e) { showToast(e.message, true); }
-    finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Publish to GitHub'; }
   }
 
   // ============================================================
@@ -1280,45 +1284,6 @@ System integration</textarea>
     const paras = content.split(/\n\n+/).filter(p => p.trim());
     const parasHTML = paras.map(p => `  <p>${p.replace(/\n/g,'<br/>')}</p>`).join('\n\n');
     return `<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8" />\n  <meta name="viewport" content="width=device-width, initial-scale=1.0" />\n  <title>${title} | Gayan Weerasingha</title>\n  <meta name="description" content="${excerpt.substring(0,150)}" />\n  <link rel="stylesheet" href="../assets/css/style.css" />\n  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />\n</head>\n<body>\n\n<header class="page-header">\n  <h1>Articles &amp; Technical Writing</h1>\n</header>\n\n<nav>\n  <a href="../index.html">Home</a>\n  <a href="../articles.html">Articles</a>\n  <a href="../index.html#contact">Contact</a>\n</nav>\n\n<div class="detail-main">\n  <a href="../articles.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Articles</a>\n  <h1>${title}</h1>\n  <p class="detail-meta">By Gayan Weerasingha &nbsp;&middot;&nbsp; ${date} &nbsp;&middot;&nbsp; ${readTime} min read</p>\n\n${parasHTML}\n\n</div>\n\n<footer>&copy; 2026 Gayan Weerasingha &nbsp;&middot;&nbsp; Electrical &amp; Automation Engineer</footer>\n\n</body>\n</html>`;
-  }
-
-  function generateArticle() {
-    const title    = document.getElementById('a-title').value.trim();
-    const filename = document.getElementById('a-filename').value.trim() || 'article-2.html';
-    const date     = document.getElementById('a-date').value.trim();
-    const readTime = document.getElementById('a-readtime').value.trim();
-    const excerpt  = document.getElementById('a-excerpt').value.trim();
-    const content  = document.getElementById('a-content').value.trim();
-    if (!title || !content) { showToast('Title and Content are required.', true); return; }
-    const obj = `  {\n    id: ${Date.now()},\n    title: "${title.replace(/"/g,'\\"')}",\n    date: "${date}",\n    readTime: "${readTime}",\n    excerpt: "${excerpt.replace(/"/g,'\\"')}",\n    link: "articles/${filename}"\n  },`;
-    document.getElementById('a-code-output').textContent = obj;
-    document.getElementById('a-html-output').textContent = buildArticleHTML(title, '', date, readTime, excerpt, content);
-    document.getElementById('a-output').classList.add('visible');
-    document.getElementById('a-output').scrollIntoView({ behavior: 'smooth' });
-  }
-
-  async function publishArticle() {
-    if (!sessionStorage.getItem('gh_token')) { showToast('Connect GitHub token first.', true); return; }
-    const title    = document.getElementById('a-title').value.trim();
-    const filename = document.getElementById('a-filename').value.trim() || 'article-2.html';
-    const date     = document.getElementById('a-date').value.trim();
-    const readTime = document.getElementById('a-readtime').value.trim();
-    const excerpt  = document.getElementById('a-excerpt').value.trim();
-    const content  = document.getElementById('a-content').value.trim();
-    if (!title || !content) { showToast('Title and Content are required.', true); return; }
-    const btn = event.currentTarget;
-    btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Publishing…';
-    try {
-      const obj = `  {\n    id: ${Date.now()},\n    title: "${title.replace(/"/g,'\\"')}",\n    date: "${date}",\n    readTime: "${readTime}",\n    excerpt: "${excerpt.replace(/"/g,'\\"')}",\n    link: "articles/${filename}"\n  },`;
-      const file = await ghGet();
-      const current = decodeURIComponent(escape(atob(file.content.replace(/\n/g,''))));
-      const updated = appendToSection(current, 'ARTICLES', obj);
-      if (!updated) throw new Error('Articles section not found in content.js');
-      await ghPut(updated, file.sha, `Add article: ${title}`);
-      await ghPutNew(`articles/${filename}`, buildArticleHTML(title, '', date, readTime, excerpt, content), `Add article page: ${title}`);
-      showToast('Article published! Vercel is deploying…');
-    } catch(e) { showToast(e.message, true); }
-    finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Publish to GitHub'; }
   }
 
   // ============================================================
