@@ -12,10 +12,10 @@ const about = {
 
 // ---- SKILLS ----
 const skills = [
-  { group: "Design & Drafting", tags: ["AutoCAD", "SolidWorks", "DIALux EVO", "Single Line Diagrams"] },
-  { group: "Electrical Engineering", tags: ["Load Calculations", "Cable Sizing", "BOQ Preparation", "IEC Standards", "Hospital Electrical Design"] },
-  { group: "Automation", tags: ["PLC Systems", "Control Panel Design", "System Integration", "Industry 4.0"] },
-  { group: "Software & AI Tools", tags: ["Claude Code", "VS Code", "React", "HTML / CSS / JS", "Git & GitHub"] }
+  { group: "Design & Drafting", tags: ["AutoCAD","SolidWorks","DIALux EVO","Single Line Diagrams"] },
+  { group: "Electrical Engineering", tags: ["Load Calculations","Cable Sizing","BOQ Preparation","IEC Standards","Hospital Electrical Design"] },
+  { group: "Automation", tags: ["PLC Systems","Control Panel Design","System Integration","Industry 4.0"] },
+  { group: "Software & AI Tools", tags: ["Claude Code","Google Antigravity","VS Code","React","HTML / CSS / JS","Git & GitHub"] }
 ];
 
 // ---- EXPERIENCE ----
