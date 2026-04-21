@@ -612,12 +612,7 @@ System integration</textarea>
     <div class="tab-pane" id="tab-projects">
 
       <!-- Existing projects -->
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:0.6rem;">
-        <p class="hint" style="margin:0;">Edit existing projects or add a new one below. Click <strong style="color:#e2e8f0;">Load from GitHub</strong> to populate.</p>
-        <button class="generate-btn" style="font-size:0.82rem;padding:0.5rem 1rem;" onclick="loadProjects()">
-          <i class="fa-brands fa-github"></i> Load from GitHub
-        </button>
-      </div>
+      <p class="hint" style="margin-bottom:1rem;">Edit existing projects or add a new one. Loads automatically when GitHub is connected.</p>
 
       <div id="p-existing-blocks"></div>
 
@@ -631,12 +626,7 @@ System integration</textarea>
     <div class="tab-pane" id="tab-articles">
 
       <!-- Existing articles -->
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:0.6rem;">
-        <p class="hint" style="margin:0;">Edit existing articles or add a new one below. Click <strong style="color:#e2e8f0;">Load from GitHub</strong> to populate.</p>
-        <button class="generate-btn" style="font-size:0.82rem;padding:0.5rem 1rem;" onclick="loadArticles()">
-          <i class="fa-brands fa-github"></i> Load from GitHub
-        </button>
-      </div>
+      <p class="hint" style="margin-bottom:1rem;">Edit existing articles or add a new one. Loads automatically when GitHub is connected.</p>
 
       <div id="a-existing-blocks"></div>
 
@@ -794,6 +784,10 @@ System integration</textarea>
     document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
     btn.classList.add('active');
     document.getElementById('tab-' + name).classList.add('active');
+    if (name === 'projects' && localStorage.getItem('gh_token') &&
+        !document.querySelector('.proj-block')) loadProjects();
+    if (name === 'articles' && localStorage.getItem('gh_token') &&
+        !document.querySelector('.art-block')) loadArticles();
   }
 
   function removeBlock(btn) { const b = btn.closest('.repeat-block'); b.parentElement.removeChild(b); }
