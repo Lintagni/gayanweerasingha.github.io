@@ -38,7 +38,6 @@
       box-shadow: 0 30px 80px rgba(0,0,0,0.5);
     }
 
-    /* Left panel — branding */
     .lock-left {
       flex: 1;
       background: linear-gradient(160deg, #2563eb, #1d4ed8, #1e1b4b);
@@ -85,7 +84,6 @@
 
     .lock-left-footer { color: rgba(255,255,255,0.4); font-size: 0.78rem; }
 
-    /* Right panel — form */
     .lock-right {
       width: 380px;
       background: #1e293b;
@@ -109,9 +107,7 @@
       margin-bottom: 0.5rem;
     }
 
-    .lock-field-wrap {
-      position: relative;
-    }
+    .lock-field-wrap { position: relative; }
 
     .lock-input {
       width: 100%;
@@ -247,18 +243,19 @@
     /* ---- TABS ---- */
     .tabs {
       display: flex;
+      flex-wrap: wrap;
       gap: 0;
       border-bottom: 1px solid #334155;
       margin-bottom: 2rem;
     }
 
     .tab-btn {
-      padding: 0.7rem 1.4rem;
+      padding: 0.7rem 1.1rem;
       background: none;
       border: none;
       border-bottom: 3px solid transparent;
       color: #64748b;
-      font-size: 0.88rem;
+      font-size: 0.82rem;
       font-weight: 600;
       cursor: pointer;
       font-family: inherit;
@@ -266,7 +263,8 @@
       margin-bottom: -1px;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
+      white-space: nowrap;
     }
     .tab-btn.active { color: #2563eb; border-bottom-color: #2563eb; }
     .tab-btn:hover:not(.active) { color: #e2e8f0; }
@@ -314,6 +312,63 @@
     .hint { color: #475569; font-size: 0.78rem; margin-top: 0.3rem; }
 
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    /* ---- REPEATING BLOCKS ---- */
+    .repeat-block {
+      background: #162032;
+      border: 1px solid #1e3a5f;
+      border-radius: 10px;
+      padding: 1.2rem;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+
+    .repeat-block-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .repeat-block-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #2563eb;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .remove-btn {
+      background: rgba(239,68,68,0.1);
+      border: 1px solid rgba(239,68,68,0.25);
+      color: #f87171;
+      padding: 0.22rem 0.65rem;
+      border-radius: 5px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+    .remove-btn:hover { background: rgba(239,68,68,0.2); }
+
+    .add-block-btn {
+      background: rgba(37,99,235,0.1);
+      border: 1px dashed #334155;
+      color: #60a5fa;
+      padding: 0.6rem 1.2rem;
+      border-radius: 9px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      width: 100%;
+      justify-content: center;
+      margin-bottom: 1.2rem;
+    }
+    .add-block-btn:hover { background: rgba(37,99,235,0.18); border-color: #2563eb; }
 
     .generate-btn {
       background: #2563eb;
@@ -379,7 +434,7 @@
       color: #7dd3fc;
       white-space: pre-wrap;
       word-break: break-all;
-      max-height: 300px;
+      max-height: 350px;
       overflow-y: auto;
     }
 
@@ -429,7 +484,6 @@
       margin-bottom: 0.2rem;
     }
 
-    /* ---- DIVIDER ---- */
     .section-divider {
       border: none;
       border-top: 1px solid #1e293b;
@@ -454,7 +508,6 @@
 <div id="lockScreen">
   <div class="lock-wrap">
 
-    <!-- Left branding panel -->
     <div class="lock-left">
       <div class="lock-logo">
         <div class="lock-logo-icon"><i class="fa-solid fa-bolt"></i></div>
@@ -463,12 +516,12 @@
 
       <div class="lock-left-body">
         <h2>Portfolio<br/>Admin Panel</h2>
-        <p>Manage your projects and articles without touching code.</p>
+        <p>Edit all sections of your portfolio without touching code.</p>
         <ul class="lock-features">
-          <li><i class="fa-solid fa-circle-check"></i> Add &amp; publish engineering projects</li>
-          <li><i class="fa-solid fa-circle-check"></i> Write and publish articles</li>
-          <li><i class="fa-solid fa-circle-check"></i> Generate ready-to-deploy HTML</li>
-          <li><i class="fa-solid fa-circle-check"></i> Live card preview before publishing</li>
+          <li><i class="fa-solid fa-circle-check"></i> Edit About, Skills, Experience, Education</li>
+          <li><i class="fa-solid fa-circle-check"></i> Edit Services &amp; Contact info</li>
+          <li><i class="fa-solid fa-circle-check"></i> Add &amp; publish projects and articles</li>
+          <li><i class="fa-solid fa-circle-check"></i> Generate ready-to-copy code snippets</li>
         </ul>
       </div>
 
@@ -477,7 +530,6 @@
       </div>
     </div>
 
-    <!-- Right login form -->
     <div class="lock-right">
       <h3>Welcome back</h3>
       <p class="lock-sub">Sign in to manage your portfolio</p>
@@ -488,8 +540,7 @@
           <input type="password" class="lock-input" id="passwordInput"
                  placeholder="Enter your password"
                  onkeydown="if(event.key==='Enter')unlock()" />
-          <button class="toggle-pw" type="button" onclick="togglePw()" id="togglePwBtn"
-                  title="Show/hide password">
+          <button class="toggle-pw" type="button" onclick="togglePw()" id="togglePwBtn">
             <i class="fa-solid fa-eye" id="pwEyeIcon"></i>
           </button>
         </div>
@@ -532,7 +583,25 @@
   <div class="admin-body">
 
     <div class="tabs">
-      <button class="tab-btn active" onclick="switchTab('projects', this)">
+      <button class="tab-btn active" onclick="switchTab('about', this)">
+        <i class="fa-solid fa-user"></i> About
+      </button>
+      <button class="tab-btn" onclick="switchTab('skills', this)">
+        <i class="fa-solid fa-wrench"></i> Skills
+      </button>
+      <button class="tab-btn" onclick="switchTab('experience', this)">
+        <i class="fa-solid fa-briefcase"></i> Experience
+      </button>
+      <button class="tab-btn" onclick="switchTab('education', this)">
+        <i class="fa-solid fa-graduation-cap"></i> Education
+      </button>
+      <button class="tab-btn" onclick="switchTab('services', this)">
+        <i class="fa-solid fa-plug"></i> Services
+      </button>
+      <button class="tab-btn" onclick="switchTab('contact', this)">
+        <i class="fa-solid fa-envelope"></i> Contact
+      </button>
+      <button class="tab-btn" onclick="switchTab('projects', this)">
         <i class="fa-solid fa-folder-open"></i> Add Project
       </button>
       <button class="tab-btn" onclick="switchTab('articles', this)">
@@ -540,8 +609,353 @@
       </button>
     </div>
 
+    <!-- ===================== ABOUT TAB ===================== -->
+    <div class="tab-pane active" id="tab-about">
+      <p class="hint" style="margin-bottom:1.2rem;">Edit your bio paragraphs. Each block is one paragraph on the site.</p>
+      <div id="about-blocks">
+        <div class="repeat-block">
+          <div class="repeat-block-header">
+            <span class="repeat-block-title">Paragraph 1</span>
+            <button class="remove-btn" onclick="removeBlock(this)">Remove</button>
+          </div>
+          <div class="form-group" style="margin:0;">
+            <textarea class="about-para" rows="4">Electrical and Electronic Engineer with over 3 years of experience in electrical engineering projects at ICC, Voltas Engineering, and the Central Engineering Consultancy Bureau (CECB). Strong exposure to low-voltage power distribution, switchboards, lighting systems, electrical estimation, and site coordination.</textarea>
+          </div>
+        </div>
+        <div class="repeat-block">
+          <div class="repeat-block-header">
+            <span class="repeat-block-title">Paragraph 2</span>
+            <button class="remove-btn" onclick="removeBlock(this)">Remove</button>
+          </div>
+          <div class="form-group" style="margin:0;">
+            <textarea class="about-para" rows="4">Proficient in AutoCAD and SolidWorks, and currently pursuing an MSc in Industrial Automation at the University of Moratuwa. Alongside engineering work, I build and ship web applications using AI tools — combining technical expertise with modern software development.</textarea>
+          </div>
+        </div>
+      </div>
+      <button class="add-block-btn" onclick="addAboutPara()"><i class="fa-solid fa-plus"></i> Add Paragraph</button>
+      <button class="generate-btn" onclick="generateAbout()"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate Snippet</button>
+      <div class="output-section" id="about-output">
+        <hr class="section-divider" />
+        <div class="instruction-box">
+          <strong>How to update:</strong>
+          <ol>
+            <li>Copy the snippet below</li>
+            <li>Open <code>data/content.js</code></li>
+            <li>Find <code>const about = {</code> and replace the entire <code>about</code> block with the copied snippet</li>
+            <li>Commit &amp; push to GitHub → Vercel auto-deploys</li>
+          </ol>
+        </div>
+        <div class="output-block" style="margin-top:1.2rem;">
+          <div class="output-block-header">
+            Replace <code>const about</code> in <code>data/content.js</code>
+            <button class="copy-btn" onclick="copyCode('about-code-output', this)">Copy</button>
+          </div>
+          <div class="code-box" id="about-code-output"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== SKILLS TAB ===================== -->
+    <div class="tab-pane" id="tab-skills">
+      <p class="hint" style="margin-bottom:1.2rem;">Each block is one skill group. Tags are comma-separated.</p>
+      <div id="skills-blocks">
+        <div class="repeat-block skill-group-block">
+          <div class="repeat-block-header">
+            <span class="repeat-block-title">Group 1</span>
+            <button class="remove-btn" onclick="removeBlock(this)">Remove</button>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Group Name</label><input class="sg-name" type="text" value="Design &amp; Drafting" /></div>
+            <div class="form-group"><label>Tags (comma separated)</label><input class="sg-tags" type="text" value="AutoCAD, SolidWorks, DIALux EVO, Single Line Diagrams" /></div>
+          </div>
+        </div>
+        <div class="repeat-block skill-group-block">
+          <div class="repeat-block-header">
+            <span class="repeat-block-title">Group 2</span>
+            <button class="remove-btn" onclick="removeBlock(this)">Remove</button>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Group Name</label><input class="sg-name" type="text" value="Electrical Engineering" /></div>
+            <div class="form-group"><label>Tags (comma separated)</label><input class="sg-tags" type="text" value="Load Calculations, Cable Sizing, BOQ Preparation, IEC Standards, Hospital Electrical Design" /></div>
+          </div>
+        </div>
+        <div class="repeat-block skill-group-block">
+          <div class="repeat-block-header">
+            <span class="repeat-block-title">Group 3</span>
+            <button class="remove-btn" onclick="removeBlock(this)">Remove</button>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Group Name</label><input class="sg-name" type="text" value="Automation" /></div>
+            <div class="form-group"><label>Tags (comma separated)</label><input class="sg-tags" type="text" value="PLC Systems, Control Panel Design, System Integration, Industry 4.0" /></div>
+          </div>
+        </div>
+        <div class="repeat-block skill-group-block">
+          <div class="repeat-block-header">
+            <span class="repeat-block-title">Group 4</span>
+            <button class="remove-btn" onclick="removeBlock(this)">Remove</button>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Group Name</label><input class="sg-name" type="text" value="Software &amp; AI Tools" /></div>
+            <div class="form-group"><label>Tags (comma separated)</label><input class="sg-tags" type="text" value="Claude Code, VS Code, React, HTML / CSS / JS, Git &amp; GitHub" /></div>
+          </div>
+        </div>
+      </div>
+      <button class="add-block-btn" onclick="addSkillGroup()"><i class="fa-solid fa-plus"></i> Add Skill Group</button>
+      <button class="generate-btn" onclick="generateSkills()"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate Snippet</button>
+      <div class="output-section" id="skills-output">
+        <hr class="section-divider" />
+        <div class="instruction-box">
+          <strong>How to update:</strong>
+          <ol>
+            <li>Copy the snippet below</li>
+            <li>Open <code>data/content.js</code> → find <code>const skills = [</code></li>
+            <li>Replace the entire <code>skills</code> block with the copied snippet</li>
+            <li>Commit &amp; push to GitHub → Vercel auto-deploys</li>
+          </ol>
+        </div>
+        <div class="output-block" style="margin-top:1.2rem;">
+          <div class="output-block-header">
+            Replace <code>const skills</code> in <code>data/content.js</code>
+            <button class="copy-btn" onclick="copyCode('skills-code-output', this)">Copy</button>
+          </div>
+          <div class="code-box" id="skills-code-output"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== EXPERIENCE TAB ===================== -->
+    <div class="tab-pane" id="tab-experience">
+      <p class="hint" style="margin-bottom:1.2rem;">Each block is one job. Put each bullet point on a new line.</p>
+      <div id="exp-blocks">
+        <div class="repeat-block exp-block">
+          <div class="repeat-block-header">
+            <span class="repeat-block-title">Job 1</span>
+            <button class="remove-btn" onclick="removeBlock(this)">Remove</button>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Job Title</label><input class="exp-title" type="text" value="Electrical Engineer – CECB" /></div>
+            <div class="form-group"><label>Period</label><input class="exp-period" type="text" value="Jul 2024 – Present" /></div>
+          </div>
+          <div class="form-group"><label>Location</label><input class="exp-location" type="text" value="Galle" /></div>
+          <div class="form-group"><label>Bullet Points (one per line)</label>
+            <textarea class="exp-bullets" rows="4">Designed and consulted on electrical systems using AutoCAD
+Prepared BOQs and electrical estimations ensuring accurate budgeting
+Prepared technical and evaluation reports to support project decisions</textarea>
+          </div>
+        </div>
+        <div class="repeat-block exp-block">
+          <div class="repeat-block-header">
+            <span class="repeat-block-title">Job 2</span>
+            <button class="remove-btn" onclick="removeBlock(this)">Remove</button>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Job Title</label><input class="exp-title" type="text" value="Electrical Engineer – Voltas Engineering" /></div>
+            <div class="form-group"><label>Period</label><input class="exp-period" type="text" value="Mar 2024 – Jun 2024" /></div>
+          </div>
+          <div class="form-group"><label>Location</label><input class="exp-location" type="text" value="Colombo" /></div>
+          <div class="form-group"><label>Bullet Points (one per line)</label>
+            <textarea class="exp-bullets" rows="4">Executed electrical system projects focusing on efficiency and accuracy
+Conducted testing and commissioning to ensure system reliability
+Performed maintenance activities to improve system longevity</textarea>
+          </div>
+        </div>
+        <div class="repeat-block exp-block">
+          <div class="repeat-block-header">
+            <span class="repeat-block-title">Job 3</span>
+            <button class="remove-btn" onclick="removeBlock(this)">Remove</button>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Job Title</label><input class="exp-title" type="text" value="MEP Engineer – ICC" /></div>
+            <div class="form-group"><label>Period</label><input class="exp-period" type="text" value="Mar 2022 – Mar 2024" /></div>
+          </div>
+          <div class="form-group"><label>Location</label><input class="exp-location" type="text" value="Dehiwala" /></div>
+          <div class="form-group"><label>Bullet Points (one per line)</label>
+            <textarea class="exp-bullets" rows="4">Maintained MEP documentation for large-scale hospital projects
+Coordinated QA/QC works and liaised with consultants
+Ensured compliance with project standards and timelines</textarea>
+          </div>
+        </div>
+      </div>
+      <button class="add-block-btn" onclick="addExpBlock()"><i class="fa-solid fa-plus"></i> Add Job</button>
+      <button class="generate-btn" onclick="generateExperience()"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate Snippet</button>
+      <div class="output-section" id="exp-output">
+        <hr class="section-divider" />
+        <div class="instruction-box">
+          <strong>How to update:</strong>
+          <ol>
+            <li>Copy the snippet below</li>
+            <li>Open <code>data/content.js</code> → find <code>const experience = [</code></li>
+            <li>Replace the entire <code>experience</code> block with the copied snippet</li>
+            <li>Commit &amp; push to GitHub → Vercel auto-deploys</li>
+          </ol>
+        </div>
+        <div class="output-block" style="margin-top:1.2rem;">
+          <div class="output-block-header">
+            Replace <code>const experience</code> in <code>data/content.js</code>
+            <button class="copy-btn" onclick="copyCode('exp-code-output', this)">Copy</button>
+          </div>
+          <div class="code-box" id="exp-code-output"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== EDUCATION TAB ===================== -->
+    <div class="tab-pane" id="tab-education">
+      <p class="hint" style="margin-bottom:1.2rem;">Each block is one education entry. Leave Badge empty if not needed.</p>
+      <div id="edu-blocks">
+        <div class="repeat-block edu-block">
+          <div class="repeat-block-header">
+            <span class="repeat-block-title">Entry 1</span>
+            <button class="remove-btn" onclick="removeBlock(this)">Remove</button>
+          </div>
+          <div class="form-group"><label>Degree / Qualification</label><input class="edu-degree" type="text" value="MSc in Industrial Automation" /></div>
+          <div class="form-row">
+            <div class="form-group"><label>Institution</label><input class="edu-institution" type="text" value="University of Moratuwa, Sri Lanka" /></div>
+            <div class="form-group"><label>Year</label><input class="edu-year" type="text" value="2024 – Present" /></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Badge Text</label><input class="edu-badge-text" type="text" value="In Progress" placeholder="e.g. In Progress (or leave empty)" /></div>
+            <div class="form-group"><label>Icon Name</label><input class="edu-icon-name" type="text" value="graduation-cap" placeholder="e.g. graduation-cap, bolt, book" /></div>
+          </div>
+        </div>
+        <div class="repeat-block edu-block">
+          <div class="repeat-block-header">
+            <span class="repeat-block-title">Entry 2</span>
+            <button class="remove-btn" onclick="removeBlock(this)">Remove</button>
+          </div>
+          <div class="form-group"><label>Degree / Qualification</label><input class="edu-degree" type="text" value="BEng (Hons) Electrical &amp; Electronic Engineering" /></div>
+          <div class="form-row">
+            <div class="form-group"><label>Institution</label><input class="edu-institution" type="text" value="Sri Lanka" /></div>
+            <div class="form-group"><label>Year</label><input class="edu-year" type="text" value="Completed" /></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Badge Text</label><input class="edu-badge-text" type="text" value="" placeholder="e.g. In Progress (or leave empty)" /></div>
+            <div class="form-group"><label>Icon Name</label><input class="edu-icon-name" type="text" value="bolt" placeholder="e.g. graduation-cap, bolt, book" /></div>
+          </div>
+        </div>
+      </div>
+      <button class="add-block-btn" onclick="addEduBlock()"><i class="fa-solid fa-plus"></i> Add Education Entry</button>
+      <button class="generate-btn" onclick="generateEducation()"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate Snippet</button>
+      <div class="output-section" id="edu-output">
+        <hr class="section-divider" />
+        <div class="instruction-box">
+          <strong>How to update:</strong>
+          <ol>
+            <li>Copy the snippet below</li>
+            <li>Open <code>data/content.js</code> → find <code>const education = [</code></li>
+            <li>Replace the entire <code>education</code> block with the copied snippet</li>
+            <li>Commit &amp; push to GitHub → Vercel auto-deploys</li>
+          </ol>
+        </div>
+        <div class="output-block" style="margin-top:1.2rem;">
+          <div class="output-block-header">
+            Replace <code>const education</code> in <code>data/content.js</code>
+            <button class="copy-btn" onclick="copyCode('edu-code-output', this)">Copy</button>
+          </div>
+          <div class="code-box" id="edu-code-output"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== SERVICES TAB ===================== -->
+    <div class="tab-pane" id="tab-services">
+      <p class="hint" style="margin-bottom:1.2rem;">Each block is one service card. Put each list item on a new line. Icon: use Font Awesome name (e.g. plug, cogs, bolt, star).</p>
+      <div id="svc-blocks">
+        <div class="repeat-block svc-block">
+          <div class="repeat-block-header">
+            <span class="repeat-block-title">Service 1</span>
+            <button class="remove-btn" onclick="removeBlock(this)">Remove</button>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Icon Name</label><input class="svc-icon" type="text" value="plug" placeholder="plug, cogs, bolt, star..." /></div>
+            <div class="form-group"><label>Service Title</label><input class="svc-title" type="text" value="Electrical Design Services" /></div>
+          </div>
+          <div class="form-group"><label>Service Items (one per line)</label>
+            <textarea class="svc-items" rows="6">Electrical demand / load calculations
+Cable sizing & voltage drop analysis
+MCB / MCCB selection
+Lighting design using DIALux EVO
+Power & lighting layouts (AutoCAD)
+Single Line Diagrams (SLDs)
+Bill of Quantities (BOQ) preparation
+Technical Evaluation Reports</textarea>
+          </div>
+        </div>
+        <div class="repeat-block svc-block">
+          <div class="repeat-block-header">
+            <span class="repeat-block-title">Service 2</span>
+            <button class="remove-btn" onclick="removeBlock(this)">Remove</button>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Icon Name</label><input class="svc-icon" type="text" value="cogs" placeholder="plug, cogs, bolt, star..." /></div>
+            <div class="form-group"><label>Service Title</label><input class="svc-title" type="text" value="Industrial Automation" /></div>
+          </div>
+          <div class="form-group"><label>Service Items (one per line)</label>
+            <textarea class="svc-items" rows="4">PLC systems design
+Control panel design
+System integration</textarea>
+          </div>
+        </div>
+      </div>
+      <button class="add-block-btn" onclick="addSvcBlock()"><i class="fa-solid fa-plus"></i> Add Service</button>
+      <button class="generate-btn" onclick="generateServices()"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate Snippet</button>
+      <div class="output-section" id="svc-output">
+        <hr class="section-divider" />
+        <div class="instruction-box">
+          <strong>How to update:</strong>
+          <ol>
+            <li>Copy the snippet below</li>
+            <li>Open <code>data/content.js</code> → find <code>const services = [</code></li>
+            <li>Replace the entire <code>services</code> block with the copied snippet</li>
+            <li>Commit &amp; push to GitHub → Vercel auto-deploys</li>
+          </ol>
+        </div>
+        <div class="output-block" style="margin-top:1.2rem;">
+          <div class="output-block-header">
+            Replace <code>const services</code> in <code>data/content.js</code>
+            <button class="copy-btn" onclick="copyCode('svc-code-output', this)">Copy</button>
+          </div>
+          <div class="code-box" id="svc-code-output"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== CONTACT TAB ===================== -->
+    <div class="tab-pane" id="tab-contact">
+      <p class="hint" style="margin-bottom:1.2rem;">Update your contact details. WhatsApp number: digits only, no + or spaces (e.g. 94724618922).</p>
+      <div class="form-row">
+        <div class="form-group"><label>Email</label><input type="email" id="ct-email" value="gweerasinghe67@gmail.com" /></div>
+        <div class="form-group"><label>Phone (with country code)</label><input type="text" id="ct-phone" value="+94 724 618 922" /></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>WhatsApp Number (digits only)</label><input type="text" id="ct-whatsapp" value="94724618922" /></div>
+        <div class="form-group"><label>Location</label><input type="text" id="ct-location" value="Sri Lanka" /></div>
+      </div>
+      <div class="form-group"><label>LinkedIn URL</label><input type="text" id="ct-linkedin" value="https://www.linkedin.com/in/gayan-weerasingha-075946188/" /></div>
+      <button class="generate-btn" onclick="generateContact()"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate Snippet</button>
+      <div class="output-section" id="ct-output">
+        <hr class="section-divider" />
+        <div class="instruction-box">
+          <strong>How to update:</strong>
+          <ol>
+            <li>Copy the snippet below</li>
+            <li>Open <code>data/content.js</code> → find <code>const contact = {</code></li>
+            <li>Replace the entire <code>contact</code> block with the copied snippet</li>
+            <li>Commit &amp; push to GitHub → Vercel auto-deploys</li>
+          </ol>
+        </div>
+        <div class="output-block" style="margin-top:1.2rem;">
+          <div class="output-block-header">
+            Replace <code>const contact</code> in <code>data/content.js</code>
+            <button class="copy-btn" onclick="copyCode('ct-code-output', this)">Copy</button>
+          </div>
+          <div class="code-box" id="ct-code-output"></div>
+        </div>
+      </div>
+    </div>
+
     <!-- ===================== PROJECT TAB ===================== -->
-    <div class="tab-pane active" id="tab-projects">
+    <div class="tab-pane" id="tab-projects">
 
       <div class="form-row">
         <div class="form-group">
@@ -760,6 +1174,238 @@
     document.getElementById('tab-' + name).classList.add('active');
   }
 
+  function removeBlock(btn) {
+    const block = btn.closest('.repeat-block');
+    block.parentElement.removeChild(block);
+  }
+
+  // ============================================================
+  //  ABOUT
+  // ============================================================
+  function addAboutPara() {
+    const container = document.getElementById('about-blocks');
+    const count = container.querySelectorAll('.repeat-block').length + 1;
+    const div = document.createElement('div');
+    div.className = 'repeat-block';
+    div.innerHTML = `
+      <div class="repeat-block-header">
+        <span class="repeat-block-title">Paragraph ${count}</span>
+        <button class="remove-btn" onclick="removeBlock(this)">Remove</button>
+      </div>
+      <div class="form-group" style="margin:0;">
+        <textarea class="about-para" rows="4" placeholder="Write a paragraph..."></textarea>
+      </div>`;
+    container.appendChild(div);
+  }
+
+  function generateAbout() {
+    const paras = [];
+    document.querySelectorAll('.about-para').forEach(ta => {
+      const v = ta.value.trim();
+      if (v) paras.push(v);
+    });
+    if (!paras.length) { alert('Add at least one paragraph.'); return; }
+    const snippet = `const about = {\n  paragraphs: [\n${paras.map(p => `    "${p.replace(/\\/g,'\\\\').replace(/"/g,'\\"')}"`).join(',\n')}\n  ]\n};`;
+    document.getElementById('about-code-output').textContent = snippet;
+    document.getElementById('about-output').classList.add('visible');
+    document.getElementById('about-output').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // ============================================================
+  //  SKILLS
+  // ============================================================
+  function addSkillGroup() {
+    const container = document.getElementById('skills-blocks');
+    const count = container.querySelectorAll('.repeat-block').length + 1;
+    const div = document.createElement('div');
+    div.className = 'repeat-block skill-group-block';
+    div.innerHTML = `
+      <div class="repeat-block-header">
+        <span class="repeat-block-title">Group ${count}</span>
+        <button class="remove-btn" onclick="removeBlock(this)">Remove</button>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Group Name</label><input class="sg-name" type="text" placeholder="e.g. Project Management" /></div>
+        <div class="form-group"><label>Tags (comma separated)</label><input class="sg-tags" type="text" placeholder="Skill 1, Skill 2, Skill 3" /></div>
+      </div>`;
+    container.appendChild(div);
+  }
+
+  function generateSkills() {
+    const groups = [];
+    document.querySelectorAll('.skill-group-block').forEach(block => {
+      const groupName = block.querySelector('.sg-name').value.trim();
+      const tagsRaw   = block.querySelector('.sg-tags').value.trim();
+      if (groupName) {
+        const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
+        groups.push({ group: groupName, tags });
+      }
+    });
+    if (!groups.length) { alert('Add at least one skill group.'); return; }
+    const items = groups.map(g =>
+      `  { group: "${g.group}", tags: ${JSON.stringify(g.tags)} }`
+    ).join(',\n');
+    const snippet = `const skills = [\n${items}\n];`;
+    document.getElementById('skills-code-output').textContent = snippet;
+    document.getElementById('skills-output').classList.add('visible');
+    document.getElementById('skills-output').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // ============================================================
+  //  EXPERIENCE
+  // ============================================================
+  function addExpBlock() {
+    const container = document.getElementById('exp-blocks');
+    const count = container.querySelectorAll('.repeat-block').length + 1;
+    const div = document.createElement('div');
+    div.className = 'repeat-block exp-block';
+    div.innerHTML = `
+      <div class="repeat-block-header">
+        <span class="repeat-block-title">Job ${count}</span>
+        <button class="remove-btn" onclick="removeBlock(this)">Remove</button>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Job Title</label><input class="exp-title" type="text" placeholder="e.g. Senior Electrical Engineer" /></div>
+        <div class="form-group"><label>Period</label><input class="exp-period" type="text" placeholder="Jan 2025 – Present" /></div>
+      </div>
+      <div class="form-group"><label>Location</label><input class="exp-location" type="text" placeholder="e.g. Colombo" /></div>
+      <div class="form-group"><label>Bullet Points (one per line)</label>
+        <textarea class="exp-bullets" rows="4" placeholder="First responsibility&#10;Second responsibility&#10;Third responsibility"></textarea>
+      </div>`;
+    container.appendChild(div);
+  }
+
+  function generateExperience() {
+    const jobs = [];
+    document.querySelectorAll('.exp-block').forEach(block => {
+      const title    = block.querySelector('.exp-title').value.trim();
+      const period   = block.querySelector('.exp-period').value.trim();
+      const location = block.querySelector('.exp-location').value.trim();
+      const raw      = block.querySelector('.exp-bullets').value.trim();
+      if (title) {
+        const bullets = raw ? raw.split('\n').map(b => b.trim()).filter(Boolean) : [];
+        jobs.push({ title, period, location, bullets });
+      }
+    });
+    if (!jobs.length) { alert('Add at least one job.'); return; }
+    const items = jobs.map(j => {
+      const bs = j.bullets.map(b => `      "${b.replace(/\\/g,'\\\\').replace(/"/g,'\\"')}"`).join(',\n');
+      return `  {\n    title: "${j.title}",\n    period: "${j.period}",\n    location: "${j.location}",\n    bullets: [\n${bs}\n    ]\n  }`;
+    }).join(',\n');
+    const snippet = `const experience = [\n${items}\n];`;
+    document.getElementById('exp-code-output').textContent = snippet;
+    document.getElementById('exp-output').classList.add('visible');
+    document.getElementById('exp-output').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // ============================================================
+  //  EDUCATION
+  // ============================================================
+  function addEduBlock() {
+    const container = document.getElementById('edu-blocks');
+    const count = container.querySelectorAll('.repeat-block').length + 1;
+    const div = document.createElement('div');
+    div.className = 'repeat-block edu-block';
+    div.innerHTML = `
+      <div class="repeat-block-header">
+        <span class="repeat-block-title">Entry ${count}</span>
+        <button class="remove-btn" onclick="removeBlock(this)">Remove</button>
+      </div>
+      <div class="form-group"><label>Degree / Qualification</label><input class="edu-degree" type="text" placeholder="e.g. BSc in Electrical Engineering" /></div>
+      <div class="form-row">
+        <div class="form-group"><label>Institution</label><input class="edu-institution" type="text" placeholder="e.g. University of Moratuwa" /></div>
+        <div class="form-group"><label>Year</label><input class="edu-year" type="text" placeholder="e.g. 2020 – 2024" /></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Badge Text</label><input class="edu-badge-text" type="text" placeholder="e.g. In Progress (or leave empty)" /></div>
+        <div class="form-group"><label>Icon Name</label><input class="edu-icon-name" type="text" value="graduation-cap" placeholder="graduation-cap, bolt, book..." /></div>
+      </div>`;
+    container.appendChild(div);
+  }
+
+  function generateEducation() {
+    const entries = [];
+    document.querySelectorAll('.edu-block').forEach(block => {
+      const degree      = block.querySelector('.edu-degree').value.trim();
+      const institution = block.querySelector('.edu-institution').value.trim();
+      const year        = block.querySelector('.edu-year').value.trim();
+      const badge       = block.querySelector('.edu-badge-text').value.trim();
+      const icon        = block.querySelector('.edu-icon-name').value.trim() || 'graduation-cap';
+      if (degree) entries.push({ degree, institution, year, badge, icon });
+    });
+    if (!entries.length) { alert('Add at least one entry.'); return; }
+    const items = entries.map(e =>
+      `  { degree: "${e.degree}", institution: "${e.institution}", year: "${e.year}", badge: "${e.badge}", icon: "${e.icon}" }`
+    ).join(',\n');
+    const snippet = `const education = [\n${items}\n];`;
+    document.getElementById('edu-code-output').textContent = snippet;
+    document.getElementById('edu-output').classList.add('visible');
+    document.getElementById('edu-output').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // ============================================================
+  //  SERVICES
+  // ============================================================
+  function addSvcBlock() {
+    const container = document.getElementById('svc-blocks');
+    const count = container.querySelectorAll('.repeat-block').length + 1;
+    const div = document.createElement('div');
+    div.className = 'repeat-block svc-block';
+    div.innerHTML = `
+      <div class="repeat-block-header">
+        <span class="repeat-block-title">Service ${count}</span>
+        <button class="remove-btn" onclick="removeBlock(this)">Remove</button>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Icon Name</label><input class="svc-icon" type="text" placeholder="plug, cogs, bolt, star..." /></div>
+        <div class="form-group"><label>Service Title</label><input class="svc-title" type="text" placeholder="e.g. Electrical Consulting" /></div>
+      </div>
+      <div class="form-group"><label>Service Items (one per line)</label>
+        <textarea class="svc-items" rows="4" placeholder="Item 1&#10;Item 2&#10;Item 3"></textarea>
+      </div>`;
+    container.appendChild(div);
+  }
+
+  function generateServices() {
+    const svcs = [];
+    document.querySelectorAll('.svc-block').forEach(block => {
+      const icon  = block.querySelector('.svc-icon').value.trim() || 'star';
+      const title = block.querySelector('.svc-title').value.trim();
+      const raw   = block.querySelector('.svc-items').value.trim();
+      if (title) {
+        const items = raw ? raw.split('\n').map(i => i.trim()).filter(Boolean) : [];
+        svcs.push({ icon, title, items });
+      }
+    });
+    if (!svcs.length) { alert('Add at least one service.'); return; }
+    const svcItems = svcs.map(s => {
+      const its = s.items.map(i => `      "${i.replace(/\\/g,'\\\\').replace(/"/g,'\\"')}"`).join(',\n');
+      return `  {\n    icon: "${s.icon}",\n    title: "${s.title}",\n    items: [\n${its}\n    ]\n  }`;
+    }).join(',\n');
+    const snippet = `const services = [\n${svcItems}\n];`;
+    document.getElementById('svc-code-output').textContent = snippet;
+    document.getElementById('svc-output').classList.add('visible');
+    document.getElementById('svc-output').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // ============================================================
+  //  CONTACT
+  // ============================================================
+  function generateContact() {
+    const email    = document.getElementById('ct-email').value.trim();
+    const phone    = document.getElementById('ct-phone').value.trim();
+    const whatsapp = document.getElementById('ct-whatsapp').value.trim();
+    const location = document.getElementById('ct-location').value.trim();
+    const linkedin = document.getElementById('ct-linkedin').value.trim();
+    const snippet  = `const contact = {\n  email: "${email}",\n  phone: "${phone}",\n  whatsapp: "${whatsapp}",\n  location: "${location}",\n  linkedin: "${linkedin}"\n};`;
+    document.getElementById('ct-code-output').textContent = snippet;
+    document.getElementById('ct-output').classList.add('visible');
+    document.getElementById('ct-output').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // ============================================================
+  //  PROJECT
+  // ============================================================
   function generateProject() {
     const title       = document.getElementById('p-title').value.trim();
     const subtitle    = document.getElementById('p-subtitle').value.trim();
@@ -798,6 +1444,9 @@
     document.getElementById('p-output').scrollIntoView({ behavior: 'smooth' });
   }
 
+  // ============================================================
+  //  ARTICLE
+  // ============================================================
   function generateArticle() {
     const title    = document.getElementById('a-title').value.trim();
     const filename = document.getElementById('a-filename').value.trim() || 'article-2.html';
@@ -814,13 +1463,16 @@
     const paragraphs = content.split(/\n\n+/).filter(p => p.trim());
     const parasHTML  = paragraphs.map(p => `  <p>${p.replace(/\n/g, '<br/>')}</p>`).join('\n\n');
 
-    const articleHTML = `<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8" />\n  <meta name="viewport" content="width=device-width, initial-scale=1.0" />\n  <title>${title} | Gayan Weerasingha</title>\n  <meta name="description" content="${excerpt.substring(0,150)}" />\n  <link rel="stylesheet" href="../assets/css/style.css" />\n  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />\n</head>\n<body>\n\n<header class="page-header">\n  <h1>Articles &amp; Technical Writing</h1>\n</header>\n\n<nav>\n  <a href="../index.html">Home</a>\n  <a href="../articles.html">Articles</a>\n  <a href="../index.html#contact">Contact</a>\n</nav>\n\n<div class="detail-main">\n  <a href="../articles.html" class="back-btn">\n    <i class="fa-solid fa-arrow-left"></i> Back to Articles\n  </a>\n\n  <h1>${title}</h1>\n  <p class="detail-meta">By Gayan Weerasingha &nbsp;·&nbsp; ${date} &nbsp;·&nbsp; ${readTime} min read</p>\n\n${parasHTML}\n\n</div>\n\n<footer>\n  &copy; 2026 Gayan Weerasingha &nbsp;&middot;&nbsp; Electrical &amp; Automation Engineer\n</footer>\n\n</body>\n</html>`;
+    const articleHTML = `<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8" />\n  <meta name="viewport" content="width=device-width, initial-scale=1.0" />\n  <title>${title} | Gayan Weerasingha</title>\n  <meta name="description" content="${excerpt.substring(0,150)}" />\n  <link rel="stylesheet" href="../assets/css/style.css" />\n  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />\n</head>\n<body>\n\n<header class="page-header">\n  <h1>Articles &amp; Technical Writing</h1>\n</header>\n\n<nav>\n  <a href="../index.html">Home</a>\n  <a href="../articles.html">Articles</a>\n  <a href="../index.html#contact">Contact</a>\n</nav>\n\n<div class="detail-main">\n  <a href="../articles.html" class="back-btn">\n    <i class="fa-solid fa-arrow-left"></i> Back to Articles\n  </a>\n\n  <h1>${title}</h1>\n  <p class="detail-meta">By Gayan Weerasingha &nbsp;&middot;&nbsp; ${date} &nbsp;&middot;&nbsp; ${readTime} min read</p>\n\n${parasHTML}\n\n</div>\n\n<footer>\n  &copy; 2026 Gayan Weerasingha &nbsp;&middot;&nbsp; Electrical &amp; Automation Engineer\n</footer>\n\n</body>\n</html>`;
     document.getElementById('a-html-output').textContent = articleHTML;
 
     document.getElementById('a-output').classList.add('visible');
     document.getElementById('a-output').scrollIntoView({ behavior: 'smooth' });
   }
 
+  // ============================================================
+  //  COPY
+  // ============================================================
   function copyCode(id, btn) {
     navigator.clipboard.writeText(document.getElementById(id).textContent).then(() => {
       btn.textContent = 'Copied!';
