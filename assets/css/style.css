@@ -185,7 +185,19 @@ section h2 {
 a.project-card-link {
   text-decoration: none;
   color: inherit;
-  display: block;
+  display: flex;
+  height: 100%;
+}
+
+a.project-card-link .card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+a.project-card-link .card .tags {
+  margin-top: auto;
+  padding-top: 0.8rem;
 }
 
 /* ---- SKILLS ---- */

@@ -253,9 +253,9 @@
     <p><i class="fa-brands fa-linkedin" style="color:var(--accent);width:18px;"></i>
       <a href="${contact.linkedin}" target="_blank" rel="noopener noreferrer">LinkedIn Profile</a></p>`;
 
-  /* ---- Render projects ---- */
+  /* ---- Render projects (3 most recent) ---- */
   const grid = document.getElementById('projects-grid');
-  projects.forEach(p => {
+  [...projects].slice(-3).forEach(p => {
     const tagHTML = p.tags.map(t =>
       `<span class="tag${t === 'React' || t === 'AI-Built' ? ' tag-green' : ''}">${t}</span>`
     ).join('');
