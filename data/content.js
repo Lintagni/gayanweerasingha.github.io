@@ -120,6 +120,20 @@ const projects = [
   }
 ];
 
+// ---- DOWNLOADS ----
+const downloads = [
+  {
+    id: 1,
+    title: "20 Claude Code Projects for Beginners",
+    description: "20 fully working web apps built entirely with AI prompts using Claude Code — covering productivity, finance, lifestyle, and utility tools.",
+    icon: "rocket",
+    meta: ["20 Apps", "React · Vercel"],
+    link: "https://20-projects-for-beginners.netlify.app/",
+    btnText: "View All Apps",
+    external: true
+  }
+];
+
 // ---- ARTICLES ----
 const articles = [
   {

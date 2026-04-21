@@ -349,6 +349,7 @@
         <span class="sidebar-label">Publish</span>
         <button class="sidebar-btn" onclick="switchTab('projects', this)"><i class="fa-solid fa-folder-open"></i> Projects</button>
         <button class="sidebar-btn" onclick="switchTab('articles', this)"><i class="fa-solid fa-pen-nib"></i> Articles</button>
+        <button class="sidebar-btn" onclick="switchTab('downloads', this)"><i class="fa-solid fa-download"></i> Downloads</button>
         <div class="sidebar-divider"></div>
         <button class="sidebar-btn" onclick="switchTab('settings', this)"><i class="fa-solid fa-gear"></i> Settings</button>
       </div>
@@ -636,6 +637,16 @@ System integration</textarea>
       </div>
     </div>
 
+    <!-- ===================== DOWNLOADS ===================== -->
+    <div class="tab-pane" id="tab-downloads">
+      <p class="hint" style="margin-bottom:1rem;">Each block is one download card on the Downloads page. Loads automatically when GitHub is connected.</p>
+      <div id="dl-existing-blocks"></div>
+      <button class="add-block-btn" onclick="addNewDownloadBlock()"><i class="fa-solid fa-plus"></i> Add Download Card</button>
+      <div class="btn-row" id="dl-save-row" style="display:none;">
+        <button class="save-btn" onclick="saveAllDownloads()"><i class="fa-solid fa-floppy-disk"></i> Save All Changes to GitHub</button>
+      </div>
+    </div>
+
     <!-- ===================== SETTINGS ===================== -->
     <div class="tab-pane" id="tab-settings">
       <div style="max-width:520px;">
@@ -788,6 +799,8 @@ System integration</textarea>
         !document.querySelector('.proj-block')) loadProjects();
     if (name === 'articles' && localStorage.getItem('gh_token') &&
         !document.querySelector('.art-block')) loadArticles();
+    if (name === 'downloads' && localStorage.getItem('gh_token') &&
+        !document.querySelector('.dl-block')) loadDownloads();
   }
 
   function removeBlock(btn) { const b = btn.closest('.repeat-block'); b.parentElement.removeChild(b); }
@@ -1010,7 +1023,7 @@ System integration</textarea>
     const res = await fetch(url);
     if (!res.ok) throw new Error('Could not load content.js from GitHub.');
     const text = await res.text();
-    const fn = new Function(text + '\nreturn { projects, articles };');
+    const fn = new Function(text + '\nreturn { projects, articles, downloads };');
     return fn();
   }
 
@@ -1276,6 +1289,122 @@ System integration</textarea>
     const paras = content.split(/\n\n+/).filter(p => p.trim());
     const parasHTML = paras.map(p => `  <p>${p.replace(/\n/g,'<br/>')}</p>`).join('\n\n');
     return `<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8" />\n  <meta name="viewport" content="width=device-width, initial-scale=1.0" />\n  <title>${title} | Gayan Weerasingha</title>\n  <meta name="description" content="${excerpt.substring(0,150)}" />\n  <link rel="stylesheet" href="../assets/css/style.css" />\n  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />\n</head>\n<body>\n\n<header class="page-header">\n  <h1>Articles &amp; Technical Writing</h1>\n</header>\n\n<nav>\n  <a href="../index.html">Home</a>\n  <a href="../articles.html">Articles</a>\n  <a href="../index.html#contact">Contact</a>\n</nav>\n\n<div class="detail-main">\n  <a href="../articles.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Articles</a>\n  <h1>${title}</h1>\n  <p class="detail-meta">By Gayan Weerasingha &nbsp;&middot;&nbsp; ${date} &nbsp;&middot;&nbsp; ${readTime} min read</p>\n\n${parasHTML}\n\n</div>\n\n<footer>&copy; 2026 Gayan Weerasingha &nbsp;&middot;&nbsp; Electrical &amp; Automation Engineer</footer>\n\n</body>\n</html>`;
+  }
+
+  // ============================================================
+  //  DOWNLOADS
+  // ============================================================
+  async function loadDownloads() {
+    if (!localStorage.getItem('gh_token')) return;
+    const container = document.getElementById('dl-existing-blocks');
+    container.innerHTML = '<p class="hint" style="padding:0.5rem 0;"><i class="fa-solid fa-spinner fa-spin" style="margin-right:6px;"></i>Loading from GitHub…</p>';
+    try {
+      const data = await loadContentData();
+      renderDownloadBlocks(data.downloads || []);
+    } catch(e) { container.innerHTML = ''; showToast(e.message, true); }
+  }
+
+  function renderDownloadBlocks(items) {
+    const container = document.getElementById('dl-existing-blocks');
+    container.innerHTML = '';
+    items.forEach((d, i) => {
+      const div = document.createElement('div');
+      div.className = 'repeat-block dl-block';
+      div.dataset.id = d.id;
+      div.innerHTML = `
+        <div class="repeat-block-header">
+          <span class="repeat-block-title">Download ${i + 1}</span>
+          <button class="remove-btn" onclick="removeBlock(this)">Delete</button>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Title</label><input class="dlb-title" type="text" value="${esc(d.title)}" /></div>
+          <div class="form-group"><label>Icon (Font Awesome name)</label><input class="dlb-icon" type="text" value="${esc(d.icon)}" placeholder="rocket, download, file-pdf…" /></div>
+        </div>
+        <div class="form-group"><label>Description</label><textarea class="dlb-desc" rows="3">${esc(d.description)}</textarea></div>
+        <div class="form-row">
+          <div class="form-group"><label>Meta tags (comma separated)</label><input class="dlb-meta" type="text" value="${esc((d.meta||[]).join(', '))}" placeholder="20 Apps, React · Vercel" /></div>
+          <div class="form-group"><label>Button Label</label><input class="dlb-btntext" type="text" value="${esc(d.btnText||'View')}" /></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Link URL</label><input class="dlb-link" type="text" value="${esc(d.link)}" /></div>
+          <div class="form-group"><label>Opens in new tab?</label>
+            <select class="dlb-external">
+              <option value="true"${d.external?' selected':''}>Yes (external)</option>
+              <option value="false"${!d.external?' selected':''}>No (internal)</option>
+            </select>
+          </div>
+        </div>`;
+      container.appendChild(div);
+    });
+    document.getElementById('dl-save-row').style.display = 'flex';
+  }
+
+  function addNewDownloadBlock() {
+    const container = document.getElementById('dl-existing-blocks');
+    const n = container.querySelectorAll('.dl-block').length + 1;
+    const div = document.createElement('div');
+    div.className = 'repeat-block dl-block';
+    div.dataset.id = 'new';
+    div.innerHTML = `
+      <div class="repeat-block-header">
+        <span class="repeat-block-title">New Download ${n}</span>
+        <button class="remove-btn" onclick="removeBlock(this)">Remove</button>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Title *</label><input class="dlb-title" type="text" placeholder="e.g. Cable Sizing Calculator" /></div>
+        <div class="form-group"><label>Icon (Font Awesome name)</label><input class="dlb-icon" type="text" placeholder="download, file-pdf, rocket…" /></div>
+      </div>
+      <div class="form-group"><label>Description *</label><textarea class="dlb-desc" rows="3" placeholder="Brief description of what this resource is…"></textarea></div>
+      <div class="form-row">
+        <div class="form-group"><label>Meta tags (comma separated)</label><input class="dlb-meta" type="text" placeholder="Free, Excel, Engineering" /></div>
+        <div class="form-group"><label>Button Label</label><input class="dlb-btntext" type="text" value="Download" /></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Link URL *</label><input class="dlb-link" type="text" placeholder="https://… or assets/files/…" /></div>
+        <div class="form-group"><label>Opens in new tab?</label>
+          <select class="dlb-external"><option value="true">Yes (external)</option><option value="false">No (internal)</option></select>
+        </div>
+      </div>`;
+    container.appendChild(div);
+    document.getElementById('dl-save-row').style.display = 'flex';
+    div.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  async function saveAllDownloads() {
+    if (!localStorage.getItem('gh_token')) { showToast('Connect GitHub token in Settings first.', true); return; }
+    const blocks = document.querySelectorAll('.dl-block');
+    const items = [];
+    blocks.forEach(b => {
+      const title = b.querySelector('.dlb-title').value.trim();
+      if (!title) return;
+      const isNew = b.dataset.id === 'new';
+      items.push({
+        id:       isNew ? Date.now() + Math.floor(Math.random()*1000) : parseInt(b.dataset.id),
+        title,
+        description: b.querySelector('.dlb-desc').value.trim(),
+        icon:     b.querySelector('.dlb-icon').value.trim() || 'download',
+        meta:     b.querySelector('.dlb-meta').value.trim().split(',').map(t=>t.trim()).filter(Boolean),
+        btnText:  b.querySelector('.dlb-btntext').value.trim() || 'View',
+        link:     b.querySelector('.dlb-link').value.trim(),
+        external: b.querySelector('.dlb-external').value === 'true'
+      });
+    });
+    if (!items.length) { showToast('No downloads to save.', true); return; }
+    const btn = event.currentTarget;
+    btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving…';
+    try {
+      const snippet = `const downloads = [\n${items.map(d =>
+        `  {\n    id: ${d.id},\n    title: "${d.title.replace(/"/g,'\\"')}",\n    description: "${d.description.replace(/"/g,'\\"')}",\n    icon: "${d.icon}",\n    meta: ${JSON.stringify(d.meta)},\n    btnText: "${d.btnText}",\n    link: "${d.link}",\n    external: ${d.external}\n  }`
+      ).join(',\n')}\n];`;
+      const file = await ghGet();
+      const current = decodeURIComponent(escape(atob(file.content.replace(/\n/g,''))));
+      const updated = replaceSection(current, 'DOWNLOADS', snippet);
+      if (!updated) throw new Error('Downloads section not found in content.js');
+      await ghPut(updated, file.sha, 'Update downloads via admin panel');
+      showToast('Downloads saved! Vercel is deploying…');
+      renderDownloadBlocks(items);
+    } catch(e) { showToast(e.message, true); }
+    finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save All Changes to GitHub'; }
   }
 
   // ============================================================

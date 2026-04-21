@@ -33,10 +33,6 @@
       text-decoration: none; transition: background 0.2s; width: fit-content;
     }
     .dl-btn:hover { background: #1d4ed8; }
-    .dl-btn.outline {
-      background: transparent; color: var(--accent); border: 1.5px solid var(--accent);
-    }
-    .dl-btn.outline:hover { background: var(--accent); color: white; }
   </style>
 </head>
 <body>
@@ -56,29 +52,27 @@
   <p class="downloads-intro">
     Free tools, web apps, and resources I've built and published. Everything here is live and usable with no sign-up required.
   </p>
-
-  <div class="downloads-grid">
-
-    <div class="dl-card">
-      <div class="dl-card-icon"><i class="fa-solid fa-rocket"></i></div>
-      <h2>20 Claude Code Projects for Beginners</h2>
-      <p>20 fully working web apps built entirely with AI prompts using Claude Code — covering productivity, finance, lifestyle, and utility tools.</p>
-      <div class="dl-meta">
-        <span><i class="fa-solid fa-layer-group"></i> 20 Apps</span>
-        <span><i class="fa-brands fa-react"></i> React · Vercel</span>
-      </div>
-      <a class="dl-btn" href="https://20-projects-for-beginners.netlify.app/" target="_blank" rel="noopener noreferrer">
-        <i class="fa-solid fa-arrow-up-right-from-square"></i> View All Apps
-      </a>
-    </div>
-
-  </div>
+  <div class="downloads-grid" id="downloads-grid"></div>
 </main>
 
 <footer>
   © 2026 Gayan Weerasingha &nbsp;·&nbsp; Electrical &amp; Automation Engineer &nbsp;·&nbsp;
   <a href="https://gayanweerasingha.org" style="color:var(--muted);">gayanweerasingha.org</a>
 </footer>
+
+<script src="data/content.js"></script>
+<script>
+  document.getElementById('downloads-grid').innerHTML = downloads.map(d => `
+    <div class="dl-card">
+      <div class="dl-card-icon"><i class="fa-solid fa-${d.icon}"></i></div>
+      <h2>${d.title}</h2>
+      <p>${d.description}</p>
+      ${d.meta && d.meta.length ? `<div class="dl-meta">${d.meta.map(m => `<span><i class="fa-solid fa-circle" style="font-size:0.4rem;"></i> ${m}</span>`).join('')}</div>` : ''}
+      <a class="dl-btn" href="${d.link}"${d.external ? ' target="_blank" rel="noopener noreferrer"' : ''}>
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> ${d.btnText || 'View'}
+      </a>
+    </div>`).join('');
+</script>
 
 </body>
 </html>
