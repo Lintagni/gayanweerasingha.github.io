@@ -102,7 +102,7 @@ const projects = [
     subtitle: "Karapitiya National Hospital, Galle",
     year: "2025",
     description: "Complete electrical system design for a new Cardiac Catheterization Laboratory including power distribution, lighting design, emergency power supply, earthing, and medical equipment vendor coordination.",
-    tags: ["Electrical Engineering", "AutoCAD", "Hospital Design", "IEC Standards"],
+    tags: ["Electrical Engineering","AutoCAD","Hospital Design","IEC Standards"],
     type: "engineering",
     link: "projects/project-1.html",
     external: false
@@ -113,9 +113,20 @@ const projects = [
     subtitle: "Web Apps · Live on Vercel",
     year: "2026",
     description: "20 working web apps built entirely with AI prompts using Claude Code — covering productivity, business & finance, lifestyle, and utility tools. Each app is live and usable.",
-    tags: ["Claude Code", "React", "AI-Built", "Vercel"],
+    tags: ["Claude Code","React","AI-Built","Vercel"],
     type: "webapp",
     link: "https://20-projects-for-beginners.netlify.app/",
+    external: true
+  },
+  {
+    id: 1776754149292,
+    title: "The Flight agent Saas Project",
+    subtitle: "",
+    year: "2026",
+    description: "AI-powered flight price monitor that deploys autonomous agents to hunt mispriced tickets and deals 24/7.",
+    tags: ["Claude Code","VS Code","React","AI-Built","Vercel"],
+    type: "webapp",
+    link: "https://theflightagent.app",
     external: true
   }
 ];
