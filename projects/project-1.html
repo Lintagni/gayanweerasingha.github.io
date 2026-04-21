@@ -5,103 +5,42 @@
   <title>Cath Lab Electrical Design | Gayan Weerasingha</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />
   <style>
-    body {
-      font-family: Inter, Arial, sans-serif;
-      margin: 0;
-      background: #ffffff;
-      color: #1f2937;
-      line-height: 1.8;
-    }
-
-    header {
-      background: #020617;
-      color: white;
-      padding: 2.5rem 1rem;
-      text-align: center;
-    }
-
-    header p {
-      color: #cbd5f5;
-      margin-top: 0.6rem;
-      font-size: 0.95rem;
-      text-align: center;
-    }
-
-    article {
-      max-width: 900px;
-      margin: auto;
-      padding: 3rem 1rem;
-    }
-
-    h1, h2 {
-      color: white;
-    }
-
-    p {
-      text-align: justify;
-      hyphens: auto;
-    }
-
-    .hero-image {
-      width: 100%;
-  max-height: 420px;
-  object-fit: cover;
-  border-radius: 12px;
-  margin: 1.5rem 0 2rem 0;
-    }
-
+    article { max-width: 900px; margin: auto; padding: 3rem 1rem; }
+    p { text-align: justify; hyphens: auto; }
+    .hero-image { width: 100%; max-height: 420px; object-fit: cover; border-radius: 12px; margin: 1.5rem 0 2rem 0; }
     .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1rem;
-      margin: 2rem 0;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem; margin: 2rem 0;
     }
-
-    .gallery img {
-      width: 100%;
-      height: 230px;
-      object-fit: cover;
-      border-radius: 12px;
-    }
-
-    footer {
-      text-align: center;
-      padding: 2rem 1rem;
-      background: #f8fafc;
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
-
-    .back-buttons {
-      margin-top: 3rem;
-    }
-
-    .back-buttons a {
-      display: inline-block;
-      text-decoration: none;
-      background: #2563eb;
-      color: white;
-      padding: 0.6rem 1.2rem;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      margin-right: 0.6rem;
-    }
-
-    .back-buttons a:hover {
-      opacity: 0.9;
-    }
+    .gallery img { width: 100%; height: 230px; object-fit: cover; border-radius: 12px; }
   </style>
 </head>
 
 <body>
 
-<header>
+<header class="page-header">
   <h1>Electrical System Design for Cath Lab</h1>
-  <p>Karapitiya National Hospital · Sri Lanka · 2025</p>
+  <p>Karapitiya National Hospital &nbsp;·&nbsp; Sri Lanka &nbsp;·&nbsp; 2025</p>
 </header>
 
+<nav>
+  <a href="../index.html">Home</a>
+  <a href="../index.html#about">About</a>
+  <a href="../index.html#skills">Skills</a>
+  <a href="../index.html#experience">Experience</a>
+  <a href="../index.html#education">Education</a>
+  <a href="../index.html#services">Services</a>
+  <a href="../index.html#projects">Projects</a>
+  <a href="../articles.html">Articles</a>
+  <a href="../downloads.html" class="nav-cta">Downloads</a>
+  <a href="../index.html#contact">Contact</a>
+</nav>
+
 <article>
+  <a href="../projects.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Projects</a>
 
   <img
     src="assets/images/CathLab01.jpeg"
@@ -146,12 +85,6 @@
     Emergency Power System Standards.
   </p>
 
-  <div class="back-buttons">
-    <a href="../projects.html">← Back to Projects</a>
-    <a href="../index.html" class="back-btn">
-  <i class="fa-solid fa-arrow-left"></i> Back to Home
-</a>
-  </div>
 
 </article>
 <footer>
