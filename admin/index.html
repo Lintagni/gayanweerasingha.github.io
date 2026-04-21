@@ -734,20 +734,20 @@ System integration</textarea>
   function connectGitHub() {
     const token = document.getElementById('ghTokenInput').value.trim();
     if (!token) { showToast('Paste your GitHub token first.', true); return; }
-    sessionStorage.setItem('gh_token', token);
+    localStorage.setItem('gh_token', token);
     updateTokenStatus(true);
-    showToast('GitHub connected!');
+    showToast('GitHub connected! Token saved permanently.');
   }
 
   function disconnectGitHub() {
-    sessionStorage.removeItem('gh_token');
+    localStorage.removeItem('gh_token');
     document.getElementById('ghTokenInput').value = '';
     updateTokenStatus(false);
     showToast('GitHub disconnected.');
   }
 
   function restoreToken() {
-    const t = sessionStorage.getItem('gh_token');
+    const t = localStorage.getItem('gh_token');
     if (t) { document.getElementById('ghTokenInput').value = t; updateTokenStatus(true); }
     else { updateTokenStatus(false); }
   }
@@ -800,7 +800,7 @@ System integration</textarea>
   //  GITHUB API
   // ============================================================
   async function ghGet() {
-    const token = sessionStorage.getItem('gh_token');
+    const token = localStorage.getItem('gh_token');
     const res = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}?ref=${GH_BRANCH}`, {
       headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
     });
@@ -809,7 +809,7 @@ System integration</textarea>
   }
 
   async function ghPut(newContent, sha, message) {
-    const token = sessionStorage.getItem('gh_token');
+    const token = localStorage.getItem('gh_token');
     const encoded = btoa(unescape(encodeURIComponent(newContent)));
     const res = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`, {
       method: 'PUT',
@@ -821,7 +821,7 @@ System integration</textarea>
   }
 
   async function ghPutNew(path, content, message) {
-    const token = sessionStorage.getItem('gh_token');
+    const token = localStorage.getItem('gh_token');
     const encoded = btoa(unescape(encodeURIComponent(content)));
     const res = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${path}`, {
       method: 'PUT',
@@ -859,7 +859,7 @@ System integration</textarea>
   //  SAVE SECTION (replace variable)
   // ============================================================
   async function saveSection(sectionKey, buildFn) {
-    if (!sessionStorage.getItem('gh_token')) {
+    if (!localStorage.getItem('gh_token')) {
       showToast('Paste your GitHub token and click Connect first.', true); return;
     }
     const snippet = buildFn();
@@ -1019,7 +1019,7 @@ System integration</textarea>
   }
 
   async function loadProjects() {
-    if (!sessionStorage.getItem('gh_token')) { showToast('Connect GitHub token in Settings first.', true); return; }
+    if (!localStorage.getItem('gh_token')) { showToast('Connect GitHub token in Settings first.', true); return; }
     const btn = event.currentTarget;
     btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading…';
     try {
@@ -1031,7 +1031,7 @@ System integration</textarea>
   }
 
   async function loadArticles() {
-    if (!sessionStorage.getItem('gh_token')) { showToast('Connect GitHub token in Settings first.', true); return; }
+    if (!localStorage.getItem('gh_token')) { showToast('Connect GitHub token in Settings first.', true); return; }
     const btn = event.currentTarget;
     btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading…';
     try {
@@ -1177,7 +1177,7 @@ System integration</textarea>
   }
 
   async function saveAllProjects() {
-    if (!sessionStorage.getItem('gh_token')) { showToast('Connect GitHub token in Settings first.', true); return; }
+    if (!localStorage.getItem('gh_token')) { showToast('Connect GitHub token in Settings first.', true); return; }
     const blocks = document.querySelectorAll('.proj-block');
     const projects = [];
     const newInternalBlocks = [];
@@ -1224,7 +1224,7 @@ System integration</textarea>
   }
 
   async function saveAllArticles() {
-    if (!sessionStorage.getItem('gh_token')) { showToast('Connect GitHub token in Settings first.', true); return; }
+    if (!localStorage.getItem('gh_token')) { showToast('Connect GitHub token in Settings first.', true); return; }
     const blocks = document.querySelectorAll('.art-block');
     const articles = [];
     const newArticlePages = [];
