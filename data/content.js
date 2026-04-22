@@ -5,7 +5,7 @@
 // ---- ABOUT ----
 const about = {
   paragraphs: [
-    "Electrical and Electronic Engineer with over 3 years of experience in electrical engineering projects at ICC, Voltas Engineering, and the Central Engineering Consultancy Bureau (CECB). Strong exposure to low-voltage power distribution, switchboards, lighting systems, electrical estimation, and site coordination.",
+    "Electrical and Electronic Engineer with over 4 years of experience in electrical engineering projects at ICC, Voltas Engineering, and the Central Engineering Consultancy Bureau (CECB). Strong exposure to low-voltage power distribution, switchboards, lighting systems, electrical estimation, and site coordination.",
     "Proficient in AutoCAD and SolidWorks, and currently pursuing an MSc in Industrial Automation at the University of Moratuwa. Alongside engineering work, I build and ship web applications using AI tools — combining technical expertise with modern software development."
   ]
 };
