@@ -154,5 +154,14 @@ const articles = [
     readTime: "5",
     excerpt: "University gives us the foundation — theories, equations, standards, and principles. But once we step into the industry, we quickly realise something important: university education alone is not enough.",
     link: "articles/article-1.html"
+  },
+  {
+    id: 1776922910811,
+    title: "Revolutionizing Robotics Prototyping with AI 🤖🦾",
+    date: "Mar 2026",
+    readTime: "5",
+    excerpt: "I’ve been testing out Blueprint.am and the speed of hardware prototyping is changing fast. I wanted to see how it handled a complex request, so I designed a 6-Axis Industrial Robot Arm focused on modularity and \"Plug-and-Work\" efficiency.",
+    link: "articles/article-3.html"
   }
 ];
+
