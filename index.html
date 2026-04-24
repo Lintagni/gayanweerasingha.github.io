@@ -282,20 +282,15 @@
       <span class="article-read-more">Read article →</span>
     </a>`).join('');
 
-  /* ---- Render education (2-column with year badge) ---- */
-  document.getElementById('education-grid').innerHTML = education.map(e => {
-    const nums = e.year.replace(/[^0-9]/g, '');
-    const badge = nums.length >= 4 ? nums.slice(-2) : (e.badge ? e.badge.slice(0,2).toUpperCase() : e.year.slice(0,2).toUpperCase());
-    return `
+  /* ---- Render education (2-column) ---- */
+  document.getElementById('education-grid').innerHTML = education.map(e => `
       <div class="edu-card">
-        <div class="edu-badge">${badge}</div>
         <div class="edu-body">
           <h3>${e.degree}</h3>
           <div class="edu-school">${e.institution}</div>
           <div class="edu-detail">${e.year}${e.badge ? ' · ' + e.badge : ''}</div>
         </div>
-      </div>`;
-  }).join('');
+      </div>`).join('');
 
   /* ---- Render contact info ---- */
   document.getElementById('contact-info').innerHTML = `

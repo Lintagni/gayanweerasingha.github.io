@@ -55,7 +55,7 @@ const experience = [
 // ---- EDUCATION ----
 const education = [
   { degree: "MSc in Industrial Automation", institution: "University of Moratuwa, Sri Lanka", year: "2026 – Present", badge: "In Progress", icon: "graduation-cap" },
-  { degree: "BEng (Hons) Electrical & Electronic Engineering", institution: "Sri Lanka", year: "Completed", badge: "", icon: "bolt" }
+  { degree: "BEng (Hons) Electrical & Electronic Engineering", institution: "South Eastern University of Sri Lanka", year: "Completed", badge: "", icon: "bolt" }
 ];
 
 // ---- SERVICES ----
