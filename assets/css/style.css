@@ -375,7 +375,8 @@ nav {
   color: var(--text-mid);
   line-height: 1.8;
   max-width: 800px;
-  margin-bottom: 1rem;
+  margin: 0 auto 1rem auto;
+  text-align: justify;
 }
 
 /* ---- SKILLS ---- */
@@ -649,9 +650,17 @@ nav {
   border-left: 2px solid var(--border);
   padding-left: 24px;
   transition: border-color 0.2s;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-left: none;
+  border-top: 2px solid var(--border);
+  padding-left: 0;
+  padding-top: 20px;
 }
 
-.service-item:hover { border-left-color: var(--accent); }
+.service-item:hover { border-top-color: var(--accent); }
 
 .service-item h3 {
   font-family: 'Sora', sans-serif;
@@ -667,6 +676,11 @@ nav {
   font-size: 14px;
   color: var(--text-mid);
   line-height: 1.7;
+  text-align: center;
+}
+
+.service-item h3 {
+  text-align: center;
 }
 
 .services-cta-banner {
