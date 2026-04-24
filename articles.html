@@ -5,48 +5,70 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Articles | Gayan Weerasingha</title>
   <meta name="description" content="Technical articles on Electrical Engineering, Industrial Automation, and Industry 4.0 by Gayan Weerasingha." />
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%232563eb'/><text x='50' y='72' font-size='60' font-family='Arial' font-weight='bold' text-anchor='middle' fill='white'>G</text></svg>" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%234d9fff'/><text x='50' y='72' font-size='60' font-family='Arial' font-weight='bold' text-anchor='middle' fill='white'>G</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />
   <style>
-    main { max-width: 860px; margin: auto; padding: 3rem 1rem; }
+    main { max-width: 860px; margin: auto; padding: 3rem 2rem; }
     .article-card {
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
-      background: white;
-      transition: box-shadow 0.2s ease, transform 0.2s ease;
+      border-radius: 6px;
+      padding: 1.8rem;
+      margin-bottom: 1.2rem;
+      background: var(--surface);
+      transition: border-color 0.2s, transform 0.2s;
     }
-    .article-card:hover {
-      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-      transform: translateY(-2px);
-    }
+    .article-card:hover { border-color: var(--accent); transform: translateY(-2px); }
     .article-card a { text-decoration: none; color: inherit; display: block; }
-    .article-card h2 { color: var(--primary); margin-bottom: 0.3rem; font-size: 1.15rem; }
-    .article-card p { margin-top: 0.5rem; font-size: 0.95rem; line-height: 1.6; }
+    .article-card h2 {
+      font-family: 'Sora', sans-serif;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+    .article-meta {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.83rem;
+      color: var(--text-light);
+      margin-bottom: 0.6rem;
+    }
+    .article-card p {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.93rem;
+      color: var(--text-mid);
+      line-height: 1.65;
+    }
   </style>
 </head>
 
 <body>
 
+<nav>
+  <a href="index.html" class="nav-logo">
+    <span class="nav-initials">GW</span>
+    <span class="nav-divider"></span>
+    <span class="nav-label">Engineer</span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html#about">About</a>
+    <a href="index.html#skills">Skills</a>
+    <a href="index.html#experience">Experience</a>
+    <a href="index.html#projects">Projects</a>
+    <a href="index.html#services">Services</a>
+    <a href="index.html#education">Education</a>
+    <a href="index.html#contact">Contact</a>
+    <a href="assets/documents/W_M_G_Weerasinghe_CV.pdf" class="nav-resume" target="_blank" rel="noopener noreferrer">Resume ↗</a>
+  </div>
+</nav>
+
 <header class="page-header">
   <h1>Articles &amp; Technical Writing</h1>
   <p>Insights on Electrical Engineering, Automation &amp; Industry 4.0</p>
 </header>
-
-<nav>
-  <a href="index.html">Home</a>
-  <a href="index.html#about">About</a>
-  <a href="index.html#skills">Skills</a>
-  <a href="index.html#experience">Experience</a>
-  <a href="index.html#education">Education</a>
-  <a href="index.html#services">Services</a>
-  <a href="index.html#projects">Projects</a>
-  <a href="articles.html">Articles</a>
-  <a href="downloads.html" class="nav-cta">Downloads</a>
-  <a href="index.html#contact">Contact</a>
-</nav>
 
 <main>
   <a href="index.html" class="back-btn">
@@ -56,7 +78,8 @@
 </main>
 
 <footer>
-  © 2026 Gayan Weerasingha &nbsp;·&nbsp; Electrical &amp; Automation Engineer
+  <span>© 2026 Gayan Weerasingha &nbsp;·&nbsp; Electrical &amp; Automation Engineer</span>
+  <a href="https://gayanweerasingha.org">gayanweerasingha.org</a>
 </footer>
 
 <script src="data/content.js"></script>
@@ -67,7 +90,7 @@
       <div class="article-card">
         <a href="${a.link}">
           <h2>${a.title}</h2>
-          <p class="muted">${a.date} &nbsp;·&nbsp; ${a.readTime} min read</p>
+          <div class="article-meta">${a.date} &nbsp;·&nbsp; ${a.readTime} min read</div>
           <p>${a.excerpt}</p>
         </a>
       </div>`;
