@@ -33,6 +33,7 @@
     <a href="#experience">Experience</a>
     <a href="#projects">Projects</a>
     <a href="#services">Services</a>
+    <a href="#articles">Articles</a>
     <a href="#education">Education</a>
     <a href="#contact">Contact</a>
     <a href="assets/documents/W_M_G_Weerasinghe_CV.pdf" class="nav-resume" target="_blank" rel="noopener noreferrer">Resume ↗</a>
@@ -123,6 +124,16 @@
     </div>
     <a href="#contact" class="btn-primary" style="flex-shrink:0;">Get a Quote</a>
   </div>
+</section>
+
+<!-- ===== ARTICLES ===== -->
+<section id="articles" class="section-wrap">
+  <div class="section-label"><span class="section-line"></span><span>Articles</span></div>
+  <div class="projects-header">
+    <h2 class="section-title">Writing</h2>
+    <a href="articles.html" class="projects-view-all">View all articles ↗</a>
+  </div>
+  <div class="articles-grid" id="articles-grid"></div>
 </section>
 
 <!-- ===== EDUCATION ===== -->
@@ -261,6 +272,15 @@
       <h3>${s.title}</h3>
       <p>${s.items.join(', ')}</p>
     </div>`).join('');
+
+  /* ---- Render articles ---- */
+  document.getElementById('articles-grid').innerHTML = articles.map(a => `
+    <a href="${a.link}" class="article-card">
+      <div class="article-meta">${a.date} &nbsp;·&nbsp; ${a.readTime} min read</div>
+      <h3>${a.title}</h3>
+      <p>${a.excerpt}</p>
+      <span class="article-read-more">Read article →</span>
+    </a>`).join('');
 
   /* ---- Render education (2-column with year badge) ---- */
   document.getElementById('education-grid').innerHTML = education.map(e => {
