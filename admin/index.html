@@ -276,6 +276,16 @@
     #toast.error { background: #dc2626; }
 
     /* ---- IMAGE UPLOAD ---- */
+    /* ---- PER-BLOCK SAVE ---- */
+    .block-actions { display: flex; gap: 6px; align-items: center; }
+    .save-block-btn {
+      background: #059669; color: white; border: none;
+      padding: 0.22rem 0.8rem; border-radius: 5px; font-size: 0.75rem; cursor: pointer;
+      font-family: inherit; transition: all 0.2s; display: inline-flex; align-items: center; gap: 4px;
+    }
+    .save-block-btn:hover { background: #047857; }
+    .save-block-btn:disabled { background: #334155; color: #64748b; cursor: not-allowed; transform: none; }
+
     .img-upload-row { display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
     .img-upload-row input[type="text"] { flex: 1; min-width: 0; }
     .img-upload-btn {
@@ -1109,7 +1119,10 @@ System integration</textarea>
       div.innerHTML = `
         <div class="repeat-block-header">
           <span class="repeat-block-title">Project ${i + 1}</span>
-          <button class="remove-btn" onclick="removeBlock(this)">Delete</button>
+          <div class="block-actions">
+            <button class="save-block-btn" onclick="saveProject(this.closest('.proj-block'))"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+            <button class="remove-btn" onclick="removeProjectFromGH(this)">Delete</button>
+          </div>
         </div>
         <div class="form-row">
           <div class="form-group"><label>Title</label><input class="pb-title" type="text" value="${esc(p.title)}" /></div>
@@ -1166,8 +1179,11 @@ System integration</textarea>
     div.dataset.id = 'new';
     div.innerHTML = `
       <div class="repeat-block-header">
-        <span class="repeat-block-title">New Project ${n}</span>
-        <button class="remove-btn" onclick="removeBlock(this)">Remove</button>
+        <span class="repeat-block-title">New Project</span>
+        <div class="block-actions">
+          <button class="save-block-btn" onclick="saveProject(this.closest('.proj-block'))"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+          <button class="remove-btn" onclick="removeBlock(this)">Remove</button>
+        </div>
       </div>
       <div class="form-row">
         <div class="form-group"><label>Title *</label><input class="pb-title" type="text" placeholder="e.g. Solar Street Lighting System" /></div>
@@ -1219,7 +1235,10 @@ System integration</textarea>
       div.innerHTML = `
         <div class="repeat-block-header">
           <span class="repeat-block-title">Article ${i + 1}</span>
-          <button class="remove-btn" onclick="removeBlock(this)">Delete</button>
+          <div class="block-actions">
+            <button class="save-block-btn" onclick="saveArticle(this.closest('.art-block'))"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+            <button class="remove-btn" onclick="removeArticleFromGH(this)">Delete</button>
+          </div>
         </div>
         <div class="form-row">
           <div class="form-group"><label>Title</label><input class="ab-title" type="text" value="${esc(a.title)}" /></div>
@@ -1260,8 +1279,11 @@ System integration</textarea>
     div.dataset.id = 'new';
     div.innerHTML = `
       <div class="repeat-block-header">
-        <span class="repeat-block-title">New Article ${n}</span>
-        <button class="remove-btn" onclick="removeBlock(this)">Remove</button>
+        <span class="repeat-block-title">New Article</span>
+        <div class="block-actions">
+          <button class="save-block-btn" onclick="saveArticle(this.closest('.art-block'))"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+          <button class="remove-btn" onclick="removeBlock(this)">Remove</button>
+        </div>
       </div>
       <div class="form-row">
         <div class="form-group"><label>Title *</label><input class="ab-title" type="text" placeholder="e.g. How to Size a Cable for a Hospital Circuit" /></div>
@@ -1406,19 +1428,19 @@ System integration</textarea>
 
 
 
-  async function saveAllProjects() {
-    if (!localStorage.getItem('gh_token')) { showToast('Connect GitHub token in Settings first.', true); return; }
-    const blocks = document.querySelectorAll('.proj-block');
-    const projects = [];
-    const newInternalBlocks = [];
-    blocks.forEach(b => {
-      const title = b.querySelector('.pb-title').value.trim();
-      if (!title) return;
-      const isNew = b.dataset.id === 'new';
-      const id = isNew ? Date.now() + Math.floor(Math.random()*1000) : parseInt(b.dataset.id);
-      const p = {
-        id,
-        title,
+  // ============================================================
+  //  PER-BLOCK SAVE FUNCTIONS
+  // ============================================================
+  function collectProjectData(b) {
+    const title = b.querySelector('.pb-title').value.trim();
+    if (!title) return null;
+    const isNew = b.dataset.id === 'new';
+    const id = isNew ? Date.now() + Math.floor(Math.random()*1000) : parseInt(b.dataset.id);
+    if (isNew) b.dataset.id = String(id);
+    const qeDiv = b.querySelector('[id^="pqe_"]');
+    return {
+      p: {
+        id, title,
         subtitle: b.querySelector('.pb-subtitle').value.trim(),
         year:     b.querySelector('.pb-year').value.trim(),
         type:     b.querySelector('.pb-type').value,
@@ -1427,82 +1449,225 @@ System integration</textarea>
         image:    (b.querySelector('.pb-img')||{}).value?.trim() || '',
         link:     b.querySelector('.pb-link').value.trim() || '#',
         external: b.querySelector('.pb-external').value === 'true'
-      };
-      // Get body from Quill editor
-      const qeDiv = b.querySelector('[id^="pqe_"]');
-      const body = qeDiv ? getQuillHTML(qeDiv.id) : '';
-      projects.push(p);
-      if (!p.external) newInternalBlocks.push({ p, body, isNew });
-    });
-    if (!projects.length) { showToast('No projects to save.', true); return; }
+      },
+      body: qeDiv ? getQuillHTML(qeDiv.id) : '',
+      isNew
+    };
+  }
+
+  function collectArticleData(b) {
+    const title = b.querySelector('.ab-title').value.trim();
+    if (!title) return null;
+    const isNew = b.dataset.id === 'new';
+    const id = isNew ? Date.now() + Math.floor(Math.random()*1000) : parseInt(b.dataset.id);
+    if (isNew) b.dataset.id = String(id);
+    const filenameRaw = b.querySelector('.ab-link').value.trim();
+    const filename = filenameRaw || `article-${id}.html`;
+    const link = filename.startsWith('articles/') ? filename : `articles/${filename}`;
+    const qeDiv = b.querySelector('[id^="aqe_"]');
+    return {
+      a: {
+        id, title,
+        date:     b.querySelector('.ab-date').value.trim(),
+        readTime: b.querySelector('.ab-readtime').value.trim(),
+        excerpt:  b.querySelector('.ab-excerpt').value.trim(),
+        image:    (b.querySelector('.ab-img')||{}).value?.trim() || '',
+        link
+      },
+      content: qeDiv ? getQuillHTML(qeDiv.id) : ''
+    };
+  }
+
+  function collectDownloadData(b) {
+    const title = b.querySelector('.dlb-title').value.trim();
+    if (!title) return null;
+    const isNew = b.dataset.id === 'new';
+    const id = isNew ? Date.now() + Math.floor(Math.random()*1000) : parseInt(b.dataset.id);
+    if (isNew) b.dataset.id = String(id);
+    return {
+      id, title,
+      description: b.querySelector('.dlb-desc').value.trim(),
+      icon:     b.querySelector('.dlb-icon').value.trim() || 'download',
+      meta:     b.querySelector('.dlb-meta').value.trim().split(',').map(t=>t.trim()).filter(Boolean),
+      btnText:  b.querySelector('.dlb-btntext').value.trim() || 'View',
+      link:     b.querySelector('.dlb-link').value.trim(),
+      external: b.querySelector('.dlb-external').value === 'true'
+    };
+  }
+
+  async function saveProject(block) {
+    if (!localStorage.getItem('gh_token')) { showToast('Connect GitHub first.', true); return; }
+    const btn = block.querySelector('.save-block-btn');
+    btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+    try {
+      const thisData = collectProjectData(block);
+      if (!thisData) throw new Error('Fill in the Title field.');
+      // Rebuild full array from all blocks to avoid losing other items
+      const allProjects = [...document.querySelectorAll('.proj-block')]
+        .map(b => collectProjectData(b)).filter(Boolean).map(d => d.p);
+      const items = allProjects.map(p =>
+        `  {\n    id: ${p.id},\n    title: "${p.title.replace(/"/g,'\\"')}",\n    subtitle: "${p.subtitle.replace(/"/g,'\\"')}",\n    year: "${p.year}",\n    description: "${p.description.replace(/"/g,'\\"')}",\n    tags: ${JSON.stringify(p.tags)},\n    type: "${p.type}",\n    image: "${p.image||''}",\n    link: "${p.link}",\n    external: ${p.external}\n  }`
+      ).join(',\n');
+      const file = await ghGet();
+      const current = decodeURIComponent(escape(atob(file.content.replace(/\n/g,''))));
+      const updated = replaceSection(current, 'PROJECTS', `const projects = [\n${items}\n];`);
+      if (!updated) throw new Error('Projects section not found in content.js.');
+      await ghPut(updated, file.sha, `Update project: ${thisData.p.title}`);
+      if (!thisData.p.external) {
+        const filename = thisData.p.link.startsWith('projects/') ? thisData.p.link : `projects/${thisData.p.link}`;
+        await ghPutNew(filename, buildDetailPage(thisData.p, thisData.body), `Update detail page: ${thisData.p.title}`);
+      }
+      showToast(`"${thisData.p.title}" saved!`);
+      block.querySelector('.repeat-block-title').textContent = thisData.p.title;
+    } catch(e) { showToast(e.message, true); }
+    finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save'; }
+  }
+
+  async function saveArticle(block) {
+    if (!localStorage.getItem('gh_token')) { showToast('Connect GitHub first.', true); return; }
+    const btn = block.querySelector('.save-block-btn');
+    btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+    try {
+      const thisData = collectArticleData(block);
+      if (!thisData) throw new Error('Fill in the Title field.');
+      const allArticles = [...document.querySelectorAll('.art-block')]
+        .map(b => collectArticleData(b)).filter(Boolean).map(d => d.a);
+      const items = allArticles.map(a =>
+        `  {\n    id: ${a.id},\n    title: "${a.title.replace(/"/g,'\\"')}",\n    date: "${a.date}",\n    readTime: "${a.readTime}",\n    excerpt: "${a.excerpt.replace(/"/g,'\\"')}",\n    image: "${a.image||''}",\n    link: "${a.link}"\n  }`
+      ).join(',\n');
+      const file = await ghGet();
+      const current = decodeURIComponent(escape(atob(file.content.replace(/\n/g,''))));
+      const updated = replaceSection(current, 'ARTICLES', `const articles = [\n${items}\n];`);
+      if (!updated) throw new Error('Articles section not found in content.js.');
+      await ghPut(updated, file.sha, `Update article: ${thisData.a.title}`);
+      if (thisData.content) {
+        await ghPutNew(thisData.a.link, buildArticleHTML(thisData.a.title, '', thisData.a.date, thisData.a.readTime, thisData.a.excerpt, thisData.content, thisData.a.image), `Save article: ${thisData.a.title}`);
+      }
+      showToast(`"${thisData.a.title}" saved!`);
+      block.querySelector('.repeat-block-title').textContent = thisData.a.title;
+    } catch(e) { showToast(e.message, true); }
+    finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save'; }
+  }
+
+  async function saveDownload(block) {
+    if (!localStorage.getItem('gh_token')) { showToast('Connect GitHub first.', true); return; }
+    const btn = block.querySelector('.save-block-btn');
+    btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+    try {
+      const thisData = collectDownloadData(block);
+      if (!thisData) throw new Error('Fill in the Title field.');
+      const allDownloads = [...document.querySelectorAll('.dl-block')]
+        .map(b => collectDownloadData(b)).filter(Boolean);
+      const snippet = `const downloads = [\n${allDownloads.map(d =>
+        `  {\n    id: ${d.id},\n    title: "${d.title.replace(/"/g,'\\"')}",\n    description: "${d.description.replace(/"/g,'\\"')}",\n    icon: "${d.icon}",\n    meta: ${JSON.stringify(d.meta)},\n    btnText: "${d.btnText}",\n    link: "${d.link}",\n    external: ${d.external}\n  }`
+      ).join(',\n')}\n];`;
+      const file = await ghGet();
+      const current = decodeURIComponent(escape(atob(file.content.replace(/\n/g,''))));
+      const updated = replaceSection(current, 'DOWNLOADS', snippet);
+      if (!updated) throw new Error('Downloads section not found in content.js.');
+      await ghPut(updated, file.sha, `Update download: ${thisData.title}`);
+      showToast(`"${thisData.title}" saved!`);
+      block.querySelector('.repeat-block-title').textContent = thisData.title;
+    } catch(e) { showToast(e.message, true); }
+    finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save'; }
+  }
+
+  // Delete from GitHub: removes from DOM + saves remaining items to GitHub
+  async function removeProjectFromGH(btn) {
+    const block = btn.closest('.proj-block');
+    if (!confirm('Delete this project from GitHub?')) return;
+    removeBlock(btn);
+    const allProjects = [...document.querySelectorAll('.proj-block')]
+      .map(b => collectProjectData(b)).filter(Boolean).map(d => d.p);
+    try {
+      const items = allProjects.map(p =>
+        `  {\n    id: ${p.id},\n    title: "${p.title.replace(/"/g,'\\"')}",\n    subtitle: "${p.subtitle.replace(/"/g,'\\"')}",\n    year: "${p.year}",\n    description: "${p.description.replace(/"/g,'\\"')}",\n    tags: ${JSON.stringify(p.tags)},\n    type: "${p.type}",\n    image: "${p.image||''}",\n    link: "${p.link}",\n    external: ${p.external}\n  }`
+      ).join(',\n');
+      const file = await ghGet();
+      const current = decodeURIComponent(escape(atob(file.content.replace(/\n/g,''))));
+      const updated = replaceSection(current, 'PROJECTS', `const projects = [\n${items}\n];`);
+      await ghPut(updated, file.sha, 'Delete project via admin panel');
+      showToast('Project deleted.');
+    } catch(e) { showToast(e.message, true); }
+  }
+
+  async function removeArticleFromGH(btn) {
+    if (!confirm('Delete this article from GitHub?')) return;
+    removeBlock(btn);
+    const allArticles = [...document.querySelectorAll('.art-block')]
+      .map(b => collectArticleData(b)).filter(Boolean).map(d => d.a);
+    try {
+      const items = allArticles.map(a =>
+        `  {\n    id: ${a.id},\n    title: "${a.title.replace(/"/g,'\\"')}",\n    date: "${a.date}",\n    readTime: "${a.readTime}",\n    excerpt: "${a.excerpt.replace(/"/g,'\\"')}",\n    image: "${a.image||''}",\n    link: "${a.link}"\n  }`
+      ).join(',\n');
+      const file = await ghGet();
+      const current = decodeURIComponent(escape(atob(file.content.replace(/\n/g,''))));
+      const updated = replaceSection(current, 'ARTICLES', `const articles = [\n${items}\n];`);
+      await ghPut(updated, file.sha, 'Delete article via admin panel');
+      showToast('Article deleted from listing.');
+    } catch(e) { showToast(e.message, true); }
+  }
+
+  async function removeDownloadFromGH(btn) {
+    if (!confirm('Delete this download from GitHub?')) return;
+    removeBlock(btn);
+    const allDownloads = [...document.querySelectorAll('.dl-block')]
+      .map(b => collectDownloadData(b)).filter(Boolean);
+    try {
+      const snippet = `const downloads = [\n${allDownloads.map(d =>
+        `  {\n    id: ${d.id},\n    title: "${d.title.replace(/"/g,'\\"')}",\n    description: "${d.description.replace(/"/g,'\\"')}",\n    icon: "${d.icon}",\n    meta: ${JSON.stringify(d.meta)},\n    btnText: "${d.btnText}",\n    link: "${d.link}",\n    external: ${d.external}\n  }`
+      ).join(',\n')}\n];`;
+      const file = await ghGet();
+      const current = decodeURIComponent(escape(atob(file.content.replace(/\n/g,''))));
+      const updated = replaceSection(current, 'DOWNLOADS', snippet);
+      await ghPut(updated, file.sha, 'Delete download via admin panel');
+      showToast('Download deleted.');
+    } catch(e) { showToast(e.message, true); }
+  }
+
+  async function saveAllProjects() {
+    if (!localStorage.getItem('gh_token')) { showToast('Connect GitHub token in Settings first.', true); return; }
+    const allData = [...document.querySelectorAll('.proj-block')].map(b => collectProjectData(b)).filter(Boolean);
+    if (!allData.length) { showToast('No projects to save.', true); return; }
     const btn = event.currentTarget;
     btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving…';
     try {
-      const items = projects.map(p =>
+      const items = allData.map(d => d.p).map(p =>
         `  {\n    id: ${p.id},\n    title: "${p.title.replace(/"/g,'\\"')}",\n    subtitle: "${p.subtitle.replace(/"/g,'\\"')}",\n    year: "${p.year}",\n    description: "${p.description.replace(/"/g,'\\"')}",\n    tags: ${JSON.stringify(p.tags)},\n    type: "${p.type}",\n    image: "${p.image||''}",\n    link: "${p.link}",\n    external: ${p.external}\n  }`
       ).join(',\n');
-      const snippet = `const projects = [\n${items}\n];`;
       const file = await ghGet();
       const current = decodeURIComponent(escape(atob(file.content.replace(/\n/g,''))));
-      const updated = replaceSection(current, 'PROJECTS', snippet);
+      const updated = replaceSection(current, 'PROJECTS', `const projects = [\n${items}\n];`);
       if (!updated) throw new Error('Projects section not found.');
-      await ghPut(updated, file.sha, 'Update projects via admin panel');
-      for (const { p, body, isNew } of newInternalBlocks) {
+      await ghPut(updated, file.sha, 'Update all projects via admin panel');
+      for (const { p, body } of allData.filter(d => !d.p.external)) {
         const filename = p.link.startsWith('projects/') ? p.link : `projects/${p.link}`;
-        await ghPutNew(filename, buildDetailPage(p, body), `${isNew ? 'Add' : 'Update'} detail page: ${p.title}`);
+        await ghPutNew(filename, buildDetailPage(p, body), `Update detail page: ${p.title}`);
       }
-      showToast('Projects saved! Vercel is deploying…');
-      renderProjectBlocks(projects);
+      showToast('All projects saved!');
     } catch(e) { showToast(e.message, true); }
     finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save All Changes to GitHub'; }
   }
 
   async function saveAllArticles() {
     if (!localStorage.getItem('gh_token')) { showToast('Connect GitHub token in Settings first.', true); return; }
-    const blocks = document.querySelectorAll('.art-block');
-    const articles = [];
-    const newArticlePages = [];
-    blocks.forEach(b => {
-      const title = b.querySelector('.ab-title').value.trim();
-      if (!title) return;
-      const isNew = b.dataset.id === 'new';
-      const id = isNew ? Date.now() + Math.floor(Math.random()*1000) : parseInt(b.dataset.id);
-      const filenameRaw = b.querySelector('.ab-link').value.trim();
-      const filename = filenameRaw || `article-${id}.html`;
-      const link = filename.startsWith('articles/') ? filename : `articles/${filename}`;
-      // Get content from Quill editor (by finding the aqe_ div inside this block)
-      const qeDiv = b.querySelector('[id^="aqe_"]');
-      const content = qeDiv ? getQuillHTML(qeDiv.id) : '';
-      const a = {
-        id,
-        title,
-        date:     b.querySelector('.ab-date').value.trim(),
-        readTime: b.querySelector('.ab-readtime').value.trim(),
-        excerpt:  b.querySelector('.ab-excerpt').value.trim(),
-        image:    (b.querySelector('.ab-img')||{}).value?.trim() || '',
-        link
-      };
-      articles.push(a);
-      if (content) newArticlePages.push({ a, content, link });
-    });
-    if (!articles.length) { showToast('No articles to save.', true); return; }
+    const allData = [...document.querySelectorAll('.art-block')].map(b => collectArticleData(b)).filter(Boolean);
+    if (!allData.length) { showToast('No articles to save.', true); return; }
     const btn = event.currentTarget;
     btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving…';
     try {
-      const items = articles.map(a =>
+      const items = allData.map(d => d.a).map(a =>
         `  {\n    id: ${a.id},\n    title: "${a.title.replace(/"/g,'\\"')}",\n    date: "${a.date}",\n    readTime: "${a.readTime}",\n    excerpt: "${a.excerpt.replace(/"/g,'\\"')}",\n    image: "${a.image||''}",\n    link: "${a.link}"\n  }`
       ).join(',\n');
-      const snippet = `const articles = [\n${items}\n];`;
       const file = await ghGet();
       const current = decodeURIComponent(escape(atob(file.content.replace(/\n/g,''))));
-      const updated = replaceSection(current, 'ARTICLES', snippet);
+      const updated = replaceSection(current, 'ARTICLES', `const articles = [\n${items}\n];`);
       if (!updated) throw new Error('Articles section not found.');
-      await ghPut(updated, file.sha, 'Update articles via admin panel');
-      for (const { a, content, link } of newArticlePages) {
-        await ghPutNew(link, buildArticleHTML(a.title, '', a.date, a.readTime, a.excerpt, content, a.image), `Save article: ${a.title}`);
+      await ghPut(updated, file.sha, 'Update all articles via admin panel');
+      for (const { a, content } of allData.filter(d => d.content)) {
+        await ghPutNew(a.link, buildArticleHTML(a.title, '', a.date, a.readTime, a.excerpt, content, a.image), `Save article: ${a.title}`);
       }
-      showToast('Articles saved! Vercel is deploying…');
-      renderArticleBlocks(articles);
+      showToast('All articles saved!');
     } catch(e) { showToast(e.message, true); }
     finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save All Changes to GitHub'; }
   }
@@ -1652,7 +1817,10 @@ ${content}
       div.innerHTML = `
         <div class="repeat-block-header">
           <span class="repeat-block-title">Download ${i + 1}</span>
-          <button class="remove-btn" onclick="removeBlock(this)">Delete</button>
+          <div class="block-actions">
+            <button class="save-block-btn" onclick="saveDownload(this.closest('.dl-block'))"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+            <button class="remove-btn" onclick="removeDownloadFromGH(this)">Delete</button>
+          </div>
         </div>
         <div class="form-row">
           <div class="form-group"><label>Title</label><input class="dlb-title" type="text" value="${esc(d.title)}" /></div>
@@ -1685,8 +1853,11 @@ ${content}
     div.dataset.id = 'new';
     div.innerHTML = `
       <div class="repeat-block-header">
-        <span class="repeat-block-title">New Download ${n}</span>
-        <button class="remove-btn" onclick="removeBlock(this)">Remove</button>
+        <span class="repeat-block-title">New Download</span>
+        <div class="block-actions">
+          <button class="save-block-btn" onclick="saveDownload(this.closest('.dl-block'))"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+          <button class="remove-btn" onclick="removeBlock(this)">Remove</button>
+        </div>
       </div>
       <div class="form-row">
         <div class="form-group"><label>Title *</label><input class="dlb-title" type="text" placeholder="e.g. Cable Sizing Calculator" /></div>
@@ -1710,37 +1881,20 @@ ${content}
 
   async function saveAllDownloads() {
     if (!localStorage.getItem('gh_token')) { showToast('Connect GitHub token in Settings first.', true); return; }
-    const blocks = document.querySelectorAll('.dl-block');
-    const items = [];
-    blocks.forEach(b => {
-      const title = b.querySelector('.dlb-title').value.trim();
-      if (!title) return;
-      const isNew = b.dataset.id === 'new';
-      items.push({
-        id:       isNew ? Date.now() + Math.floor(Math.random()*1000) : parseInt(b.dataset.id),
-        title,
-        description: b.querySelector('.dlb-desc').value.trim(),
-        icon:     b.querySelector('.dlb-icon').value.trim() || 'download',
-        meta:     b.querySelector('.dlb-meta').value.trim().split(',').map(t=>t.trim()).filter(Boolean),
-        btnText:  b.querySelector('.dlb-btntext').value.trim() || 'View',
-        link:     b.querySelector('.dlb-link').value.trim(),
-        external: b.querySelector('.dlb-external').value === 'true'
-      });
-    });
-    if (!items.length) { showToast('No downloads to save.', true); return; }
+    const allData = [...document.querySelectorAll('.dl-block')].map(b => collectDownloadData(b)).filter(Boolean);
+    if (!allData.length) { showToast('No downloads to save.', true); return; }
     const btn = event.currentTarget;
     btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving…';
     try {
-      const snippet = `const downloads = [\n${items.map(d =>
+      const snippet = `const downloads = [\n${allData.map(d =>
         `  {\n    id: ${d.id},\n    title: "${d.title.replace(/"/g,'\\"')}",\n    description: "${d.description.replace(/"/g,'\\"')}",\n    icon: "${d.icon}",\n    meta: ${JSON.stringify(d.meta)},\n    btnText: "${d.btnText}",\n    link: "${d.link}",\n    external: ${d.external}\n  }`
       ).join(',\n')}\n];`;
       const file = await ghGet();
       const current = decodeURIComponent(escape(atob(file.content.replace(/\n/g,''))));
       const updated = replaceSection(current, 'DOWNLOADS', snippet);
       if (!updated) throw new Error('Downloads section not found in content.js');
-      await ghPut(updated, file.sha, 'Update downloads via admin panel');
-      showToast('Downloads saved! Vercel is deploying…');
-      renderDownloadBlocks(items);
+      await ghPut(updated, file.sha, 'Update all downloads via admin panel');
+      showToast('All downloads saved!');
     } catch(e) { showToast(e.message, true); }
     finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save All Changes to GitHub'; }
   }
