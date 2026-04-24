@@ -1162,21 +1162,19 @@ System integration</textarea>
             </select>
           </div>
         </div>
-        ${!p.external ? `<div class="form-group">
+        <div class="form-group">
           <label>Detail Page Body</label>
           <div id="pqe_${p.id}"></div>
           <p class="hint">Rich content for the project detail page — auto-loaded from GitHub.</p>
-        </div>` : ''}`;
+        </div>`;
       container.appendChild(div);
       // Lock all fields until Edit is clicked
       div.querySelectorAll('input, textarea, select').forEach(el => el.disabled = true);
       div.querySelectorAll('.img-upload-btn').forEach(el => el.classList.add('disabled'));
-      if (!p.external) {
-        initQuill(`pqe_${p.id}`, 'Loading project content…');
-        const qInst = quillMap[`pqe_${p.id}`];
-        if (qInst) { qInst.enable(false); div.querySelector('.quill-wrap').classList.add('quill-readonly'); }
-        autoLoadBodyFromGH(p.link, `pqe_${p.id}`);
-      }
+      initQuill(`pqe_${p.id}`, 'Write project detail content here…');
+      const qInst = quillMap[`pqe_${p.id}`];
+      if (qInst) { qInst.enable(false); div.querySelector('.quill-wrap').classList.add('quill-readonly'); }
+      if (!p.external) autoLoadBodyFromGH(p.link, `pqe_${p.id}`);
     });
   }
 
@@ -1365,7 +1363,10 @@ System integration</textarea>
   function setQuillHTML(wrapperId, html) {
     const q = quillMap[wrapperId];
     if (!q) return;
-    q.root.innerHTML = html || '';
+    const wasReadOnly = q.root.getAttribute('contenteditable') === 'false';
+    if (wasReadOnly) q.enable(true);
+    q.clipboard.dangerouslyPasteHTML(html || '');
+    if (wasReadOnly) q.enable(false);
   }
 
   // Fetch article/project HTML from GitHub and extract body for Quill
