@@ -5,7 +5,7 @@
 // ---- ABOUT ----
 const about = {
   paragraphs: [
-    "Electrical and Electronic Engineer with over 3 years of experience in electrical engineering projects at ICC, Voltas Engineering, and the Central Engineering Consultancy Bureau (CECB). Strong exposure to low-voltage power distribution, switchboards, lighting systems, electrical estimation, and site coordination.",
+    "Electrical and Electronic Engineer with over 4 years of experience in electrical engineering projects at ICC, Voltas Engineering, and the Central Engineering Consultancy Bureau (CECB). Strong exposure to low-voltage power distribution, switchboards, lighting systems, electrical estimation, and site coordination.",
     "Proficient in AutoCAD and SolidWorks, and currently pursuing an MSc in Industrial Automation at the University of Moratuwa. Alongside engineering work, I build and ship web applications using AI tools — combining technical expertise with modern software development."
   ]
 };
@@ -154,5 +154,14 @@ const articles = [
     readTime: "5",
     excerpt: "University gives us the foundation — theories, equations, standards, and principles. But once we step into the industry, we quickly realise something important: university education alone is not enough.",
     link: "articles/article-1.html"
+  },
+  {
+    id: 1776922910811,
+    title: "Revolutionizing Robotics Prototyping with AI 🤖🦾",
+    date: "Mar 2026",
+    readTime: "5",
+    excerpt: "I’ve been testing out Blueprint.am and the speed of hardware prototyping is changing fast. I wanted to see how it handled a complex request, so I designed a 6-Axis Industrial Robot Arm focused on modularity and \"Plug-and-Work\" efficiency.",
+    link: "articles/article-3.html"
   }
 ];
+
