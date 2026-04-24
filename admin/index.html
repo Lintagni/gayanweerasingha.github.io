@@ -286,6 +286,19 @@
     .save-block-btn:hover { background: #047857; }
     .save-block-btn:disabled { background: #334155; color: #64748b; cursor: not-allowed; transform: none; }
 
+    .edit-block-btn {
+      background: rgba(37,99,235,0.12); border: 1px solid rgba(37,99,235,0.3); color: #60a5fa;
+      padding: 0.22rem 0.8rem; border-radius: 5px; font-size: 0.75rem; cursor: pointer;
+      font-family: inherit; transition: all 0.2s; display: inline-flex; align-items: center; gap: 4px;
+    }
+    .edit-block-btn:hover { background: rgba(37,99,235,0.22); }
+    .form-group input:disabled, .form-group textarea:disabled, .form-group select:disabled {
+      opacity: 0.55; cursor: default;
+    }
+    .img-upload-btn.disabled { opacity: 0.45; pointer-events: none; }
+    .quill-readonly .ql-toolbar { opacity: 0.4; pointer-events: none; }
+    .quill-readonly .ql-editor { cursor: default; }
+
     .img-upload-row { display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
     .img-upload-row input[type="text"] { flex: 1; min-width: 0; }
     .img-upload-btn {
@@ -674,9 +687,6 @@ System integration</textarea>
       <div id="p-existing-blocks"></div>
 
       <button class="add-block-btn" onclick="addNewProjectBlock()"><i class="fa-solid fa-plus"></i> Add New Project</button>
-      <div class="btn-row" id="p-save-row" style="display:none;">
-        <button class="save-btn" onclick="saveAllProjects()"><i class="fa-solid fa-floppy-disk"></i> Save All Changes to GitHub</button>
-      </div>
     </div>
 
     <!-- ===================== ARTICLES ===================== -->
@@ -688,9 +698,6 @@ System integration</textarea>
       <div id="a-existing-blocks"></div>
 
       <button class="add-block-btn" onclick="addNewArticleBlock()"><i class="fa-solid fa-plus"></i> Add New Article</button>
-      <div class="btn-row" id="a-save-row" style="display:none;">
-        <button class="save-btn" onclick="saveAllArticles()"><i class="fa-solid fa-floppy-disk"></i> Save All Changes to GitHub</button>
-      </div>
     </div>
 
     <!-- ===================== DOWNLOADS ===================== -->
@@ -698,9 +705,6 @@ System integration</textarea>
       <p class="hint" style="margin-bottom:1rem;">Each block is one download card on the Downloads page. Loads automatically when GitHub is connected.</p>
       <div id="dl-existing-blocks"></div>
       <button class="add-block-btn" onclick="addNewDownloadBlock()"><i class="fa-solid fa-plus"></i> Add Download Card</button>
-      <div class="btn-row" id="dl-save-row" style="display:none;">
-        <button class="save-btn" onclick="saveAllDownloads()"><i class="fa-solid fa-floppy-disk"></i> Save All Changes to GitHub</button>
-      </div>
     </div>
 
     <!-- ===================== SETTINGS ===================== -->
@@ -1120,7 +1124,8 @@ System integration</textarea>
         <div class="repeat-block-header">
           <span class="repeat-block-title">Project ${i + 1}</span>
           <div class="block-actions">
-            <button class="save-block-btn" onclick="saveProject(this.closest('.proj-block'))"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+            <button class="edit-block-btn" onclick="enterEditMode(this)"><i class="fa-solid fa-pen"></i> Edit</button>
+            <button class="save-block-btn" style="display:none;" onclick="saveProject(this.closest('.proj-block'))"><i class="fa-solid fa-floppy-disk"></i> Save</button>
             <button class="remove-btn" onclick="removeProjectFromGH(this)">Delete</button>
           </div>
         </div>
@@ -1163,12 +1168,16 @@ System integration</textarea>
           <p class="hint">Rich content for the project detail page — auto-loaded from GitHub.</p>
         </div>` : ''}`;
       container.appendChild(div);
+      // Lock all fields until Edit is clicked
+      div.querySelectorAll('input, textarea, select').forEach(el => el.disabled = true);
+      div.querySelectorAll('.img-upload-btn').forEach(el => el.classList.add('disabled'));
       if (!p.external) {
         initQuill(`pqe_${p.id}`, 'Loading project content…');
+        const qInst = quillMap[`pqe_${p.id}`];
+        if (qInst) { qInst.enable(false); div.querySelector('.quill-wrap').classList.add('quill-readonly'); }
         autoLoadBodyFromGH(p.link, `pqe_${p.id}`);
       }
     });
-    document.getElementById('p-save-row').style.display = 'flex';
   }
 
   function addNewProjectBlock() {
@@ -1221,7 +1230,6 @@ System integration</textarea>
     const newPqeId = `pqe_new_${Date.now()}`;
     div.querySelector('.pb-quill-slot').id = newPqeId;
     initQuill(newPqeId, 'Write your project detail content here…');
-    document.getElementById('p-save-row').style.display = 'flex';
     div.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
@@ -1236,7 +1244,8 @@ System integration</textarea>
         <div class="repeat-block-header">
           <span class="repeat-block-title">Article ${i + 1}</span>
           <div class="block-actions">
-            <button class="save-block-btn" onclick="saveArticle(this.closest('.art-block'))"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+            <button class="edit-block-btn" onclick="enterEditMode(this)"><i class="fa-solid fa-pen"></i> Edit</button>
+            <button class="save-block-btn" style="display:none;" onclick="saveArticle(this.closest('.art-block'))"><i class="fa-solid fa-floppy-disk"></i> Save</button>
             <button class="remove-btn" onclick="removeArticleFromGH(this)">Delete</button>
           </div>
         </div>
@@ -1264,11 +1273,15 @@ System integration</textarea>
           <p class="hint">Auto-loaded from GitHub. Edit freely — saves to article HTML file on GitHub.</p>
         </div>`;
       container.appendChild(div);
+      // Lock all fields until Edit is clicked
+      div.querySelectorAll('input, textarea, select').forEach(el => el.disabled = true);
+      div.querySelectorAll('.img-upload-btn').forEach(el => el.classList.add('disabled'));
       // Init Quill + auto-load body from GitHub
       initQuill(`aqe_${a.id}`, 'Loading article content…');
+      const qInst = quillMap[`aqe_${a.id}`];
+      if (qInst) { qInst.enable(false); div.querySelector('.quill-wrap').classList.add('quill-readonly'); }
       autoLoadBodyFromGH(a.link, `aqe_${a.id}`);
     });
-    document.getElementById('a-save-row').style.display = 'flex';
   }
 
   function addNewArticleBlock() {
@@ -1313,7 +1326,6 @@ System integration</textarea>
     const newQeId = `aqe_new_${Date.now()}`;
     div.querySelector('.ab-quill-slot').id = newQeId;
     initQuill(newQeId, 'Write your article here — use the toolbar for bold, italic, links, YouTube…');
-    document.getElementById('a-save-row').style.display = 'flex';
     div.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
@@ -1429,6 +1441,39 @@ System integration</textarea>
 
 
   // ============================================================
+  //  EDIT / LOCK MODE
+  // ============================================================
+  function enterEditMode(btn) {
+    const block = btn.closest('.repeat-block');
+    block.querySelectorAll('input, textarea, select').forEach(el => el.disabled = false);
+    block.querySelectorAll('.img-upload-btn').forEach(el => el.classList.remove('disabled'));
+    const qDiv = block.querySelector('[id^="pqe_"], [id^="aqe_"]');
+    if (qDiv && quillMap[qDiv.id]) {
+      quillMap[qDiv.id].enable(true);
+      const wrap = block.querySelector('.quill-wrap');
+      if (wrap) wrap.classList.remove('quill-readonly');
+    }
+    btn.style.display = 'none';
+    const saveBtn = block.querySelector('.save-block-btn');
+    if (saveBtn) saveBtn.style.display = 'inline-flex';
+  }
+
+  function exitEditMode(block) {
+    block.querySelectorAll('input, textarea, select').forEach(el => el.disabled = true);
+    block.querySelectorAll('.img-upload-btn').forEach(el => el.classList.add('disabled'));
+    const qDiv = block.querySelector('[id^="pqe_"], [id^="aqe_"]');
+    if (qDiv && quillMap[qDiv.id]) {
+      quillMap[qDiv.id].enable(false);
+      const wrap = block.querySelector('.quill-wrap');
+      if (wrap) wrap.classList.add('quill-readonly');
+    }
+    const editBtn = block.querySelector('.edit-block-btn');
+    if (editBtn) editBtn.style.display = 'inline-flex';
+    const saveBtn = block.querySelector('.save-block-btn');
+    if (saveBtn) saveBtn.style.display = 'none';
+  }
+
+  // ============================================================
   //  PER-BLOCK SAVE FUNCTIONS
   // ============================================================
   function collectProjectData(b) {
@@ -1519,6 +1564,7 @@ System integration</textarea>
       }
       showToast(`"${thisData.p.title}" saved!`);
       block.querySelector('.repeat-block-title').textContent = thisData.p.title;
+      if (block.querySelector('.edit-block-btn')) exitEditMode(block);
     } catch(e) { showToast(e.message, true); }
     finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save'; }
   }
@@ -1545,6 +1591,7 @@ System integration</textarea>
       }
       showToast(`"${thisData.a.title}" saved!`);
       block.querySelector('.repeat-block-title').textContent = thisData.a.title;
+      if (block.querySelector('.edit-block-btn')) exitEditMode(block);
     } catch(e) { showToast(e.message, true); }
     finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save'; }
   }
@@ -1568,6 +1615,7 @@ System integration</textarea>
       await ghPut(updated, file.sha, `Update download: ${thisData.title}`);
       showToast(`"${thisData.title}" saved!`);
       block.querySelector('.repeat-block-title').textContent = thisData.title;
+      if (block.querySelector('.edit-block-btn')) exitEditMode(block);
     } catch(e) { showToast(e.message, true); }
     finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save'; }
   }
@@ -1623,53 +1671,6 @@ System integration</textarea>
       await ghPut(updated, file.sha, 'Delete download via admin panel');
       showToast('Download deleted.');
     } catch(e) { showToast(e.message, true); }
-  }
-
-  async function saveAllProjects() {
-    if (!localStorage.getItem('gh_token')) { showToast('Connect GitHub token in Settings first.', true); return; }
-    const allData = [...document.querySelectorAll('.proj-block')].map(b => collectProjectData(b)).filter(Boolean);
-    if (!allData.length) { showToast('No projects to save.', true); return; }
-    const btn = event.currentTarget;
-    btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving…';
-    try {
-      const items = allData.map(d => d.p).map(p =>
-        `  {\n    id: ${p.id},\n    title: "${p.title.replace(/"/g,'\\"')}",\n    subtitle: "${p.subtitle.replace(/"/g,'\\"')}",\n    year: "${p.year}",\n    description: "${p.description.replace(/"/g,'\\"')}",\n    tags: ${JSON.stringify(p.tags)},\n    type: "${p.type}",\n    image: "${p.image||''}",\n    link: "${p.link}",\n    external: ${p.external}\n  }`
-      ).join(',\n');
-      const file = await ghGet();
-      const current = decodeURIComponent(escape(atob(file.content.replace(/\n/g,''))));
-      const updated = replaceSection(current, 'PROJECTS', `const projects = [\n${items}\n];`);
-      if (!updated) throw new Error('Projects section not found.');
-      await ghPut(updated, file.sha, 'Update all projects via admin panel');
-      for (const { p, body } of allData.filter(d => !d.p.external)) {
-        const filename = p.link.startsWith('projects/') ? p.link : `projects/${p.link}`;
-        await ghPutNew(filename, buildDetailPage(p, body), `Update detail page: ${p.title}`);
-      }
-      showToast('All projects saved!');
-    } catch(e) { showToast(e.message, true); }
-    finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save All Changes to GitHub'; }
-  }
-
-  async function saveAllArticles() {
-    if (!localStorage.getItem('gh_token')) { showToast('Connect GitHub token in Settings first.', true); return; }
-    const allData = [...document.querySelectorAll('.art-block')].map(b => collectArticleData(b)).filter(Boolean);
-    if (!allData.length) { showToast('No articles to save.', true); return; }
-    const btn = event.currentTarget;
-    btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving…';
-    try {
-      const items = allData.map(d => d.a).map(a =>
-        `  {\n    id: ${a.id},\n    title: "${a.title.replace(/"/g,'\\"')}",\n    date: "${a.date}",\n    readTime: "${a.readTime}",\n    excerpt: "${a.excerpt.replace(/"/g,'\\"')}",\n    image: "${a.image||''}",\n    link: "${a.link}"\n  }`
-      ).join(',\n');
-      const file = await ghGet();
-      const current = decodeURIComponent(escape(atob(file.content.replace(/\n/g,''))));
-      const updated = replaceSection(current, 'ARTICLES', `const articles = [\n${items}\n];`);
-      if (!updated) throw new Error('Articles section not found.');
-      await ghPut(updated, file.sha, 'Update all articles via admin panel');
-      for (const { a, content } of allData.filter(d => d.content)) {
-        await ghPutNew(a.link, buildArticleHTML(a.title, '', a.date, a.readTime, a.excerpt, content, a.image), `Save article: ${a.title}`);
-      }
-      showToast('All articles saved!');
-    } catch(e) { showToast(e.message, true); }
-    finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save All Changes to GitHub'; }
   }
 
   function buildDetailPage(p, body = '') {
@@ -1818,7 +1819,8 @@ ${content}
         <div class="repeat-block-header">
           <span class="repeat-block-title">Download ${i + 1}</span>
           <div class="block-actions">
-            <button class="save-block-btn" onclick="saveDownload(this.closest('.dl-block'))"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+            <button class="edit-block-btn" onclick="enterEditMode(this)"><i class="fa-solid fa-pen"></i> Edit</button>
+            <button class="save-block-btn" style="display:none;" onclick="saveDownload(this.closest('.dl-block'))"><i class="fa-solid fa-floppy-disk"></i> Save</button>
             <button class="remove-btn" onclick="removeDownloadFromGH(this)">Delete</button>
           </div>
         </div>
@@ -1841,8 +1843,10 @@ ${content}
           </div>
         </div>`;
       container.appendChild(div);
+      // Lock all fields until Edit is clicked
+      div.querySelectorAll('input, textarea, select').forEach(el => el.disabled = true);
+      div.querySelectorAll('.img-upload-btn').forEach(el => el.classList.add('disabled'));
     });
-    document.getElementById('dl-save-row').style.display = 'flex';
   }
 
   function addNewDownloadBlock() {
@@ -1875,28 +1879,7 @@ ${content}
         </div>
       </div>`;
     container.appendChild(div);
-    document.getElementById('dl-save-row').style.display = 'flex';
     div.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
-
-  async function saveAllDownloads() {
-    if (!localStorage.getItem('gh_token')) { showToast('Connect GitHub token in Settings first.', true); return; }
-    const allData = [...document.querySelectorAll('.dl-block')].map(b => collectDownloadData(b)).filter(Boolean);
-    if (!allData.length) { showToast('No downloads to save.', true); return; }
-    const btn = event.currentTarget;
-    btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving…';
-    try {
-      const snippet = `const downloads = [\n${allData.map(d =>
-        `  {\n    id: ${d.id},\n    title: "${d.title.replace(/"/g,'\\"')}",\n    description: "${d.description.replace(/"/g,'\\"')}",\n    icon: "${d.icon}",\n    meta: ${JSON.stringify(d.meta)},\n    btnText: "${d.btnText}",\n    link: "${d.link}",\n    external: ${d.external}\n  }`
-      ).join(',\n')}\n];`;
-      const file = await ghGet();
-      const current = decodeURIComponent(escape(atob(file.content.replace(/\n/g,''))));
-      const updated = replaceSection(current, 'DOWNLOADS', snippet);
-      if (!updated) throw new Error('Downloads section not found in content.js');
-      await ghPut(updated, file.sha, 'Update all downloads via admin panel');
-      showToast('All downloads saved!');
-    } catch(e) { showToast(e.message, true); }
-    finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save All Changes to GitHub'; }
   }
 
   // ============================================================
