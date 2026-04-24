@@ -273,6 +273,25 @@
     #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
     #toast.error { background: #dc2626; }
 
+    /* ---- IMAGE UPLOAD ---- */
+    .img-upload-row { display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+    .img-upload-row input[type="text"] { flex: 1; min-width: 0; }
+    .img-upload-btn {
+      background: rgba(37,99,235,0.12); border: 1px dashed #334155; color: #60a5fa;
+      padding: 0.45rem 1rem; border-radius: 7px; font-size: 0.82rem; cursor: pointer;
+      font-family: inherit; transition: all 0.2s; white-space: nowrap; display: inline-flex; align-items: center; gap: 6px;
+    }
+    .img-upload-btn:hover { background: rgba(37,99,235,0.22); border-color: #2563eb; }
+    .img-upload-btn input[type="file"] { display: none; }
+    .img-preview { display: none; width: 80px; height: 60px; object-fit: cover; border-radius: 6px; border: 1px solid #334155; flex-shrink: 0; }
+    .img-progress { font-size: 0.78rem; color: #60a5fa; display: none; margin-top: 4px; }
+    .load-content-btn {
+      background: rgba(100,116,139,0.15); border: 1px solid #334155; color: #94a3b8;
+      padding: 0.4rem 0.9rem; border-radius: 7px; font-size: 0.8rem; cursor: pointer;
+      font-family: inherit; transition: all 0.2s; display: inline-flex; align-items: center; gap: 5px;
+    }
+    .load-content-btn:hover { border-color: #60a5fa; color: #60a5fa; }
+
     @media (max-width: 720px) {
       .lock-wrap { flex-direction: column; min-height: auto; }
       .lock-left { padding: 2rem 1.5rem; }
@@ -832,12 +851,18 @@ System integration</textarea>
   async function ghPutNew(path, content, message) {
     const token = localStorage.getItem('gh_token');
     const encoded = btoa(unescape(encodeURIComponent(content)));
+    const body = { message, content: encoded, branch: GH_BRANCH };
+    // If file already exists, include its SHA so GitHub accepts the update
+    const checkRes = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${path}?ref=${GH_BRANCH}`, {
+      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+    });
+    if (checkRes.ok) { const existing = await checkRes.json(); body.sha = existing.sha; }
     const res = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${path}`, {
       method: 'PUT',
       headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message, content: encoded, branch: GH_BRANCH })
+      body: JSON.stringify(body)
     });
-    if (!res.ok) { const e = await res.json(); throw new Error(e.message || 'Failed to create file'); }
+    if (!res.ok) { const e = await res.json(); throw new Error(e.message || 'Failed to save file'); }
   }
 
   function replaceSection(fileContent, sectionKey, newSnippet) {
@@ -1074,6 +1099,15 @@ System integration</textarea>
         </div>
         <div class="form-group"><label>Description</label><textarea class="pb-desc" rows="3">${esc(p.description)}</textarea></div>
         <div class="form-group"><label>Tags (comma separated)</label><input class="pb-tags" type="text" value="${esc(p.tags.join(', '))}" /></div>
+        <div class="form-group">
+          <label>Hero Image</label>
+          <div class="img-upload-row">
+            <input class="pb-img" type="text" placeholder="projects/assets/images/photo.jpg" value="${esc(p.image||'')}" />
+            <label class="img-upload-btn"><i class="fa-solid fa-upload"></i> Upload<input type="file" accept="image/*" onchange="handleImageUpload(this,'pb-img','projects/assets/images')" /></label>
+            <img class="img-preview" ${p.image ? `src="../${esc(p.image)}" style="display:block"` : ''} alt="preview" />
+          </div>
+          <span class="img-progress">Uploading…</span>
+        </div>
         <div class="form-row">
           <div class="form-group"><label>Link</label><input class="pb-link" type="text" value="${esc(p.link)}" /></div>
           <div class="form-group"><label>Opens in new tab?</label>
@@ -1111,6 +1145,15 @@ System integration</textarea>
       </div>
       <div class="form-group"><label>Description *</label><textarea class="pb-desc" rows="3" placeholder="Brief description (1–3 sentences)..."></textarea></div>
       <div class="form-group"><label>Tags (comma separated)</label><input class="pb-tags" type="text" placeholder="Electrical Engineering, AutoCAD, Hospital Design" /></div>
+      <div class="form-group">
+        <label>Hero Image</label>
+        <div class="img-upload-row">
+          <input class="pb-img" type="text" placeholder="projects/assets/images/photo.jpg" />
+          <label class="img-upload-btn"><i class="fa-solid fa-upload"></i> Upload<input type="file" accept="image/*" onchange="handleImageUpload(this,'pb-img','projects/assets/images')" /></label>
+          <img class="img-preview" alt="preview" />
+        </div>
+        <span class="img-progress">Uploading…</span>
+      </div>
       <div class="form-row">
         <div class="form-group"><label>Link</label><input class="pb-link" type="text" placeholder="projects/project-2.html or https://..." /></div>
         <div class="form-group"><label>Opens in new tab?</label>
@@ -1142,7 +1185,24 @@ System integration</textarea>
           <div class="form-group"><label>Date</label><input class="ab-date" type="text" value="${esc(a.date)}" /></div>
           <div class="form-group"><label>Read Time (min)</label><input class="ab-readtime" type="number" value="${esc(a.readTime)}" /></div>
         </div>
-        <div class="form-group"><label>Excerpt</label><textarea class="ab-excerpt" rows="3">${esc(a.excerpt)}</textarea></div>`;
+        <div class="form-group"><label>Excerpt</label><textarea class="ab-excerpt" rows="3">${esc(a.excerpt)}</textarea></div>
+        <div class="form-group">
+          <label>Hero Image</label>
+          <div class="img-upload-row">
+            <input class="ab-img" type="text" placeholder="articles/assets/images/photo.jpg" value="${esc(a.image||'')}" />
+            <label class="img-upload-btn"><i class="fa-solid fa-upload"></i> Upload<input type="file" accept="image/*" onchange="handleImageUpload(this,'ab-img','articles/assets/images')" /></label>
+            <img class="img-preview" ${a.image ? `src="../${esc(a.image)}" style="display:block"` : ''} alt="preview" />
+          </div>
+          <span class="img-progress">Uploading…</span>
+        </div>
+        <div class="form-group">
+          <label style="display:flex;align-items:center;justify-content:space-between;">
+            Full Article Body
+            <button type="button" class="load-content-btn" onclick="loadArticleContent(this,'${esc(a.link)}')"><i class="fa-solid fa-download"></i> Load from GitHub</button>
+          </label>
+          <textarea class="ab-content" rows="10" placeholder="Click 'Load from GitHub' to edit existing content, or type new content here.&#10;&#10;Separate paragraphs with a blank line."></textarea>
+          <p class="hint">Leave blank to keep existing article HTML unchanged. Fill in to overwrite.</p>
+        </div>`;
       container.appendChild(div);
     });
     document.getElementById('a-save-row').style.display = 'flex';
@@ -1168,8 +1228,17 @@ System integration</textarea>
         <div class="form-group"><label>Read Time (min)</label><input class="ab-readtime" type="number" value="5" min="1" /></div>
       </div>
       <div class="form-group"><label>Excerpt</label><textarea class="ab-excerpt" rows="3" placeholder="2–3 sentence summary..."></textarea></div>
-      <div class="form-group"><label>Full Article Content *</label>
-        <textarea class="ab-content" rows="8" placeholder="Write your full article here.&#10;&#10;Separate paragraphs with a blank line."></textarea>
+      <div class="form-group">
+        <label>Hero Image</label>
+        <div class="img-upload-row">
+          <input class="ab-img" type="text" placeholder="articles/assets/images/photo.jpg" />
+          <label class="img-upload-btn"><i class="fa-solid fa-upload"></i> Upload<input type="file" accept="image/*" onchange="handleImageUpload(this,'ab-img','articles/assets/images')" /></label>
+          <img class="img-preview" alt="preview" />
+        </div>
+        <span class="img-progress">Uploading…</span>
+      </div>
+      <div class="form-group"><label>Full Article Body *</label>
+        <textarea class="ab-content" rows="10" placeholder="Write your full article here.&#10;&#10;Separate paragraphs with a blank line."></textarea>
         <p class="hint">Blank line = new paragraph. Saved as a separate HTML file.</p>
       </div>`;
     container.appendChild(div);
@@ -1179,6 +1248,69 @@ System integration</textarea>
 
   function esc(str) {
     return String(str || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  // ============================================================
+  //  IMAGE UPLOAD
+  // ============================================================
+  async function handleImageUpload(input, inputClass, folder) {
+    const file = input.files[0];
+    if (!file) return;
+    if (!localStorage.getItem('gh_token')) { showToast('Connect GitHub first.', true); return; }
+    const block = input.closest('.repeat-block');
+    const imgInput = block.querySelector('.' + inputClass);
+    const preview = block.querySelector('.img-preview');
+    const progress = block.querySelector('.img-progress');
+    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '-').toLowerCase();
+    const path = `${folder}/${safeName}`;
+    progress.style.display = 'inline';
+    try {
+      const base64 = await new Promise((res, rej) => {
+        const r = new FileReader();
+        r.onload = () => res(r.result.split(',')[1]);
+        r.onerror = rej;
+        r.readAsDataURL(file);
+      });
+      const token = localStorage.getItem('gh_token');
+      const checkRes = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${path}?ref=${GH_BRANCH}`, {
+        headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+      });
+      const body = { message: `Upload image: ${safeName}`, content: base64, branch: GH_BRANCH };
+      if (checkRes.ok) { const existing = await checkRes.json(); body.sha = existing.sha; }
+      const res = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${path}`, {
+        method: 'PUT',
+        headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      if (!res.ok) { const e = await res.json(); throw new Error(e.message || 'Upload failed'); }
+      imgInput.value = path;
+      preview.src = URL.createObjectURL(file);
+      preview.style.display = 'block';
+      showToast('Image uploaded!');
+    } catch(e) { showToast(e.message, true); }
+    finally { progress.style.display = 'none'; }
+  }
+
+  // Load existing article HTML and extract plain text paragraphs for editing
+  async function loadArticleContent(btn, link) {
+    const block = btn.closest('.repeat-block');
+    const textarea = block.querySelector('.ab-content');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading…';
+    try {
+      const url = `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/${GH_BRANCH}/${link}?t=${Date.now()}`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('Could not load article HTML.');
+      const html = await res.text();
+      // Extract <p> content between <p> tags, strip inline HTML
+      const matches = [...html.matchAll(/<p(?:[^>]*)>([\s\S]*?)<\/p>/gi)];
+      const paras = matches
+        .map(m => m[1].replace(/<[^>]+>/g, '').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&nbsp;/g,' ').trim())
+        .filter(p => p.length > 20); // skip short meta lines
+      textarea.value = paras.join('\n\n');
+      showToast('Content loaded — edit and save.');
+    } catch(e) { showToast(e.message, true); }
+    finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-download"></i> Load from GitHub'; }
   }
 
   async function saveAllProjects() {
@@ -1199,6 +1331,7 @@ System integration</textarea>
         type:     b.querySelector('.pb-type').value,
         description: b.querySelector('.pb-desc').value.trim(),
         tags:     b.querySelector('.pb-tags').value.split(',').map(t=>t.trim()).filter(Boolean),
+        image:    (b.querySelector('.pb-img')||{}).value?.trim() || '',
         link:     b.querySelector('.pb-link').value.trim() || '#',
         external: b.querySelector('.pb-external').value === 'true'
       };
@@ -1210,7 +1343,7 @@ System integration</textarea>
     btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving…';
     try {
       const items = projects.map(p =>
-        `  {\n    id: ${p.id},\n    title: "${p.title.replace(/"/g,'\\"')}",\n    subtitle: "${p.subtitle.replace(/"/g,'\\"')}",\n    year: "${p.year}",\n    description: "${p.description.replace(/"/g,'\\"')}",\n    tags: ${JSON.stringify(p.tags)},\n    type: "${p.type}",\n    link: "${p.link}",\n    external: ${p.external}\n  }`
+        `  {\n    id: ${p.id},\n    title: "${p.title.replace(/"/g,'\\"')}",\n    subtitle: "${p.subtitle.replace(/"/g,'\\"')}",\n    year: "${p.year}",\n    description: "${p.description.replace(/"/g,'\\"')}",\n    tags: ${JSON.stringify(p.tags)},\n    type: "${p.type}",\n    image: "${p.image||''}",\n    link: "${p.link}",\n    external: ${p.external}\n  }`
       ).join(',\n');
       const snippet = `const projects = [\n${items}\n];`;
       const file = await ghGet();
@@ -1241,27 +1374,25 @@ System integration</textarea>
       const filenameRaw = b.querySelector('.ab-link').value.trim();
       const filename = filenameRaw || `article-${id}.html`;
       const link = filename.startsWith('articles/') ? filename : `articles/${filename}`;
+      const content = (b.querySelector('.ab-content')||{}).value?.trim() || '';
       const a = {
         id,
         title,
         date:     b.querySelector('.ab-date').value.trim(),
         readTime: b.querySelector('.ab-readtime').value.trim(),
         excerpt:  b.querySelector('.ab-excerpt').value.trim(),
+        image:    (b.querySelector('.ab-img')||{}).value?.trim() || '',
         link
       };
       articles.push(a);
-      if (isNew) {
-        const contentEl = b.querySelector('.ab-content');
-        const content = contentEl ? contentEl.value.trim() : '';
-        if (content) newArticlePages.push({ a, content, link });
-      }
+      if (content) newArticlePages.push({ a, content, link });
     });
     if (!articles.length) { showToast('No articles to save.', true); return; }
     const btn = event.currentTarget;
     btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving…';
     try {
       const items = articles.map(a =>
-        `  {\n    id: ${a.id},\n    title: "${a.title.replace(/"/g,'\\"')}",\n    date: "${a.date}",\n    readTime: "${a.readTime}",\n    excerpt: "${a.excerpt.replace(/"/g,'\\"')}",\n    link: "${a.link}"\n  }`
+        `  {\n    id: ${a.id},\n    title: "${a.title.replace(/"/g,'\\"')}",\n    date: "${a.date}",\n    readTime: "${a.readTime}",\n    excerpt: "${a.excerpt.replace(/"/g,'\\"')}",\n    image: "${a.image||''}",\n    link: "${a.link}"\n  }`
       ).join(',\n');
       const snippet = `const articles = [\n${items}\n];`;
       const file = await ghGet();
@@ -1270,7 +1401,7 @@ System integration</textarea>
       if (!updated) throw new Error('Articles section not found.');
       await ghPut(updated, file.sha, 'Update articles via admin panel');
       for (const { a, content, link } of newArticlePages) {
-        await ghPutNew(link, buildArticleHTML(a.title, '', a.date, a.readTime, a.excerpt, content), `Add article page: ${a.title}`);
+        await ghPutNew(link, buildArticleHTML(a.title, '', a.date, a.readTime, a.excerpt, content, a.image), `Save article: ${a.title}`);
       }
       showToast('Articles saved! Vercel is deploying…');
       renderArticleBlocks(articles);
@@ -1279,16 +1410,18 @@ System integration</textarea>
   }
 
   function buildDetailPage(p) {
-    return `<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8" />\n  <meta name="viewport" content="width=device-width, initial-scale=1.0" />\n  <title>${p.title} | Gayan Weerasingha</title>\n  <link rel="stylesheet" href="../assets/css/style.css" />\n  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />\n</head>\n<body>\n\n<header class="page-header">\n  <h1>${p.title}</h1>\n  <p>${p.subtitle}</p>\n</header>\n\n<nav>\n  <a href="../index.html">Home</a>\n  <a href="../projects.html">Projects</a>\n  <a href="../index.html#contact">Contact</a>\n</nav>\n\n<div class="detail-main">\n  <a href="../projects.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Projects</a>\n\n  <h2>Project Overview</h2>\n  <p>${p.description}</p>\n\n  <h2>Scope of Work</h2>\n  <p>Add scope details here...</p>\n\n  <h2>My Responsibilities</h2>\n  <ul style="padding-left:1.2rem;line-height:2;">\n    <li>Add responsibility here</li>\n  </ul>\n\n  <h2>Tools &amp; Standards</h2>\n  <p>${p.tags.join(', ')}</p>\n\n</div>\n\n<footer>&copy; 2026 Gayan Weerasingha</footer>\n\n</body>\n</html>`;
+    const imgTag = p.image ? `\n  <img src="${p.image.replace('projects/','')}" alt="${p.title}" class="hero-image" />\n` : '';
+    return `<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8" />\n  <meta name="viewport" content="width=device-width, initial-scale=1.0" />\n  <title>${p.title} | Gayan Weerasingha</title>\n  <link rel="preconnect" href="https://fonts.googleapis.com">\n  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">\n  <link rel="stylesheet" href="../assets/css/style.css" />\n  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />\n  <style>\n    article { max-width: 900px; margin: auto; padding: 3rem 1rem; }\n    p { text-align: justify; hyphens: auto; }\n    .hero-image { width: 100%; max-height: 420px; object-fit: cover; border-radius: 12px; margin: 1.5rem 0 2rem; }\n  </style>\n</head>\n<body>\n\n<header class="page-header">\n  <h1>${p.title}</h1>\n  <p>${p.subtitle}</p>\n</header>\n\n<nav>\n  <a href="../index.html" class="nav-logo"><span class="nav-initials">GW</span><span class="nav-divider"></span><span class="nav-label">Engineer</span></a>\n  <div class="nav-links">\n    <a href="../index.html#about">About</a>\n    <a href="../index.html#projects">Projects</a>\n    <a href="../index.html#contact">Contact</a>\n    <a href="../assets/documents/W_M_G_Weerasinghe_CV.pdf" class="nav-resume" target="_blank" rel="noopener noreferrer">Resume ↗</a>\n  </div>\n</nav>\n\n<article>\n  <a href="../projects.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Projects</a>\n${imgTag}\n  <h2>Project Overview</h2>\n  <p>${p.description}</p>\n\n  <h2>Scope of Work</h2>\n  <p>Add scope details here...</p>\n\n  <h2>My Responsibilities</h2>\n  <ul style="padding-left:1.2rem;line-height:2;">\n    <li>Add responsibility here</li>\n  </ul>\n\n  <h2>Tools &amp; Standards</h2>\n  <p>${p.tags.join(', ')}</p>\n\n</article>\n\n<footer>\n  <span>&copy; 2026 Gayan Weerasingha &nbsp;&middot;&nbsp; Electrical &amp; Automation Engineer</span>\n  <a href="https://gayanweerasingha.org">gayanweerasingha.org</a>\n</footer>\n\n</body>\n</html>`;
   }
 
   // ============================================================
   //  ARTICLE
   // ============================================================
-  function buildArticleHTML(title, subtitle, date, readTime, excerpt, content) {
+  function buildArticleHTML(title, subtitle, date, readTime, excerpt, content, image) {
     const paras = content.split(/\n\n+/).filter(p => p.trim());
     const parasHTML = paras.map(p => `  <p>${p.replace(/\n/g,'<br/>')}</p>`).join('\n\n');
-    return `<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8" />\n  <meta name="viewport" content="width=device-width, initial-scale=1.0" />\n  <title>${title} | Gayan Weerasingha</title>\n  <meta name="description" content="${excerpt.substring(0,150)}" />\n  <link rel="stylesheet" href="../assets/css/style.css" />\n  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />\n</head>\n<body>\n\n<header class="page-header">\n  <h1>Articles &amp; Technical Writing</h1>\n</header>\n\n<nav>\n  <a href="../index.html">Home</a>\n  <a href="../articles.html">Articles</a>\n  <a href="../index.html#contact">Contact</a>\n</nav>\n\n<div class="detail-main">\n  <a href="../articles.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Articles</a>\n  <h1>${title}</h1>\n  <p class="detail-meta">By Gayan Weerasingha &nbsp;&middot;&nbsp; ${date} &nbsp;&middot;&nbsp; ${readTime} min read</p>\n\n${parasHTML}\n\n</div>\n\n<footer>&copy; 2026 Gayan Weerasingha &nbsp;&middot;&nbsp; Electrical &amp; Automation Engineer</footer>\n\n</body>\n</html>`;
+    const imgTag = image ? `\n  <img src="${image.replace('articles/','')}" alt="${title}" style="width:100%;max-height:420px;object-fit:cover;border-radius:12px;margin:1.5rem 0 2rem;" />\n` : '';
+    return `<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8" />\n  <meta name="viewport" content="width=device-width, initial-scale=1.0" />\n  <title>${title} | Gayan Weerasingha</title>\n  <meta name="description" content="${excerpt.substring(0,150)}" />\n  <link rel="preconnect" href="https://fonts.googleapis.com">\n  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">\n  <link rel="stylesheet" href="../assets/css/style.css" />\n  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />\n  <style>\n    article { max-width: 860px; margin: auto; padding: 3rem 1rem; }\n    article p { text-align: justify; hyphens: auto; margin-bottom: 1.2rem; }\n    article h2 { font-family: Sora, sans-serif; margin: 2rem 0 0.8rem; }\n    .article-meta-bar { font-size: 0.85rem; color: var(--text-light); margin-bottom: 2rem; }\n  </style>\n</head>\n<body>\n\n<header class="page-header">\n  <h1>Articles &amp; Technical Writing</h1>\n</header>\n\n<nav>\n  <a href="../index.html" class="nav-logo"><span class="nav-initials">GW</span><span class="nav-divider"></span><span class="nav-label">Engineer</span></a>\n  <div class="nav-links">\n    <a href="../index.html#about">About</a>\n    <a href="../articles.html">Articles</a>\n    <a href="../index.html#contact">Contact</a>\n    <a href="../assets/documents/W_M_G_Weerasinghe_CV.pdf" class="nav-resume" target="_blank" rel="noopener noreferrer">Resume ↗</a>\n  </div>\n</nav>\n\n<article>\n  <a href="../articles.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Articles</a>\n  <h1 style="font-family:Sora,sans-serif;font-size:clamp(1.5rem,3vw,2rem);margin:1.2rem 0 0.6rem;">${title}</h1>\n  <div class="article-meta-bar">By Gayan Weerasingha &nbsp;&middot;&nbsp; ${date} &nbsp;&middot;&nbsp; ${readTime} min read</div>\n${imgTag}\n${parasHTML}\n\n</article>\n\n<footer>\n  <span>&copy; 2026 Gayan Weerasingha &nbsp;&middot;&nbsp; Electrical &amp; Automation Engineer</span>\n  <a href="https://gayanweerasingha.org">gayanweerasingha.org</a>\n</footer>\n\n</body>\n</html>`;
   }
 
   // ============================================================
