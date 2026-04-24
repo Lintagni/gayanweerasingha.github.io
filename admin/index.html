@@ -6,6 +6,8 @@
   <title>Admin — Portfolio</title>
   <meta name="robots" content="noindex, nofollow" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.7/quill.snow.css" />
+  <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -291,6 +293,31 @@
       font-family: inherit; transition: all 0.2s; display: inline-flex; align-items: center; gap: 5px;
     }
     .load-content-btn:hover { border-color: #60a5fa; color: #60a5fa; }
+
+    /* ---- QUILL DARK THEME ---- */
+    .quill-wrap { border-radius: 9px; overflow: hidden; margin-top: 0; }
+    .quill-wrap .ql-toolbar { background: #0f172a; border-color: #334155; border-radius: 9px 9px 0 0; }
+    .quill-wrap .ql-container { background: #1e293b; border-color: #334155; border-radius: 0 0 9px 9px; font-family: inherit; font-size: 0.92rem; }
+    .quill-wrap .ql-editor { min-height: 180px; color: #e2e8f0; line-height: 1.7; }
+    .quill-wrap .ql-editor.ql-blank::before { color: #475569; font-style: normal; }
+    .quill-wrap .ql-editor a { color: #60a5fa; }
+    .quill-wrap .ql-snow .ql-stroke { stroke: #94a3b8; }
+    .quill-wrap .ql-snow .ql-fill { fill: #94a3b8; }
+    .quill-wrap .ql-snow .ql-picker { color: #94a3b8; }
+    .quill-wrap .ql-snow .ql-picker-options { background: #1e293b; border-color: #334155; }
+    .quill-wrap .ql-snow .ql-picker-item { color: #94a3b8; }
+    .quill-wrap .ql-snow .ql-picker-item:hover { color: #60a5fa; }
+    .quill-wrap .ql-snow button:hover .ql-stroke,
+    .quill-wrap .ql-snow button.ql-active .ql-stroke { stroke: #60a5fa; }
+    .quill-wrap .ql-snow button:hover .ql-fill,
+    .quill-wrap .ql-snow button.ql-active .ql-fill { fill: #60a5fa; }
+    .quill-wrap .ql-snow .ql-picker-label:hover,
+    .quill-wrap .ql-snow .ql-picker-label.ql-active { color: #60a5fa; }
+    .quill-wrap .ql-tooltip { background: #1e293b; border-color: #334155; color: #e2e8f0; box-shadow: 0 8px 30px rgba(0,0,0,0.5); border-radius: 8px; }
+    .quill-wrap .ql-tooltip input[type=text] { background: #0f172a; border-color: #334155; color: #e2e8f0; border-radius: 6px; }
+    .quill-wrap .ql-tooltip a.ql-action,
+    .quill-wrap .ql-tooltip a.ql-remove { color: #60a5fa; }
+    .ql-loading { padding: 1rem; color: #475569; font-size: 0.85rem; font-style: italic; }
 
     @media (max-width: 720px) {
       .lock-wrap { flex-direction: column; min-height: auto; }
@@ -1116,8 +1143,17 @@ System integration</textarea>
               <option value="true"${p.external?' selected':''}>Yes (external)</option>
             </select>
           </div>
-        </div>`;
+        </div>
+        ${!p.external ? `<div class="form-group">
+          <label>Detail Page Body</label>
+          <div id="pqe_${p.id}"></div>
+          <p class="hint">Rich content for the project detail page — auto-loaded from GitHub.</p>
+        </div>` : ''}`;
       container.appendChild(div);
+      if (!p.external) {
+        initQuill(`pqe_${p.id}`, 'Loading project content…');
+        autoLoadBodyFromGH(p.link, `pqe_${p.id}`);
+      }
     });
     document.getElementById('p-save-row').style.display = 'flex';
   }
@@ -1159,8 +1195,16 @@ System integration</textarea>
         <div class="form-group"><label>Opens in new tab?</label>
           <select class="pb-external"><option value="false">No (internal page)</option><option value="true">Yes (external URL)</option></select>
         </div>
+      </div>
+      <div class="form-group">
+        <label>Detail Page Body</label>
+        <div class="pb-quill-slot"></div>
+        <p class="hint">Rich content for the project detail page — bold, italic, links, YouTube embeds.</p>
       </div>`;
     container.appendChild(div);
+    const newPqeId = `pqe_new_${Date.now()}`;
+    div.querySelector('.pb-quill-slot').id = newPqeId;
+    initQuill(newPqeId, 'Write your project detail content here…');
     document.getElementById('p-save-row').style.display = 'flex';
     div.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
@@ -1196,14 +1240,14 @@ System integration</textarea>
           <span class="img-progress">Uploading…</span>
         </div>
         <div class="form-group">
-          <label style="display:flex;align-items:center;justify-content:space-between;">
-            Full Article Body
-            <button type="button" class="load-content-btn" onclick="loadArticleContent(this,'${esc(a.link)}')"><i class="fa-solid fa-download"></i> Load from GitHub</button>
-          </label>
-          <textarea class="ab-content" rows="10" placeholder="Click 'Load from GitHub' to edit existing content, or type new content here.&#10;&#10;Separate paragraphs with a blank line."></textarea>
-          <p class="hint">Leave blank to keep existing article HTML unchanged. Fill in to overwrite.</p>
+          <label>Full Article Body</label>
+          <div id="aqe_${a.id}"></div>
+          <p class="hint">Auto-loaded from GitHub. Edit freely — saves to article HTML file on GitHub.</p>
         </div>`;
       container.appendChild(div);
+      // Init Quill + auto-load body from GitHub
+      initQuill(`aqe_${a.id}`, 'Loading article content…');
+      autoLoadBodyFromGH(a.link, `aqe_${a.id}`);
     });
     document.getElementById('a-save-row').style.display = 'flex';
   }
@@ -1237,17 +1281,86 @@ System integration</textarea>
         </div>
         <span class="img-progress">Uploading…</span>
       </div>
-      <div class="form-group"><label>Full Article Body *</label>
-        <textarea class="ab-content" rows="10" placeholder="Write your full article here.&#10;&#10;Separate paragraphs with a blank line."></textarea>
-        <p class="hint">Blank line = new paragraph. Saved as a separate HTML file.</p>
+      <div class="form-group">
+        <label>Full Article Body *</label>
+        <div class="ab-quill-slot"></div>
+        <p class="hint">Saved as a separate HTML file on GitHub.</p>
       </div>`;
     container.appendChild(div);
+    // Init Quill — assign unique ID after appending
+    const newQeId = `aqe_new_${Date.now()}`;
+    div.querySelector('.ab-quill-slot').id = newQeId;
+    initQuill(newQeId, 'Write your article here — use the toolbar for bold, italic, links, YouTube…');
     document.getElementById('a-save-row').style.display = 'flex';
     div.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
   function esc(str) {
     return String(str || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  // ============================================================
+  //  RICH TEXT EDITOR (Quill)
+  // ============================================================
+  const quillMap = {};
+  const QUILL_TOOLBAR = [
+    ['bold', 'italic', 'underline'],
+    [{ align: ['', 'center', 'right', 'justify'] }],
+    ['link', 'video'],
+    ['clean']
+  ];
+
+  function initQuill(wrapperId, placeholder = 'Write content here…') {
+    const wrap = document.getElementById(wrapperId);
+    if (!wrap || quillMap[wrapperId]) return;
+    wrap.innerHTML = `<div class="quill-wrap"><div id="${wrapperId}_editor"></div></div>`;
+    quillMap[wrapperId] = new Quill(`#${wrapperId}_editor`, {
+      theme: 'snow',
+      placeholder,
+      modules: { toolbar: QUILL_TOOLBAR }
+    });
+  }
+
+  function getQuillHTML(wrapperId) {
+    const q = quillMap[wrapperId];
+    if (!q) return '';
+    const html = q.root.innerHTML;
+    return html === '<p><br></p>' ? '' : html;
+  }
+
+  function setQuillHTML(wrapperId, html) {
+    const q = quillMap[wrapperId];
+    if (!q) return;
+    q.root.innerHTML = html || '';
+  }
+
+  // Fetch article/project HTML from GitHub and extract body for Quill
+  async function autoLoadBodyFromGH(link, wrapperId) {
+    const wrap = document.getElementById(wrapperId);
+    if (!wrap) return;
+    const editorWrap = wrap.querySelector('.quill-wrap');
+    if (editorWrap) editorWrap.insertAdjacentHTML('afterbegin', '<div class="ql-loading"><i class="fa-solid fa-spinner fa-spin" style="margin-right:5px;"></i>Loading from GitHub…</div>');
+    try {
+      const url = `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/${GH_BRANCH}/${link}?t=${Date.now()}`;
+      const res = await fetch(url);
+      if (!res.ok) return;
+      const html = await res.text();
+      // Extract content inside <article> tag
+      const match = html.match(/<article[^>]*>([\s\S]*?)<\/article>/i);
+      if (!match) return;
+      let body = match[1];
+      // Strip navigation elements: back-btn, h1, meta bar, hero image
+      body = body.replace(/<a[^>]*class="back-btn"[^>]*>[\s\S]*?<\/a>/gi, '');
+      body = body.replace(/<h1[^>]*>[\s\S]*?<\/h1>/gi, '');
+      body = body.replace(/<div[^>]*class="article-meta-bar"[^>]*>[\s\S]*?<\/div>/gi, '');
+      body = body.replace(/<img[^>]*>/gi, '');
+      body = body.trim();
+      setQuillHTML(wrapperId, body);
+    } catch(e) { /* silent — user can type */ }
+    finally {
+      const loader = wrap.querySelector('.ql-loading');
+      if (loader) loader.remove();
+    }
   }
 
   // ============================================================
@@ -1291,27 +1404,7 @@ System integration</textarea>
     finally { progress.style.display = 'none'; }
   }
 
-  // Load existing article HTML and extract plain text paragraphs for editing
-  async function loadArticleContent(btn, link) {
-    const block = btn.closest('.repeat-block');
-    const textarea = block.querySelector('.ab-content');
-    btn.disabled = true;
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading…';
-    try {
-      const url = `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/${GH_BRANCH}/${link}?t=${Date.now()}`;
-      const res = await fetch(url);
-      if (!res.ok) throw new Error('Could not load article HTML.');
-      const html = await res.text();
-      // Extract <p> content between <p> tags, strip inline HTML
-      const matches = [...html.matchAll(/<p(?:[^>]*)>([\s\S]*?)<\/p>/gi)];
-      const paras = matches
-        .map(m => m[1].replace(/<[^>]+>/g, '').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&nbsp;/g,' ').trim())
-        .filter(p => p.length > 20); // skip short meta lines
-      textarea.value = paras.join('\n\n');
-      showToast('Content loaded — edit and save.');
-    } catch(e) { showToast(e.message, true); }
-    finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-download"></i> Load from GitHub'; }
-  }
+
 
   async function saveAllProjects() {
     if (!localStorage.getItem('gh_token')) { showToast('Connect GitHub token in Settings first.', true); return; }
@@ -1335,8 +1428,11 @@ System integration</textarea>
         link:     b.querySelector('.pb-link').value.trim() || '#',
         external: b.querySelector('.pb-external').value === 'true'
       };
+      // Get body from Quill editor
+      const qeDiv = b.querySelector('[id^="pqe_"]');
+      const body = qeDiv ? getQuillHTML(qeDiv.id) : '';
       projects.push(p);
-      if (isNew && !p.external) newInternalBlocks.push(p);
+      if (!p.external) newInternalBlocks.push({ p, body, isNew });
     });
     if (!projects.length) { showToast('No projects to save.', true); return; }
     const btn = event.currentTarget;
@@ -1351,9 +1447,9 @@ System integration</textarea>
       const updated = replaceSection(current, 'PROJECTS', snippet);
       if (!updated) throw new Error('Projects section not found.');
       await ghPut(updated, file.sha, 'Update projects via admin panel');
-      for (const p of newInternalBlocks) {
+      for (const { p, body, isNew } of newInternalBlocks) {
         const filename = p.link.startsWith('projects/') ? p.link : `projects/${p.link}`;
-        await ghPutNew(filename, buildDetailPage(p), `Add detail page: ${p.title}`);
+        await ghPutNew(filename, buildDetailPage(p, body), `${isNew ? 'Add' : 'Update'} detail page: ${p.title}`);
       }
       showToast('Projects saved! Vercel is deploying…');
       renderProjectBlocks(projects);
@@ -1374,7 +1470,9 @@ System integration</textarea>
       const filenameRaw = b.querySelector('.ab-link').value.trim();
       const filename = filenameRaw || `article-${id}.html`;
       const link = filename.startsWith('articles/') ? filename : `articles/${filename}`;
-      const content = (b.querySelector('.ab-content')||{}).value?.trim() || '';
+      // Get content from Quill editor (by finding the aqe_ div inside this block)
+      const qeDiv = b.querySelector('[id^="aqe_"]');
+      const content = qeDiv ? getQuillHTML(qeDiv.id) : '';
       const a = {
         id,
         title,
@@ -1409,19 +1507,126 @@ System integration</textarea>
     finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save All Changes to GitHub'; }
   }
 
-  function buildDetailPage(p) {
+  function buildDetailPage(p, body = '') {
     const imgTag = p.image ? `\n  <img src="${p.image.replace('projects/','')}" alt="${p.title}" class="hero-image" />\n` : '';
-    return `<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8" />\n  <meta name="viewport" content="width=device-width, initial-scale=1.0" />\n  <title>${p.title} | Gayan Weerasingha</title>\n  <link rel="preconnect" href="https://fonts.googleapis.com">\n  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">\n  <link rel="stylesheet" href="../assets/css/style.css" />\n  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />\n  <style>\n    article { max-width: 900px; margin: auto; padding: 3rem 1rem; }\n    p { text-align: justify; hyphens: auto; }\n    .hero-image { width: 100%; max-height: 420px; object-fit: cover; border-radius: 12px; margin: 1.5rem 0 2rem; }\n  </style>\n</head>\n<body>\n\n<header class="page-header">\n  <h1>${p.title}</h1>\n  <p>${p.subtitle}</p>\n</header>\n\n<nav>\n  <a href="../index.html" class="nav-logo"><span class="nav-initials">GW</span><span class="nav-divider"></span><span class="nav-label">Engineer</span></a>\n  <div class="nav-links">\n    <a href="../index.html#about">About</a>\n    <a href="../index.html#projects">Projects</a>\n    <a href="../index.html#contact">Contact</a>\n    <a href="../assets/documents/W_M_G_Weerasinghe_CV.pdf" class="nav-resume" target="_blank" rel="noopener noreferrer">Resume ↗</a>\n  </div>\n</nav>\n\n<article>\n  <a href="../projects.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Projects</a>\n${imgTag}\n  <h2>Project Overview</h2>\n  <p>${p.description}</p>\n\n  <h2>Scope of Work</h2>\n  <p>Add scope details here...</p>\n\n  <h2>My Responsibilities</h2>\n  <ul style="padding-left:1.2rem;line-height:2;">\n    <li>Add responsibility here</li>\n  </ul>\n\n  <h2>Tools &amp; Standards</h2>\n  <p>${p.tags.join(', ')}</p>\n\n</article>\n\n<footer>\n  <span>&copy; 2026 Gayan Weerasingha &nbsp;&middot;&nbsp; Electrical &amp; Automation Engineer</span>\n  <a href="https://gayanweerasingha.org">gayanweerasingha.org</a>\n</footer>\n\n</body>\n</html>`;
+    const bodyHTML = body || `<h2>Project Overview</h2>\n  <p>${p.description}</p>\n\n  <h2>Scope of Work</h2>\n  <p>Add scope details here…</p>`;
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>${p.title} | Gayan Weerasingha</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />
+  <style>
+    article { max-width: 900px; margin: auto; padding: 3rem 1rem; }
+    article p { margin-bottom: 1.1rem; line-height: 1.75; }
+    article h2 { font-family: Sora, sans-serif; margin: 2rem 0 0.8rem; }
+    article a { color: var(--accent); text-decoration: underline; }
+    article iframe { max-width: 100%; aspect-ratio: 16/9; border-radius: 8px; border: none; display: block; margin: 1.5rem 0; }
+    .ql-align-justify { text-align: justify; }
+    .ql-align-center { text-align: center; }
+    .ql-align-right { text-align: right; }
+    .hero-image { width: 100%; max-height: 420px; object-fit: cover; border-radius: 12px; margin: 1.5rem 0 2rem; }
+  </style>
+</head>
+<body>
+
+<header class="page-header">
+  <h1>${p.title}</h1>
+  <p>${p.subtitle}</p>
+</header>
+
+<nav>
+  <a href="../index.html" class="nav-logo"><span class="nav-initials">GW</span><span class="nav-divider"></span><span class="nav-label">Engineer</span></a>
+  <div class="nav-links">
+    <a href="../index.html#about">About</a>
+    <a href="../index.html#projects">Projects</a>
+    <a href="../index.html#contact">Contact</a>
+    <a href="../assets/documents/W_M_G_Weerasinghe_CV.pdf" class="nav-resume" target="_blank" rel="noopener noreferrer">Resume ↗</a>
+  </div>
+</nav>
+
+<article>
+  <a href="../projects.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Projects</a>
+${imgTag}
+  ${bodyHTML}
+
+</article>
+
+<footer>
+  <span>&copy; 2026 Gayan Weerasingha &nbsp;&middot;&nbsp; Electrical &amp; Automation Engineer</span>
+  <a href="https://gayanweerasingha.org">gayanweerasingha.org</a>
+</footer>
+
+</body>
+</html>`;
   }
 
   // ============================================================
   //  ARTICLE
   // ============================================================
   function buildArticleHTML(title, subtitle, date, readTime, excerpt, content, image) {
-    const paras = content.split(/\n\n+/).filter(p => p.trim());
-    const parasHTML = paras.map(p => `  <p>${p.replace(/\n/g,'<br/>')}</p>`).join('\n\n');
     const imgTag = image ? `\n  <img src="${image.replace('articles/','')}" alt="${title}" style="width:100%;max-height:420px;object-fit:cover;border-radius:12px;margin:1.5rem 0 2rem;" />\n` : '';
-    return `<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8" />\n  <meta name="viewport" content="width=device-width, initial-scale=1.0" />\n  <title>${title} | Gayan Weerasingha</title>\n  <meta name="description" content="${excerpt.substring(0,150)}" />\n  <link rel="preconnect" href="https://fonts.googleapis.com">\n  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">\n  <link rel="stylesheet" href="../assets/css/style.css" />\n  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />\n  <style>\n    article { max-width: 860px; margin: auto; padding: 3rem 1rem; }\n    article p { text-align: justify; hyphens: auto; margin-bottom: 1.2rem; }\n    article h2 { font-family: Sora, sans-serif; margin: 2rem 0 0.8rem; }\n    .article-meta-bar { font-size: 0.85rem; color: var(--text-light); margin-bottom: 2rem; }\n  </style>\n</head>\n<body>\n\n<header class="page-header">\n  <h1>Articles &amp; Technical Writing</h1>\n</header>\n\n<nav>\n  <a href="../index.html" class="nav-logo"><span class="nav-initials">GW</span><span class="nav-divider"></span><span class="nav-label">Engineer</span></a>\n  <div class="nav-links">\n    <a href="../index.html#about">About</a>\n    <a href="../articles.html">Articles</a>\n    <a href="../index.html#contact">Contact</a>\n    <a href="../assets/documents/W_M_G_Weerasinghe_CV.pdf" class="nav-resume" target="_blank" rel="noopener noreferrer">Resume ↗</a>\n  </div>\n</nav>\n\n<article>\n  <a href="../articles.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Articles</a>\n  <h1 style="font-family:Sora,sans-serif;font-size:clamp(1.5rem,3vw,2rem);margin:1.2rem 0 0.6rem;">${title}</h1>\n  <div class="article-meta-bar">By Gayan Weerasingha &nbsp;&middot;&nbsp; ${date} &nbsp;&middot;&nbsp; ${readTime} min read</div>\n${imgTag}\n${parasHTML}\n\n</article>\n\n<footer>\n  <span>&copy; 2026 Gayan Weerasingha &nbsp;&middot;&nbsp; Electrical &amp; Automation Engineer</span>\n  <a href="https://gayanweerasingha.org">gayanweerasingha.org</a>\n</footer>\n\n</body>\n</html>`;
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>${title} | Gayan Weerasingha</title>
+  <meta name="description" content="${excerpt.substring(0,150)}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />
+  <style>
+    article { max-width: 860px; margin: auto; padding: 3rem 1rem; }
+    article p { margin-bottom: 1.1rem; line-height: 1.75; }
+    article h2 { font-family: Sora, sans-serif; margin: 2rem 0 0.8rem; }
+    article a { color: var(--accent); text-decoration: underline; }
+    article iframe { max-width: 100%; aspect-ratio: 16/9; border-radius: 8px; border: none; display: block; margin: 1.5rem 0; }
+    .ql-align-justify { text-align: justify; }
+    .ql-align-center { text-align: center; }
+    .ql-align-right { text-align: right; }
+    .article-meta-bar { font-size: 0.85rem; color: var(--text-light); margin-bottom: 2rem; }
+  </style>
+</head>
+<body>
+
+<header class="page-header">
+  <h1>Articles &amp; Technical Writing</h1>
+</header>
+
+<nav>
+  <a href="../index.html" class="nav-logo"><span class="nav-initials">GW</span><span class="nav-divider"></span><span class="nav-label">Engineer</span></a>
+  <div class="nav-links">
+    <a href="../index.html#about">About</a>
+    <a href="../articles.html">Articles</a>
+    <a href="../index.html#contact">Contact</a>
+    <a href="../assets/documents/W_M_G_Weerasinghe_CV.pdf" class="nav-resume" target="_blank" rel="noopener noreferrer">Resume ↗</a>
+  </div>
+</nav>
+
+<article>
+  <a href="../articles.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Articles</a>
+  <h1 style="font-family:Sora,sans-serif;font-size:clamp(1.5rem,3vw,2rem);margin:1.2rem 0 0.6rem;">${title}</h1>
+  <div class="article-meta-bar">By Gayan Weerasingha &nbsp;&middot;&nbsp; ${date} &nbsp;&middot;&nbsp; ${readTime} min read</div>
+${imgTag}
+${content}
+
+</article>
+
+<footer>
+  <span>&copy; 2026 Gayan Weerasingha &nbsp;&middot;&nbsp; Electrical &amp; Automation Engineer</span>
+  <a href="https://gayanweerasingha.org">gayanweerasingha.org</a>
+</footer>
+
+</body>
+</html>`;
   }
 
   // ============================================================
