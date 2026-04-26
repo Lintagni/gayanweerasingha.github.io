@@ -1331,6 +1331,15 @@ System integration</textarea>
     return String(str || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
 
+  // Escapes a value for safe insertion into a JS double-quoted string literal
+  function jsStr(str) {
+    return String(str || '')
+      .replace(/\\/g, '\\\\')
+      .replace(/"/g, '\\"')
+      .replace(/\r/g, '')
+      .replace(/\n/g, '\\n');
+  }
+
   // ============================================================
   //  RICH TEXT EDITOR (Quill)
   // ============================================================
@@ -1552,7 +1561,7 @@ System integration</textarea>
       const allProjects = [...document.querySelectorAll('.proj-block')]
         .map(b => collectProjectData(b)).filter(Boolean).map(d => d.p);
       const items = allProjects.map(p =>
-        `  {\n    id: ${p.id},\n    title: "${p.title.replace(/"/g,'\\"')}",\n    subtitle: "${p.subtitle.replace(/"/g,'\\"')}",\n    year: "${p.year}",\n    description: "${p.description.replace(/"/g,'\\"')}",\n    tags: ${JSON.stringify(p.tags)},\n    type: "${p.type}",\n    image: "${p.image||''}",\n    link: "${p.link}",\n    external: ${p.external}\n  }`
+        `  {\n    id: ${p.id},\n    title: "${jsStr(p.title)}",\n    subtitle: "${jsStr(p.subtitle)}",\n    year: "${jsStr(p.year)}",\n    description: "${jsStr(p.description)}",\n    tags: ${JSON.stringify(p.tags)},\n    type: "${p.type}",\n    image: "${jsStr(p.image||'')}",\n    link: "${jsStr(p.link)}",\n    external: ${p.external}\n  }`
       ).join(',\n');
       const file = await ghGet();
       const current = decodeURIComponent(escape(atob(file.content.replace(/\n/g,''))));
@@ -1580,7 +1589,7 @@ System integration</textarea>
       const allArticles = [...document.querySelectorAll('.art-block')]
         .map(b => collectArticleData(b)).filter(Boolean).map(d => d.a);
       const items = allArticles.map(a =>
-        `  {\n    id: ${a.id},\n    title: "${a.title.replace(/"/g,'\\"')}",\n    date: "${a.date}",\n    readTime: "${a.readTime}",\n    excerpt: "${a.excerpt.replace(/"/g,'\\"')}",\n    image: "${a.image||''}",\n    link: "${a.link}"\n  }`
+        `  {\n    id: ${a.id},\n    title: "${jsStr(a.title)}",\n    date: "${jsStr(a.date)}",\n    readTime: "${jsStr(a.readTime)}",\n    excerpt: "${jsStr(a.excerpt)}",\n    image: "${jsStr(a.image||'')}",\n    link: "${jsStr(a.link)}"\n  }`
       ).join(',\n');
       const file = await ghGet();
       const current = decodeURIComponent(escape(atob(file.content.replace(/\n/g,''))));
@@ -1607,7 +1616,7 @@ System integration</textarea>
       const allDownloads = [...document.querySelectorAll('.dl-block')]
         .map(b => collectDownloadData(b)).filter(Boolean);
       const snippet = `const downloads = [\n${allDownloads.map(d =>
-        `  {\n    id: ${d.id},\n    title: "${d.title.replace(/"/g,'\\"')}",\n    description: "${d.description.replace(/"/g,'\\"')}",\n    icon: "${d.icon}",\n    meta: ${JSON.stringify(d.meta)},\n    btnText: "${d.btnText}",\n    link: "${d.link}",\n    external: ${d.external}\n  }`
+        `  {\n    id: ${d.id},\n    title: "${jsStr(d.title)}",\n    description: "${jsStr(d.description)}",\n    icon: "${jsStr(d.icon)}",\n    meta: ${JSON.stringify(d.meta)},\n    btnText: "${jsStr(d.btnText)}",\n    link: "${jsStr(d.link)}",\n    external: ${d.external}\n  }`
       ).join(',\n')}\n];`;
       const file = await ghGet();
       const current = decodeURIComponent(escape(atob(file.content.replace(/\n/g,''))));
@@ -1630,7 +1639,7 @@ System integration</textarea>
       .map(b => collectProjectData(b)).filter(Boolean).map(d => d.p);
     try {
       const items = allProjects.map(p =>
-        `  {\n    id: ${p.id},\n    title: "${p.title.replace(/"/g,'\\"')}",\n    subtitle: "${p.subtitle.replace(/"/g,'\\"')}",\n    year: "${p.year}",\n    description: "${p.description.replace(/"/g,'\\"')}",\n    tags: ${JSON.stringify(p.tags)},\n    type: "${p.type}",\n    image: "${p.image||''}",\n    link: "${p.link}",\n    external: ${p.external}\n  }`
+        `  {\n    id: ${p.id},\n    title: "${jsStr(p.title)}",\n    subtitle: "${jsStr(p.subtitle)}",\n    year: "${jsStr(p.year)}",\n    description: "${jsStr(p.description)}",\n    tags: ${JSON.stringify(p.tags)},\n    type: "${p.type}",\n    image: "${jsStr(p.image||'')}",\n    link: "${jsStr(p.link)}",\n    external: ${p.external}\n  }`
       ).join(',\n');
       const file = await ghGet();
       const current = decodeURIComponent(escape(atob(file.content.replace(/\n/g,''))));
@@ -1647,7 +1656,7 @@ System integration</textarea>
       .map(b => collectArticleData(b)).filter(Boolean).map(d => d.a);
     try {
       const items = allArticles.map(a =>
-        `  {\n    id: ${a.id},\n    title: "${a.title.replace(/"/g,'\\"')}",\n    date: "${a.date}",\n    readTime: "${a.readTime}",\n    excerpt: "${a.excerpt.replace(/"/g,'\\"')}",\n    image: "${a.image||''}",\n    link: "${a.link}"\n  }`
+        `  {\n    id: ${a.id},\n    title: "${jsStr(a.title)}",\n    date: "${jsStr(a.date)}",\n    readTime: "${jsStr(a.readTime)}",\n    excerpt: "${jsStr(a.excerpt)}",\n    image: "${jsStr(a.image||'')}",\n    link: "${jsStr(a.link)}"\n  }`
       ).join(',\n');
       const file = await ghGet();
       const current = decodeURIComponent(escape(atob(file.content.replace(/\n/g,''))));
@@ -1664,7 +1673,7 @@ System integration</textarea>
       .map(b => collectDownloadData(b)).filter(Boolean);
     try {
       const snippet = `const downloads = [\n${allDownloads.map(d =>
-        `  {\n    id: ${d.id},\n    title: "${d.title.replace(/"/g,'\\"')}",\n    description: "${d.description.replace(/"/g,'\\"')}",\n    icon: "${d.icon}",\n    meta: ${JSON.stringify(d.meta)},\n    btnText: "${d.btnText}",\n    link: "${d.link}",\n    external: ${d.external}\n  }`
+        `  {\n    id: ${d.id},\n    title: "${jsStr(d.title)}",\n    description: "${jsStr(d.description)}",\n    icon: "${jsStr(d.icon)}",\n    meta: ${JSON.stringify(d.meta)},\n    btnText: "${jsStr(d.btnText)}",\n    link: "${jsStr(d.link)}",\n    external: ${d.external}\n  }`
       ).join(',\n')}\n];`;
       const file = await ghGet();
       const current = decodeURIComponent(escape(atob(file.content.replace(/\n/g,''))));
