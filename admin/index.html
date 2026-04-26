@@ -299,6 +299,29 @@
     .quill-readonly .ql-toolbar { opacity: 0.4; pointer-events: none; }
     .quill-readonly .ql-editor { cursor: default; }
 
+    .draft-block-btn {
+      background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.3); color: #fbbf24;
+      padding: 0.22rem 0.8rem; border-radius: 5px; font-size: 0.75rem; cursor: pointer;
+      font-family: inherit; transition: all 0.2s; display: inline-flex; align-items: center; gap: 4px;
+    }
+    .draft-block-btn:hover { background: rgba(245,158,11,0.22); }
+    .draft-badge {
+      font-size: 0.67rem; color: #fbbf24; background: rgba(245,158,11,0.1);
+      border: 1px solid rgba(245,158,11,0.25); border-radius: 4px;
+      padding: 0.07rem 0.45rem; margin-left: 6px; vertical-align: middle;
+    }
+    .orphan-draft-banner {
+      background: rgba(245,158,11,0.07); border: 1px solid rgba(245,158,11,0.25);
+      border-radius: 9px; padding: 0.75rem 1rem; margin-bottom: 1.2rem;
+      display: flex; align-items: center; gap: 10px; font-size: 0.85rem; color: #cbd5e1;
+    }
+    .draft-restore-btn {
+      background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.35); color: #fbbf24;
+      padding: 0.25rem 0.75rem; border-radius: 6px; font-size: 0.8rem; cursor: pointer;
+      font-family: inherit; white-space: nowrap; transition: all 0.2s;
+    }
+    .draft-restore-btn:hover { background: rgba(245,158,11,0.28); }
+
     .img-upload-row { display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
     .img-upload-row input[type="text"] { flex: 1; min-width: 0; }
     .img-upload-btn {
@@ -1100,6 +1123,7 @@ System integration</textarea>
     try {
       const data = await loadContentData();
       renderProjectBlocks(data.projects);
+      showOrphanedDraftsBanner(container, 'proj');
     } catch(e) { container.innerHTML = ''; showToast(e.message, true); }
   }
 
@@ -1110,6 +1134,7 @@ System integration</textarea>
     try {
       const data = await loadContentData();
       renderArticleBlocks(data.articles);
+      showOrphanedDraftsBanner(container, 'art');
     } catch(e) { container.innerHTML = ''; showToast(e.message, true); }
   }
 
@@ -1125,7 +1150,8 @@ System integration</textarea>
           <span class="repeat-block-title">Project ${i + 1}</span>
           <div class="block-actions">
             <button class="edit-block-btn" onclick="enterEditMode(this)"><i class="fa-solid fa-pen"></i> Edit</button>
-            <button class="save-block-btn" style="display:none;" onclick="saveProject(this.closest('.proj-block'))"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+            <button class="draft-block-btn" style="display:none;" onclick="saveDraft(this.closest('.proj-block'))"><i class="fa-solid fa-floppy-disk"></i> Save Draft</button>
+            <button class="save-block-btn" style="display:none;" onclick="saveProject(this.closest('.proj-block'))"><i class="fa-solid fa-cloud-arrow-up"></i> Publish</button>
             <button class="remove-btn" onclick="removeProjectFromGH(this)">Delete</button>
           </div>
         </div>
@@ -1175,20 +1201,25 @@ System integration</textarea>
       const qInst = quillMap[`pqe_${p.id}`];
       if (qInst) { qInst.enable(false); div.querySelector('.quill-wrap').classList.add('quill-readonly'); }
       if (!p.external) autoLoadBodyFromGH(p.link, `pqe_${p.id}`);
+      // Auto-restore draft if one was saved locally
+      if (tryRestoreDraft(div) && !div.querySelector('.draft-badge')) {
+        div.querySelector('.repeat-block-title').insertAdjacentHTML('afterend', '<span class="draft-badge">Draft</span>');
+      }
     });
   }
 
-  function addNewProjectBlock() {
+  function addNewProjectBlock(existingDraftId) {
     const container = document.getElementById('p-existing-blocks');
-    const n = container.querySelectorAll('.proj-block').length + 1;
     const div = document.createElement('div');
     div.className = 'repeat-block proj-block';
     div.dataset.id = 'new';
+    div.dataset.draftId = existingDraftId || `new_${Date.now()}`;
     div.innerHTML = `
       <div class="repeat-block-header">
         <span class="repeat-block-title">New Project</span>
         <div class="block-actions">
-          <button class="save-block-btn" onclick="saveProject(this.closest('.proj-block'))"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+          <button class="draft-block-btn" onclick="saveDraft(this.closest('.proj-block'))"><i class="fa-solid fa-floppy-disk"></i> Save Draft</button>
+          <button class="save-block-btn" onclick="saveProject(this.closest('.proj-block'))"><i class="fa-solid fa-cloud-arrow-up"></i> Publish</button>
           <button class="remove-btn" onclick="removeBlock(this)">Remove</button>
         </div>
       </div>
@@ -1228,6 +1259,8 @@ System integration</textarea>
     const newPqeId = `pqe_new_${Date.now()}`;
     div.querySelector('.pb-quill-slot').id = newPqeId;
     initQuill(newPqeId, 'Write your project detail content here…');
+    // Restore draft if this block was created from a saved draft
+    if (existingDraftId) setTimeout(() => { tryRestoreDraft(div); }, 80);
     div.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
@@ -1243,7 +1276,8 @@ System integration</textarea>
           <span class="repeat-block-title">Article ${i + 1}</span>
           <div class="block-actions">
             <button class="edit-block-btn" onclick="enterEditMode(this)"><i class="fa-solid fa-pen"></i> Edit</button>
-            <button class="save-block-btn" style="display:none;" onclick="saveArticle(this.closest('.art-block'))"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+            <button class="draft-block-btn" style="display:none;" onclick="saveDraft(this.closest('.art-block'))"><i class="fa-solid fa-floppy-disk"></i> Save Draft</button>
+            <button class="save-block-btn" style="display:none;" onclick="saveArticle(this.closest('.art-block'))"><i class="fa-solid fa-cloud-arrow-up"></i> Publish</button>
             <button class="remove-btn" onclick="removeArticleFromGH(this)">Delete</button>
           </div>
         </div>
@@ -1279,20 +1313,25 @@ System integration</textarea>
       const qInst = quillMap[`aqe_${a.id}`];
       if (qInst) { qInst.enable(false); div.querySelector('.quill-wrap').classList.add('quill-readonly'); }
       autoLoadBodyFromGH(a.link, `aqe_${a.id}`);
+      // Auto-restore draft if one was saved locally
+      if (tryRestoreDraft(div) && !div.querySelector('.draft-badge')) {
+        div.querySelector('.repeat-block-title').insertAdjacentHTML('afterend', '<span class="draft-badge">Draft</span>');
+      }
     });
   }
 
-  function addNewArticleBlock() {
+  function addNewArticleBlock(existingDraftId) {
     const container = document.getElementById('a-existing-blocks');
-    const n = container.querySelectorAll('.art-block').length + 1;
     const div = document.createElement('div');
     div.className = 'repeat-block art-block';
     div.dataset.id = 'new';
+    div.dataset.draftId = existingDraftId || `new_${Date.now()}`;
     div.innerHTML = `
       <div class="repeat-block-header">
         <span class="repeat-block-title">New Article</span>
         <div class="block-actions">
-          <button class="save-block-btn" onclick="saveArticle(this.closest('.art-block'))"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+          <button class="draft-block-btn" onclick="saveDraft(this.closest('.art-block'))"><i class="fa-solid fa-floppy-disk"></i> Save Draft</button>
+          <button class="save-block-btn" onclick="saveArticle(this.closest('.art-block'))"><i class="fa-solid fa-cloud-arrow-up"></i> Publish</button>
           <button class="remove-btn" onclick="removeBlock(this)">Remove</button>
         </div>
       </div>
@@ -1324,6 +1363,8 @@ System integration</textarea>
     const newQeId = `aqe_new_${Date.now()}`;
     div.querySelector('.ab-quill-slot').id = newQeId;
     initQuill(newQeId, 'Write your article here — use the toolbar for bold, italic, links, YouTube…');
+    // Restore draft if this block was created from a saved draft
+    if (existingDraftId) setTimeout(() => { tryRestoreDraft(div); }, 80);
     div.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
@@ -1338,6 +1379,85 @@ System integration</textarea>
       .replace(/"/g, '\\"')
       .replace(/\r/g, '')
       .replace(/\n/g, '\\n');
+  }
+
+  // ============================================================
+  //  DRAFT — localStorage (never leaves the browser)
+  // ============================================================
+  function getDraftKey(block) {
+    const type = block.classList.contains('proj-block') ? 'proj' : 'art';
+    return `draft_${type}_${block.dataset.draftId || block.dataset.id}`;
+  }
+
+  function collectDraftData(block) {
+    const data = { _ts: Date.now() };
+    block.querySelectorAll('input, textarea, select').forEach(el => {
+      const cls = [...el.classList].find(c => /^(ab|pb|dlb)-/.test(c));
+      if (cls) data[cls] = el.value;
+    });
+    const qDiv = block.querySelector('[id^="aqe_"], [id^="pqe_"]');
+    if (qDiv && quillMap[qDiv.id]) data._quill = getQuillHTML(qDiv.id);
+    return data;
+  }
+
+  function restoreDraftToBlock(block, data) {
+    Object.entries(data).forEach(([key, val]) => {
+      if (key.startsWith('_')) return;
+      const el = block.querySelector('.' + key);
+      if (el) el.value = val;
+    });
+    if (data._quill !== undefined) {
+      const qDiv = block.querySelector('[id^="aqe_"], [id^="pqe_"]');
+      if (qDiv && quillMap[qDiv.id]) setQuillHTML(qDiv.id, data._quill);
+    }
+  }
+
+  function saveDraft(block) {
+    localStorage.setItem(getDraftKey(block), JSON.stringify(collectDraftData(block)));
+    if (!block.querySelector('.draft-badge')) {
+      const titleEl = block.querySelector('.repeat-block-title');
+      if (titleEl) titleEl.insertAdjacentHTML('afterend', '<span class="draft-badge">Draft</span>');
+    }
+    showToast('Draft saved locally — click Publish when ready.');
+  }
+
+  function clearDraft(block) {
+    localStorage.removeItem(getDraftKey(block));
+    const badge = block.querySelector('.draft-badge');
+    if (badge) badge.remove();
+  }
+
+  function tryRestoreDraft(block) {
+    const raw = localStorage.getItem(getDraftKey(block));
+    if (!raw) return false;
+    try { restoreDraftToBlock(block, JSON.parse(raw)); return true; }
+    catch(e) { return false; }
+  }
+
+  function showOrphanedDraftsBanner(anchorEl, type) {
+    const prefix = `draft_${type}_new_`;
+    const keys = Object.keys(localStorage).filter(k => k.startsWith(prefix));
+    if (!keys.length) return;
+    if (anchorEl.parentNode.querySelector('.orphan-draft-banner')) return;
+    const banner = document.createElement('div');
+    banner.className = 'orphan-draft-banner';
+    banner.innerHTML = `<i class="fa-solid fa-floppy-disk" style="color:#fbbf24;"></i>
+      <span style="flex:1;">${keys.length} unsaved draft${keys.length > 1 ? 's' : ''} from your last session.</span>
+      <button class="draft-restore-btn" onclick="restoreOrphanedDrafts('${type}', this.closest('.orphan-draft-banner'))">Restore</button>
+      <button class="remove-btn" style="font-size:0.75rem;margin-left:4px;" onclick="this.closest('.orphan-draft-banner').remove()">Dismiss</button>`;
+    anchorEl.parentNode.insertBefore(banner, anchorEl);
+  }
+
+  function restoreOrphanedDrafts(type, banner) {
+    const prefix = `draft_${type}_new_`;
+    Object.keys(localStorage).filter(k => k.startsWith(prefix)).forEach(key => {
+      try {
+        const draftId = key.slice(`draft_${type}_`.length);
+        if (type === 'art') addNewArticleBlock(draftId);
+        else addNewProjectBlock(draftId);
+      } catch(e) {}
+    });
+    if (banner) banner.remove();
   }
 
   // ============================================================
@@ -1464,8 +1584,7 @@ System integration</textarea>
       if (wrap) wrap.classList.remove('quill-readonly');
     }
     btn.style.display = 'none';
-    const saveBtn = block.querySelector('.save-block-btn');
-    if (saveBtn) saveBtn.style.display = 'inline-flex';
+    block.querySelectorAll('.draft-block-btn, .save-block-btn').forEach(b => b.style.display = 'inline-flex');
   }
 
   function exitEditMode(block) {
@@ -1479,8 +1598,7 @@ System integration</textarea>
     }
     const editBtn = block.querySelector('.edit-block-btn');
     if (editBtn) editBtn.style.display = 'inline-flex';
-    const saveBtn = block.querySelector('.save-block-btn');
-    if (saveBtn) saveBtn.style.display = 'none';
+    block.querySelectorAll('.draft-block-btn, .save-block-btn').forEach(b => b.style.display = 'none');
   }
 
   // ============================================================
@@ -1574,6 +1692,7 @@ System integration</textarea>
       }
       showToast(`"${thisData.p.title}" saved!`);
       block.querySelector('.repeat-block-title').textContent = thisData.p.title;
+      clearDraft(block);
       if (block.querySelector('.edit-block-btn')) exitEditMode(block);
     } catch(e) { showToast(e.message, true); }
     finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save'; }
@@ -1601,6 +1720,7 @@ System integration</textarea>
       }
       showToast(`"${thisData.a.title}" saved!`);
       block.querySelector('.repeat-block-title').textContent = thisData.a.title;
+      clearDraft(block);
       if (block.querySelector('.edit-block-btn')) exitEditMode(block);
     } catch(e) { showToast(e.message, true); }
     finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save'; }
