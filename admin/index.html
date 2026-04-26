@@ -871,7 +871,7 @@ System integration</textarea>
   async function ghGet() {
     const token = localStorage.getItem('gh_token');
     const res = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}?ref=${GH_BRANCH}&t=${Date.now()}`, {
-      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json', 'Cache-Control': 'no-cache' }
+      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
     });
     if (!res.ok) throw new Error('Cannot read content.js from GitHub. Check your token.');
     return res.json();
