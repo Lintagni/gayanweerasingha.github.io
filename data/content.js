@@ -153,6 +153,7 @@ const articles = [
     date: "Jan 2026",
     readTime: "5",
     excerpt: "University gives us the foundation — theories, equations, standards, and principles. But once we step into the industry, we quickly realise something important: university education alone is not enough.",
+    image: "",
     link: "articles/article-1.html"
   },
   {
@@ -161,7 +162,17 @@ const articles = [
     date: "Mar 2026",
     readTime: "5",
     excerpt: "I’ve been testing out Blueprint.am and the speed of hardware prototyping is changing fast. I wanted to see how it handled a complex request, so I designed a 6-Axis Industrial Robot Arm focused on modularity and \"Plug-and-Work\" efficiency.",
+    image: "",
     link: "articles/article-3.html"
+  },
+  {
+    id: 1777219022083,
+    title: "Learn to build an AI job matcher",
+    date: "Apr 2026",
+    readTime: "3",
+    excerpt: "Job Matcher App automates job searching using AI. Upload your CV, the app scrapes job boards, uses Claude to match jobs (0-100%), generates cover letters, and tracks applications. Result: 4x more applications in 97% less time. Built with React, Node.js, Claude API.",
+    image: "",
+    link: "articles/article-4.html"
   }
 ];
 
