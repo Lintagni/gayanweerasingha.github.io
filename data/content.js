@@ -104,6 +104,7 @@ const projects = [
     description: "Complete electrical system design for a new Cardiac Catheterization Laboratory including power distribution, lighting design, emergency power supply, earthing, and medical equipment vendor coordination.",
     tags: ["Electrical Engineering","AutoCAD","Hospital Design","IEC Standards"],
     type: "engineering",
+    image: "",
     link: "projects/project-1.html",
     external: false
   },
@@ -115,6 +116,7 @@ const projects = [
     description: "20 working web apps built entirely with AI prompts using Claude Code — covering productivity, business & finance, lifestyle, and utility tools. Each app is live and usable.",
     tags: ["Claude Code","React","AI-Built","Vercel"],
     type: "webapp",
+    image: "",
     link: "https://20-projects-for-beginners.netlify.app/",
     external: true
   },
@@ -126,6 +128,7 @@ const projects = [
     description: "AI-powered flight price monitor that deploys autonomous agents to hunt mispriced tickets and deals 24/7. Alerts via email and Telegram across 50+ currencies.",
     tags: ["Claude Code","VS Code","React","AI-Built","Vercel"],
     type: "webapp",
+    image: "",
     link: "https://www.theflightagent.app/",
     external: true
   }
