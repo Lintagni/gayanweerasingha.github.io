@@ -104,6 +104,7 @@ const projects = [
     description: "Site electrical engineering for a private hospital building project in Dehiwala — subcontractor coordination, BIM-integrated detailing, and full site delivery support.",
     tags: ["Site Engineering","BIM Coordination","Revit","MEP"],
     type: "engineering",
+    image: "",
     link: "projects/project-4.html",
     external: false
   },
@@ -115,6 +116,7 @@ const projects = [
     description: "Redesigned the electrical infrastructure for a 500kVA-capacity fishery harbour project — consolidating dual generator supply into a single ATS-managed distribution system with manual bypass.",
     tags: ["Electrical Design","ATS/Changeover","Load Calculation","Generators"],
     type: "engineering",
+    image: "",
     link: "projects/project-5.html",
     external: false
   },
@@ -126,6 +128,7 @@ const projects = [
     description: "Electrical design and consulting across 10–20 hospital ward renovation projects for government and private hospitals in Sri Lanka's Southern and Western provinces.",
     tags: ["Healthcare Design","Retrofit","Electrical Engineering","IEC Standards"],
     type: "engineering",
+    image: "",
     link: "projects/project-6.html",
     external: false
   },
@@ -137,6 +140,7 @@ const projects = [
     description: "Electrical design and consulting for private hospitality and residential clients, including Morning Sun, Morning Sun 2, Kahanda Villa, Le Surf, and Rock Island, alongside various housing projects.",
     tags: ["Hospitality Design","Residential Design","Electrical Consulting"],
     type: "engineering",
+    image: "",
     link: "projects/project-7.html",
     external: false
   },
@@ -148,6 +152,7 @@ const projects = [
     description: "Full electrical distribution design for cardiac catheterization lab suites — 250A main panel, dedicated critical-care UPS backup, and segregated distribution across four clinical zones. Delivered across two separate cath lab facilities using the same critical-care design standard.",
     tags: ["Electrical Engineering","AutoCAD","Hospital Design","IEC Standards","UPS Systems"],
     type: "engineering",
+    image: "",
     link: "projects/project-1.html",
     external: false
   },
@@ -159,6 +164,7 @@ const projects = [
     description: "20 working web apps built entirely with AI prompts using Claude Code — covering productivity, business & finance, lifestyle, and utility tools. Each app is live and usable.",
     tags: ["Claude Code","React","AI-Built","Vercel"],
     type: "webapp",
+    image: "",
     link: "https://20-projects-for-beginners.netlify.app/",
     external: true
   },
@@ -170,6 +176,7 @@ const projects = [
     description: "AI-powered flight price monitor that deploys autonomous agents to hunt mispriced tickets and deals 24/7. Alerts via email and Telegram across 50+ currencies.",
     tags: ["Claude Code","VS Code","React","AI-Built","Vercel"],
     type: "webapp",
+    image: "",
     link: "https://www.theflightagent.app/",
     external: true
   }
