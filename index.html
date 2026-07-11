@@ -257,9 +257,9 @@
     </div>`;
   }).join('');
 
-  /* ---- Render projects (3 most recent, 2-col grid) ---- */
+  /* ---- Render projects (6 most recent, 2-col grid) ---- */
   const pgrid = document.getElementById('projects-grid');
-  [...projects].slice(-3).forEach(p => {
+  [...projects].slice(-6).forEach(p => {
     const tagHTML = p.tags.map(t => `<span class="proj-tag">${t}</span>`).join('');
     const extBadge = p.external
       ? `<div class="external-badge"><i class="fa-solid fa-arrow-up-right-from-square"></i> View live</div>`
