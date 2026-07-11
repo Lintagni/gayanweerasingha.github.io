@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Cath Lab Electrical Design | Gayan Weerasingha</title>
+  <title>Cath Lab Electrical Design & Distribution | Gayan Weerasingha</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-5GVMKG2YMF"></script>
@@ -27,14 +27,29 @@
       gap: 1rem; margin: 2rem 0;
     }
     .gallery img { width: 100%; height: 230px; object-fit: cover; border-radius: 12px; }
+    .arch-list { padding-left: 1.2rem; }
+    .arch-list li { margin-bottom: 0.5rem; }
+    .flow-diagram {
+      display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+      margin: 1.5rem 0 2rem 0;
+    }
+    .flow-row { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; justify-content: center; }
+    .flow-box {
+      border: 1px solid var(--border); border-radius: 8px; padding: 0.6rem 1rem;
+      font-size: 0.85rem; text-align: center; min-width: 140px;
+    }
+    .flow-box.critical { border-color: var(--accent); color: var(--accent); }
+    .flow-arrow { color: var(--text-mid); font-size: 1.1rem; }
+    .flow-branch { display: flex; gap: 0.6rem; flex-wrap: wrap; justify-content: center; margin-top: 0.4rem; }
+    .flow-caption { font-size: 0.8rem; color: var(--text-mid); margin-top: 0.6rem; }
   </style>
 </head>
 
 <body>
 
 <header class="page-header">
-  <h1>Electrical System Design for Cath Lab</h1>
-  <p>Karapitiya National Hospital &nbsp;·&nbsp; Sri Lanka &nbsp;·&nbsp; 2025</p>
+  <h1>Cardiac Catheterization Lab — Electrical Design &amp; Distribution</h1>
+  <p>Two Facilities, incl. Karapitiya National Hospital &nbsp;·&nbsp; Sri Lanka &nbsp;·&nbsp; 2025</p>
 </header>
 
 <nav>
@@ -64,18 +79,48 @@
   >
 
   <p>
-    This project involved the complete electrical system design for a new
-    Cardiac Catheterization Laboratory (Cath Lab) at Karapitiya National Hospital.
-    The design was carried out in accordance with hospital electrical safety
-    standards and medical equipment requirements.
+    Designed the electrical distribution system for cardiac catheterization laboratory
+    suites at two separate facilities, including Karapitiya National Hospital — a
+    critical-care environment requiring high-reliability power delivery and strict
+    segregation between clinical and support loads. Delivering the same design standard
+    twice demonstrated both the repeatability of the approach and the ability to adapt it
+    to each facility's specific room layout and equipment configuration.
   </p>
 
-  <h2>Scope of Work</h2>
-  <p>
-    The project scope included power distribution systems, lighting design,
-    emergency power supply integration, earthing, and coordination with
-    medical equipment vendors.
-  </p>
+  <h2>System Architecture</h2>
+  <ul class="arch-list">
+    <li>250A main distribution panel as the primary supply point</li>
+    <li>95 sqmm main feeder cable sized for the connected load and cable run</li>
+    <li>120kVA Socomec Masterys GP4 UPS providing dedicated backup power for the cath machine and associated critical equipment</li>
+    <li>Four dedicated sub-panels per facility: Monitoring Room, Cath Machine Room, Technical Room, and Cath Lab Room</li>
+  </ul>
+
+  <h2>Power Flow</h2>
+  <div class="flow-diagram">
+    <div class="flow-box">Feeder</div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-box critical">Main Panel<br><span style="font-size:0.75rem;">250A · 95 sqmm feeder</span></div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-box critical">UPS<br><span style="font-size:0.75rem;">120kVA Socomec GP4</span></div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-box critical">Cath Machine Panel</div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-box critical">Cath Lab Equipment<br><span style="font-size:0.75rem;">incl. cath machine</span></div>
+    <div class="flow-branch">
+      <div class="flow-box">Monitoring Room<br><span style="font-size:0.75rem;">Lights, AC, power</span></div>
+      <div class="flow-box">Technical Room<br><span style="font-size:0.75rem;">Lights, AC, power</span></div>
+      <div class="flow-box">Cath Lab Room<br><span style="font-size:0.75rem;">Lights, AC, power</span></div>
+    </div>
+    <p class="flow-caption">Feeder → Main Panel → UPS → Cath Machine Panel → Cath Lab Equipment, with parallel sub-panel feeds supplying lighting, air conditioning, and general power to the Monitoring, Technical, and Cath Lab Rooms independently.</p>
+  </div>
+
+  <h2>Scope Covered</h2>
+  <ul class="arch-list">
+    <li>Lighting system design</li>
+    <li>Power outlet distribution</li>
+    <li>Data point layout</li>
+    <li>Load segregation between UPS-backed critical circuits and standard building supply</li>
+  </ul>
 
   <h2>My Responsibilities</h2>
   <p>
@@ -93,6 +138,13 @@
     <img src="assets/images/CathLab04.jpg" alt="Cathlab04">
     <img src="assets/images/CathLab05.jpg" alt="Cathlab05">
   </div>
+
+  <h2>Skills Demonstrated</h2>
+  <p>
+    Critical-care electrical design, UPS system integration, panel schedule design,
+    cable sizing for medical equipment loads, and repeatable design-standard delivery
+    across multiple facilities.
+  </p>
 
   <h2>Tools & Standards</h2>
   <p>

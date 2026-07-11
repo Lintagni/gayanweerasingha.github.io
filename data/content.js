@@ -97,12 +97,56 @@ const contact = {
 // ---- PROJECTS ----
 const projects = [
   {
+    id: 4,
+    title: "Private Hospital Building — Dehiwala",
+    subtitle: "Dehiwala, Sri Lanka",
+    year: "2022 – 2024",
+    description: "Site electrical engineering for a private hospital building project in Dehiwala — subcontractor coordination, BIM-integrated detailing, and full site delivery support.",
+    tags: ["Site Engineering","BIM Coordination","Revit","MEP"],
+    type: "engineering",
+    link: "projects/project-4.html",
+    external: false
+  },
+  {
+    id: 5,
+    title: "Fishery Harbour — Electrical Infrastructure Redesign",
+    subtitle: "Sri Lanka",
+    year: "2024 – 2025",
+    description: "Redesigned the electrical infrastructure for a 500kVA-capacity fishery harbour project — consolidating dual generator supply into a single ATS-managed distribution system with manual bypass.",
+    tags: ["Electrical Design","ATS/Changeover","Load Calculation","Generators"],
+    type: "engineering",
+    link: "projects/project-5.html",
+    external: false
+  },
+  {
+    id: 6,
+    title: "Hospital Ward Renovation Program",
+    subtitle: "Southern & Western Provinces, Sri Lanka",
+    year: "2024 – Present",
+    description: "Electrical design and consulting across 10–20 hospital ward renovation projects for government and private hospitals in Sri Lanka's Southern and Western provinces.",
+    tags: ["Healthcare Design","Retrofit","Electrical Engineering","IEC Standards"],
+    type: "engineering",
+    link: "projects/project-6.html",
+    external: false
+  },
+  {
+    id: 7,
+    title: "Private Sector Works — Hospitality & Residential",
+    subtitle: "Hospitality & Residential, Sri Lanka",
+    year: "Various",
+    description: "Electrical design and consulting for private hospitality and residential clients, including Morning Sun, Morning Sun 2, Kahanda Villa, Le Surf, and Rock Island, alongside various housing projects.",
+    tags: ["Hospitality Design","Residential Design","Electrical Consulting"],
+    type: "engineering",
+    link: "projects/project-7.html",
+    external: false
+  },
+  {
     id: 1,
-    title: "Electrical System Design – Cath Lab",
-    subtitle: "Karapitiya National Hospital, Galle",
+    title: "Cardiac Catheterization Lab – Electrical Design & Distribution",
+    subtitle: "Two Facilities incl. Karapitiya National Hospital",
     year: "2025",
-    description: "Complete electrical system design for a new Cardiac Catheterization Laboratory including power distribution, lighting design, emergency power supply, earthing, and medical equipment vendor coordination.",
-    tags: ["Electrical Engineering","AutoCAD","Hospital Design","IEC Standards"],
+    description: "Full electrical distribution design for cardiac catheterization lab suites — 250A main panel, dedicated critical-care UPS backup, and segregated distribution across four clinical zones. Delivered across two separate cath lab facilities using the same critical-care design standard.",
+    tags: ["Electrical Engineering","AutoCAD","Hospital Design","IEC Standards","UPS Systems"],
     type: "engineering",
     link: "projects/project-1.html",
     external: false
