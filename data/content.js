@@ -147,7 +147,7 @@ const projects = [
   {
     id: 1,
     title: "Cardiac Catheterization Lab – Electrical Design & Distribution",
-    subtitle: "Two Facilities incl. Karapitiya National Hospital",
+    subtitle: "Two Facilities",
     year: "2025",
     description: "Full electrical distribution design for cardiac catheterization lab suites — 250A main panel, dedicated critical-care UPS backup, and segregated distribution across four clinical zones. Delivered across two separate cath lab facilities using the same critical-care design standard.",
     tags: ["Electrical Engineering","AutoCAD","Hospital Design","IEC Standards","UPS Systems"],
